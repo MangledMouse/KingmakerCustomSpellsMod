@@ -32,7 +32,7 @@ namespace CowWithHatsCustomSpellsMod
     {
         static internal void load()
         {
-            NewSpells.createSuggestion();
+            NewSpells.load();            
         }
     }
 }

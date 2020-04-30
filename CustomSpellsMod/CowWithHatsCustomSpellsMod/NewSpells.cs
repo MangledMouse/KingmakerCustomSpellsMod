@@ -49,6 +49,13 @@ namespace CowWithHatsCustomSpellsMod
         static public BlueprintAbility suggestion;
         static public BlueprintAbility suggestion_mass;
 
+        public static void load()
+        {
+            createSuggestion();
+            //this needs to come after creation of all relevant spells
+            ReplaceDomainSpells();
+        }
+
         public static void createSuggestion()
         {
             var buff = library.Get<BlueprintBuff>("6477ae917b0ec7a4ca76bc9f36b023ac"); //rainbow pattern
@@ -124,8 +131,11 @@ namespace CowWithHatsCustomSpellsMod
             suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 5); //psychic detective spell list
             suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 6); // witch spell list
             suggestion_mass.AddSpellAndScroll("4d80ff5fde0655a41bf3c8bfa653bfe9");  //scroll of euphoric tranquility
+        }
 
-
+        public static void ReplaceDomainSpells()
+        {
+            Common.replaceDomainSpell(library.Get<BlueprintProgression>("b5c056787d1bf544588ec3a150ed0b3b"), suggestion, 3); //charm domain replacement
         }
 
     }
