@@ -102,6 +102,7 @@ namespace CowWithHatsCustomSpellsMod
                                      check_intelligent,
                                      check_undead
                                      );
+            suggestion_mass.setMiscAbilityParametersRangedDirectional();
             suggestion_mass.AddComponent(Helpers.CreateSpellDescriptor(SpellDescriptor.MindAffecting));
             suggestion_mass.SpellResistance = true;
             suggestion_mass.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Persistent | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Piercing;
