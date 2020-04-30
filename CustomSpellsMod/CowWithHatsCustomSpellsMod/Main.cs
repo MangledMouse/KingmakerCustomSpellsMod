@@ -70,6 +70,7 @@ namespace CowWithHatsCustomSpellsMod
         }
         [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary")]
         [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary", new Type[0])]
+        [Harmony12.HarmonyAfter("CallOfTheWild")] //make it run after call so I can be sure to have the classes for that up and running
         static class LibraryScriptableObject_LoadDictionary_Patch
         {
             static void Postfix(LibraryScriptableObject __instance)
