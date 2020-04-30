@@ -74,12 +74,11 @@ namespace CowWithHatsCustomSpellsMod
                                       CallOfTheWild.Helpers.minutesPerLevelDuration,
                                       CallOfTheWild.Helpers.willNegates,
                                       CallOfTheWild.Helpers.CreateRunActions(SavingThrowType.Will, CallOfTheWild.Helpers.CreateConditionalSaved(null, apply_buff)),
-                                      Helpers.CreateSpellDescriptor(SpellDescriptor.Compulsion),
+                                      Helpers.CreateSpellDescriptor(SpellDescriptor.MindAffecting | SpellDescriptor.Compulsion),
                                       CallOfTheWild.Helpers.CreateSpellComponent(SpellSchool.Enchantment),
                                       check_intelligent,
                                       check_undead
                                       );
-            suggestion.AddComponent(Helpers.CreateSpellDescriptor(SpellDescriptor.MindAffecting));
             suggestion.setMiscAbilityParametersSingleTargetRangedHarmful(true);
             suggestion.SpellResistance = true;
             suggestion.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Persistent | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Piercing;
@@ -97,13 +96,12 @@ namespace CowWithHatsCustomSpellsMod
                                      CallOfTheWild.Helpers.willNegates,
                                      Helpers.CreateAbilityTargetsAround(15.Feet(), TargetType.Enemy),
                                      CallOfTheWild.Helpers.CreateRunActions(SavingThrowType.Will, CallOfTheWild.Helpers.CreateConditionalSaved(null, apply_buff)),
-                                     Helpers.CreateSpellDescriptor(SpellDescriptor.Compulsion),
+                                     Helpers.CreateSpellDescriptor(SpellDescriptor.MindAffecting | SpellDescriptor.Compulsion),
                                      CallOfTheWild.Helpers.CreateSpellComponent(SpellSchool.Enchantment),
                                      check_intelligent,
                                      check_undead
                                      );
             suggestion_mass.setMiscAbilityParametersRangedDirectional();
-            suggestion_mass.AddComponent(Helpers.CreateSpellDescriptor(SpellDescriptor.MindAffecting));
             suggestion_mass.SpellResistance = true;
             suggestion_mass.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Persistent | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Piercing;
 
