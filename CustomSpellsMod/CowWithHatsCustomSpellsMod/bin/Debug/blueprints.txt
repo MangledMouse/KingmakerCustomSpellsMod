@@ -1,0 +1,2 @@
+SuggestionAbility	3682197d956543e2a694e163b5fdcc6c	Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbility
+ScrollOfSuggestionAbility	568f2f93985302da298bc17ebec8c9f3	Kingmaker.Blueprints.Items.Equipment.BlueprintItemEquipmentUsable

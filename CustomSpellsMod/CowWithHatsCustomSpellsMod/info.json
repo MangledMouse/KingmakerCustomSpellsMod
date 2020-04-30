@@ -1,0 +1,11 @@
+{
+  "Id": "CowWithHatsCustomSpellsMod",
+  "DisplayName": "CowWithHatsCustomSpellsMod",
+  "Author": "CowWithHat",
+  "Version": "1.0.0",
+  "ManagerVersion": "0.13.0",
+  "Requirements": [ "CallOfTheWild" ],
+  "AssemblyName": "CowWithHatsCustomSpellsMod.dll",
+  "HomePage": "",
+  "EntryMethod": "CowWithHatsCustomSpellsMod.Main.Load"
+}

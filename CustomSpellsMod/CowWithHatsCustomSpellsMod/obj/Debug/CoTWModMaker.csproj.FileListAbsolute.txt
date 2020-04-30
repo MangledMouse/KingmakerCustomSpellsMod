@@ -1,0 +1,10 @@
+C:\Users\Chris\Documents\kingmaker stuff\mods\MyCreatedMods\AnotherTry\CustomSpellsMod\CoTWModMaker\bin\Debug\blueprints.txt
+C:\Users\Chris\Documents\kingmaker stuff\mods\MyCreatedMods\AnotherTry\CustomSpellsMod\CoTWModMaker\bin\Debug\info.json
+C:\Users\Chris\Documents\kingmaker stuff\mods\MyCreatedMods\AnotherTry\CustomSpellsMod\CoTWModMaker\bin\Debug\settings.json
+C:\Users\Chris\Documents\kingmaker stuff\mods\MyCreatedMods\AnotherTry\CustomSpellsMod\CoTWModMaker\bin\Debug\CoTWModMaker.dll
+C:\Users\Chris\Documents\kingmaker stuff\mods\MyCreatedMods\AnotherTry\CustomSpellsMod\CoTWModMaker\bin\Debug\CoTWModMaker.pdb
+C:\Users\Chris\Documents\kingmaker stuff\mods\MyCreatedMods\AnotherTry\CustomSpellsMod\CoTWModMaker\obj\Debug\CoTWModMaker.csprojAssemblyReference.cache
+C:\Users\Chris\Documents\kingmaker stuff\mods\MyCreatedMods\AnotherTry\CustomSpellsMod\CoTWModMaker\obj\Debug\CoTWModMaker.Properties.Resources.resources
+C:\Users\Chris\Documents\kingmaker stuff\mods\MyCreatedMods\AnotherTry\CustomSpellsMod\CoTWModMaker\obj\Debug\CoTWModMaker.csproj.GenerateResource.cache
+C:\Users\Chris\Documents\kingmaker stuff\mods\MyCreatedMods\AnotherTry\CustomSpellsMod\CoTWModMaker\obj\Debug\CoTWModMaker.dll
+C:\Users\Chris\Documents\kingmaker stuff\mods\MyCreatedMods\AnotherTry\CustomSpellsMod\CoTWModMaker\obj\Debug\CoTWModMaker.pdb
