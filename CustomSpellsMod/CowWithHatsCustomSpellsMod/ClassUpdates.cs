@@ -25,8 +25,6 @@ namespace CowWithHatsCustomSpellsMod
         {
             FixDomainsAndSpellLists();
             ReplaceEvangelistSpells();
-            //UpdateInfectiousCharmsDiscovery();
-            //UpdateLoreShmanCapstone();
         }
 
         public static void FixDomainsAndSpellLists()
@@ -72,71 +70,6 @@ namespace CowWithHatsCustomSpellsMod
             {
                 spontaneous_casting.AddComponent(Common.createSpontaneousSpellConversion(cleric, spells_array[i].ToArray()));
             }
-        }
-
-        private static void UpdateInfectiousCharmsDiscovery()
-        {
-            BlueprintFeature infectious_charms_feature = library.Get<BlueprintFeature>("1a4bd53d5b8848d9a717084d7f9dfa0c");//the feature
-            BlueprintAbility infectious_charms_base = library.Get<BlueprintAbility>("f4e6208e0cbf4807bd023f168dd1f616");//the base buff
-
-            var spells = new BlueprintAbility[]
-           {
-                NewSpells.suggestion
-           };
-
-            var swift_abilites = new List<BlueprintAbility>();
-            foreach (var spell in spells)
-            {
-                var buff = Helpers.CreateBuff("InfectiousCharms" + spell.name + "Buff",
-                                              infectious_charms_feature.Name,
-                                              infectious_charms_feature.Description,
-                                              "",
-                                              null,
-                                              null);
-
-                var apply_buff = Common.createContextActionApplyBuffToCaster(buff, Helpers.CreateContextDuration(1), dispellable: false);
-
-                var swift_ability = library.CopyAndAdd<BlueprintAbility>(spell, "InfectiousCharms" + spell.name, "");
-                swift_ability.ActionType = UnitCommand.CommandType.Swift;
-                swift_ability.AddComponent(Common.createAbilityCasterHasFacts(buff));
-                swift_ability.RemoveComponents<AbilityDeliverTouch>();
-
-                swift_ability.Range = AbilityRange.Close;
-
-
-                var remove_buff = Common.createAbilityExecuteActionOnCast(Helpers.CreateActionList(Common.createContextActionOnContextCaster(Helpers.Create<ContextActionRemoveBuff>(r => r.Buff = buff))));
-                swift_ability.AddComponent(remove_buff);
-
-                bool found = false;
-
-                var new_actions = spell.GetComponent<AbilityEffectRunAction>().Actions.Actions;
-
-                new_actions = Common.changeAction<ContextActionConditionalSaved>(new_actions,
-                                                                                 c =>
-                                                                                 {
-                                                                                     c.Failed = Helpers.CreateActionList(c.Failed.Actions.AddToArray(apply_buff));
-                                                                                     found = true;
-                                                                                 });
-                if (!found)
-                {
-                    new_actions = new_actions.AddToArray(apply_buff);
-                }
-
-                spell.ReplaceComponent<AbilityEffectRunAction>(a => a.Actions = Helpers.CreateActionList(new_actions));
-
-                buff.AddComponent(Helpers.Create<ReplaceAbilityParamsWithContext>(r => r.Ability = swift_ability));
-                swift_ability.Parent = infectious_charms_base;
-                swift_abilites.Add(swift_ability);
-            }
-
-            List<BlueprintComponent> components = new List<BlueprintComponent>();
-            components.Add(Helpers.CreateAbilityVariants(infectious_charms_base, swift_abilites.ToArray()));
-            infectious_charms_base.ReplaceComponent<AbilityVariants>(a => a.Variants = a.Variants.AddToArray(swift_abilites.ToArray()));
-        }
-
-        private static void UpdateLoreShmanCapstone()
-        {
-
         }
     }
 }
