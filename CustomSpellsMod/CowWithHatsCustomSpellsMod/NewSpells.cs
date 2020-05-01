@@ -56,7 +56,6 @@ namespace CowWithHatsCustomSpellsMod
 
         public static void createSuggestion()
         {
-            Main.logger.Log("Reached creation of suggestion");
             var buff = library.Get<BlueprintBuff>("6477ae917b0ec7a4ca76bc9f36b023ac"); //rainbow pattern
             var echolocation = library.Get<BlueprintAbility>("20b548bf09bb3ea4bafea78dcb4f3db6"); //Echolocation
             var hold_monster = library.Get<BlueprintAbility>("41e8a952da7a5c247b3ec1c2dbb73018");
@@ -119,7 +118,6 @@ namespace CowWithHatsCustomSpellsMod
             suggestion_mass.SpellResistance = true;
             suggestion_mass.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Persistent | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Piercing;
 
-            Main.logger.Log("Reached adding of spells to base class lists");
             NewSpells.suggestion.AddToSpellList(Helpers.bardSpellList, 2);//bard spell list
             NewSpells.suggestion.AddToSpellList(Helpers.wizardSpellList, 3);//wizard spell list
             NewSpells.suggestion_mass.AddToSpellList(Helpers.bardSpellList, 5);

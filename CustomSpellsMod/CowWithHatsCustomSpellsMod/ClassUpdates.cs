@@ -29,7 +29,6 @@ namespace CowWithHatsCustomSpellsMod
 
         public static void FixDomainsAndSpellLists()
         {
-            Main.logger.Log("Reached fix domain spells");
             Common.replaceDomainSpell(library.Get<BlueprintProgression>("b5c056787d1bf544588ec3a150ed0b3b"), NewSpells.suggestion, 3); //charm domain replacement
             NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 5); //psychic detective spell list
             NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 6); // witch spell list

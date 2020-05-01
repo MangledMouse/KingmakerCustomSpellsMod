@@ -35,7 +35,7 @@ namespace CowWithHatsCustomSpellsMod
         static internal void preLoad()
         {
             NewSpells.load();
-            Main.logger.Log("Preload reached");
+            //Main.logger.Log("Preload reached");
         }
 
         static internal void postLoad()
