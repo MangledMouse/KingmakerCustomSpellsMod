@@ -7,3 +7,6 @@
 
     # ignore all files ending with ~
     *~
+
+    # ignore all files with suo
+    *.suo
