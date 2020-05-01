@@ -123,13 +123,7 @@ namespace CowWithHatsCustomSpellsMod
 
             List<BlueprintComponent> components = new List<BlueprintComponent>();
             components.Add(Helpers.CreateAbilityVariants(infectious_charms_base, swift_abilites.ToArray()));
-            infectious_charms_base.ComponentsArray.AddToArray(components.ToArray());
-
-            //var variants = Helpers.CreateAbilityVariants(infectious_charms_base, swift_abilites);
-            //infectious_charms_base.AddComponents(variants);
-            //infectious_charms_feature.AddComponents(variants);
-            //var abilities = infectious_charms_feature.GetComponents<AbilityVariants>();
-
+            infectious_charms_base.ReplaceComponent<AbilityVariants>(a => a.Variants = a.Variants.AddToArray(swift_abilites.ToArray()));
         }
     }
 }
