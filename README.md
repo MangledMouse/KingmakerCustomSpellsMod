@@ -1,5 +1,11 @@
 CowWithHat's Custom Spells mod
 
+This spell adds the following spells from PnP:
+
+Suggestion
+Suggestion, Mass
+
+
 You will need the mods Unity Mod Manager and the Call of the Wild.
 
 They be accessed here and here respectively
