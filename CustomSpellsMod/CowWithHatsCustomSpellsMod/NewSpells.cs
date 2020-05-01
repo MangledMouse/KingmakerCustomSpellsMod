@@ -52,8 +52,6 @@ namespace CowWithHatsCustomSpellsMod
         public static void load()
         {
             createSuggestion();
-            //this needs to come after creation of all relevant spells
-            
         }
 
         public static void createSuggestion()
@@ -119,18 +117,6 @@ namespace CowWithHatsCustomSpellsMod
             suggestion_mass.ReplaceComponent<AbilityEffectRunAction>(a => a.Actions = Helpers.CreateActionList(action));
             suggestion_mass.SpellResistance = true;
             suggestion_mass.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Persistent | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Piercing;
-
-            suggestion.AddToSpellList(Helpers.bardSpellList, 2);
-            suggestion.AddToSpellList(Helpers.wizardSpellList, 3);
-            suggestion.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 3); // witch spell list
-            suggestion.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 2); //psychic detective spell list
-            suggestion.AddSpellAndScroll("4d80ff5fde0655a41bf3c8bfa653bfe9"); //scroll of euphoric tranquility
-
-            suggestion_mass.AddToSpellList(Helpers.bardSpellList, 5);
-            suggestion_mass.AddToSpellList(Helpers.wizardSpellList, 6);
-            suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 5); //psychic detective spell list
-            suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 6); // witch spell list
-            suggestion_mass.AddSpellAndScroll("4d80ff5fde0655a41bf3c8bfa653bfe9");  //scroll of euphoric tranquility
         }
 
     }

@@ -1,6 +1,7 @@
 ﻿using CallOfTheWild;
 using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
+using Kingmaker.Blueprints.Classes.Spells;
 using Kingmaker.Designers.Mechanics.Facts;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
 using Kingmaker.UnitLogic.Abilities.Components;
@@ -21,15 +22,25 @@ namespace CowWithHatsCustomSpellsMod
 
         public static void load()
         {
-            ReplaceDomainSpells();
+            FixDomainsAndSpellLists();
             ReplaceEvangelistSpells();
             UpdateInfectiousCharmsDiscovery();
             //UpdateLoreShmanCapstone();
         }
 
-        public static void ReplaceDomainSpells()
+        public static void FixDomainsAndSpellLists()
         {
             Common.replaceDomainSpell(library.Get<BlueprintProgression>("b5c056787d1bf544588ec3a150ed0b3b"), NewSpells.suggestion, 3); //charm domain replacement
+            NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 5); //psychic detective spell list
+            NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 6); // witch spell list
+            NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 3); // witch spell list
+            NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 2); //psychic detective spell list
+            NewSpells.suggestion.AddToSpellList(Helpers.bardSpellList, 2);
+            NewSpells.suggestion.AddToSpellList(Helpers.wizardSpellList, 3);
+            NewSpells.suggestion.AddSpellAndScroll("4d80ff5fde0655a41bf3c8bfa653bfe9"); //scroll of euphoric tranquility
+            NewSpells.suggestion_mass.AddToSpellList(Helpers.bardSpellList, 5);
+            NewSpells.suggestion_mass.AddToSpellList(Helpers.wizardSpellList, 6);
+            NewSpells.suggestion_mass.AddSpellAndScroll("4d80ff5fde0655a41bf3c8bfa653bfe9");  //scroll of euphoric tranquility
         }
 
         private static void ReplaceEvangelistSpells()
