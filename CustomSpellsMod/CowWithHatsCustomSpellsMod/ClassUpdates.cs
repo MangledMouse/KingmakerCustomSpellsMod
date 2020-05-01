@@ -24,8 +24,8 @@ namespace CowWithHatsCustomSpellsMod
             ReplaceDomainSpells();
             ReplaceEvangelistSpells();
             UpdateInfectiousCharmsDiscovery();
+            UpdateLoreShmanCapstone();
         }
-
 
         public static void ReplaceDomainSpells()
         {
@@ -124,6 +124,11 @@ namespace CowWithHatsCustomSpellsMod
             List<BlueprintComponent> components = new List<BlueprintComponent>();
             components.Add(Helpers.CreateAbilityVariants(infectious_charms_base, swift_abilites.ToArray()));
             infectious_charms_base.ReplaceComponent<AbilityVariants>(a => a.Variants = a.Variants.AddToArray(swift_abilites.ToArray()));
+        }
+
+        private static void UpdateLoreShmanCapstone()
+        {
+
         }
     }
 }
