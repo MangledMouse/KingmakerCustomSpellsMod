@@ -21,18 +21,25 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityModManagerNet;
 
 namespace CowWithHatsCustomSpellsMod
 {
     class Core
     {
-        static internal void load()
+        static internal void preLoad()
         {
             NewSpells.load();
+            Main.logger.Log("Preload reached");
+        }
+
+        static internal void postLoad()
+        {
             ClassUpdates.load();
         }
     }
