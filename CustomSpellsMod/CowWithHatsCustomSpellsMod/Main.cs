@@ -68,9 +68,32 @@ namespace CowWithHatsCustomSpellsMod
             }
             return true;
         }
+
+        [Harmony12.HarmonyBefore(new string[] { "CallOfTheWild" })] // these want to launch before call so that the Call of the Wild's scraping of all spells sees the new spells
         [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary")]
         [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary", new Type[0])]
-        [Harmony12.HarmonyAfter("CallOfTheWild")] //make it run after call so I can be sure to have the classes for that up and running
+        static class LibraryScriptableObject_LoadDictionary_Patch_Before
+        {
+            static bool Run = false;
+            static void Postfix(LibraryScriptableObject __instance)
+            {
+                if (Run) return; Run = true;
+                Main.library = __instance;
+                try
+                {
+                    Main.DebugLog("Loading CowWithHat's Custom Spells Mod before Call of the Wild");
+                    Core.preLoad();
+                }
+                catch (Exception ex)
+                {
+                    Main.DebugError(ex);
+                }
+            }
+        }
+
+        [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary")]
+        [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary", new Type[0])]
+        [Harmony12.HarmonyAfter("CallOfTheWild")] //These want to launch after Call of the Wild so that Call's stuff exists and can be editted
         static class LibraryScriptableObject_LoadDictionary_Patch
         {
             static void Postfix(LibraryScriptableObject __instance)
@@ -80,7 +103,7 @@ namespace CowWithHatsCustomSpellsMod
                 Main.library = self;
                 try
                 {
-                    Main.DebugLog("Loading CowWithHatsCustomSpellsMod");
+                    Main.DebugLog("Loading CowWithHat's CustomSpellsMod after Call of the Wild");
 
                     CallOfTheWild.LoadIcons.Image2Sprite.icons_folder = @"./Mods/CowWithHatsCustomSpellsMod/Icons/";
 #if DEBUG                
@@ -89,8 +112,8 @@ namespace CowWithHatsCustomSpellsMod
                     bool allow_guid_generation = false; //no guids should be ever generated in release
 #endif
                     CallOfTheWild.Helpers.GuidStorage.load(Properties.Resources.blueprints, allow_guid_generation);
-
-                    Core.load();
+                    
+                    Core.postLoad();
 
 #if DEBUG
                     string guid_file_name = @"./Mods/CowWithHatsCustomSpellsMod/blueprints.txt";

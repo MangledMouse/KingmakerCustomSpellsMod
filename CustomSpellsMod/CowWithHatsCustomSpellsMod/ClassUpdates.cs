@@ -24,7 +24,7 @@ namespace CowWithHatsCustomSpellsMod
             ReplaceDomainSpells();
             ReplaceEvangelistSpells();
             UpdateInfectiousCharmsDiscovery();
-            UpdateLoreShmanCapstone();
+            //UpdateLoreShmanCapstone();
         }
 
         public static void ReplaceDomainSpells()

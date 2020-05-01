@@ -30,9 +30,13 @@ namespace CowWithHatsCustomSpellsMod
 {
     class Core
     {
-        static internal void load()
+        static internal void preLoad()
         {
             NewSpells.load();
+        }
+
+        static internal void postLoad()
+        {
             ClassUpdates.load();
         }
     }
