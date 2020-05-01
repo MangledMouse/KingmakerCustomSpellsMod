@@ -35,11 +35,9 @@ namespace CowWithHatsCustomSpellsMod
             NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 6); // witch spell list
             NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 3); // witch spell list
             NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 2); //psychic detective spell list
-            NewSpells.suggestion.AddToSpellList(Helpers.bardSpellList, 2);
-            NewSpells.suggestion.AddToSpellList(Helpers.wizardSpellList, 3);
+            
             NewSpells.suggestion.AddSpellAndScroll("4d80ff5fde0655a41bf3c8bfa653bfe9"); //scroll of euphoric tranquility
-            NewSpells.suggestion_mass.AddToSpellList(Helpers.bardSpellList, 5);
-            NewSpells.suggestion_mass.AddToSpellList(Helpers.wizardSpellList, 6);
+            
             NewSpells.suggestion_mass.AddSpellAndScroll("4d80ff5fde0655a41bf3c8bfa653bfe9");  //scroll of euphoric tranquility
         }
 

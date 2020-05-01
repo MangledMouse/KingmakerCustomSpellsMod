@@ -117,6 +117,12 @@ namespace CowWithHatsCustomSpellsMod
             suggestion_mass.ReplaceComponent<AbilityEffectRunAction>(a => a.Actions = Helpers.CreateActionList(action));
             suggestion_mass.SpellResistance = true;
             suggestion_mass.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Persistent | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Piercing;
+
+            //can't use Call of the Wild's spell lists because they won't be populated yet
+            NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("25a5013493bdcf74bb2424532214d0c8"), 2);//bard spell list
+            NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("ba0401fdeb4062f40a7aa95b6f07fe89"), 3);//wizard spell list
+            NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("25a5013493bdcf74bb2424532214d0c8"), 5);
+            NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("ba0401fdeb4062f40a7aa95b6f07fe89"), 6);
         }
 
     }
