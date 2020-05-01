@@ -114,11 +114,8 @@ namespace CowWithHatsCustomSpellsMod
         [Harmony12.HarmonyAfter("CallOfTheWild")] //These want to launch after Call of the Wild so that Call's stuff exists and can be editted
         static class LibraryScriptableObject_LoadDictionary_Patch_After
         {
-            static void Postfix(LibraryScriptableObject __instance)
+            static void Postfix()
             {
-                var self = __instance;
-                if (Main.library != null) return;
-                Main.library = self;
                 try
                 {
                     Main.DebugLog("Loading CowWithHat's CustomSpellsMod after Call of the Wild");

@@ -56,6 +56,7 @@ namespace CowWithHatsCustomSpellsMod
 
         public static void createSuggestion()
         {
+            Main.logger.Log("Reached creation of suggestion");
             var buff = library.Get<BlueprintBuff>("6477ae917b0ec7a4ca76bc9f36b023ac"); //rainbow pattern
             var echolocation = library.Get<BlueprintAbility>("20b548bf09bb3ea4bafea78dcb4f3db6"); //Echolocation
             var hold_monster = library.Get<BlueprintAbility>("41e8a952da7a5c247b3ec1c2dbb73018");
@@ -80,7 +81,7 @@ namespace CowWithHatsCustomSpellsMod
             suggestion = Helpers.CreateAbility("SuggestionAbility",
                                       "Suggestion",
                                       "You suggest to a single creature that they should avoid combat and turn their thoughts inward. The spell magically influences the creature to follow the suggestion. They are fascinated by the effect for the duration or until they are harmed.",
-                                      "",
+                                      "3682197d956543e2a694e163b5fdcc6c",
                                       echolocation.Icon,
                                       AbilityType.Spell,
                                       UnitCommand.CommandType.Standard,
@@ -101,7 +102,7 @@ namespace CowWithHatsCustomSpellsMod
             suggestion_mass = Helpers.CreateAbility("SuggestionMassAbility",
                 "Suggestion, Mass",
                 "This spell functions like Suggestion, except several creatures may be affected. \n" +suggestion.Description,
-                "",
+                "033e70b6c72f46cab793eab5ff9f3a87",
                 echolocation.Icon,
                 AbilityType.Spell,
                 UnitCommand.CommandType.Standard,
@@ -118,10 +119,13 @@ namespace CowWithHatsCustomSpellsMod
             suggestion_mass.SpellResistance = true;
             suggestion_mass.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Persistent | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Piercing;
 
+            Main.logger.Log("Reached adding of spells to base class lists");
             NewSpells.suggestion.AddToSpellList(Helpers.bardSpellList, 2);//bard spell list
             NewSpells.suggestion.AddToSpellList(Helpers.wizardSpellList, 3);//wizard spell list
             NewSpells.suggestion_mass.AddToSpellList(Helpers.bardSpellList, 5);
             NewSpells.suggestion_mass.AddToSpellList(Helpers.wizardSpellList, 6);
+            NewSpells.suggestion.AddSpellAndScroll("4d80ff5fde0655a41bf3c8bfa653bfe9"); //scroll of euphoric tranquility
+            NewSpells.suggestion_mass.AddSpellAndScroll("4d80ff5fde0655a41bf3c8bfa653bfe9");  //scroll of euphoric tranquility
         }
 
     }
