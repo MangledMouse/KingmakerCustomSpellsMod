@@ -118,6 +118,7 @@ namespace CowWithHatsCustomSpellsMod
                 spell.ReplaceComponent<AbilityEffectRunAction>(a => a.Actions = Helpers.CreateActionList(new_actions));
 
                 buff.AddComponent(Helpers.Create<ReplaceAbilityParamsWithContext>(r => r.Ability = swift_ability));
+                swift_ability.Parent = infectious_charms_base;
                 swift_abilites.Add(swift_ability);
             }
 
