@@ -62,7 +62,7 @@ namespace CowWithHatsCustomSpellsMod
             var checker_fact = hold_monster.GetComponents<AbilityTargetHasNoFactUnless>().ToArray();
             var does_not_work = hold_monster.GetComponent<AbilityTargetHasFact>();
             buff.SetDescription("");
-            var apply_buff = CallOfTheWild.Common.createContextActionApplyBuff(buff, CallOfTheWild.Helpers.CreateContextDuration(CallOfTheWild.Helpers.CreateContextValue(AbilityRankType.Default), DurationRate.Minutes));
+            var apply_buff = CallOfTheWild.Common.createContextActionApplyBuff(buff, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.Default), DurationRate.Minutes));
             var action = Helpers.CreateConditional(Helpers.CreateConditionsCheckerAnd(Common.createContextConditionHasFacts(false, checker_fact[0].CheckedFacts), Common.createContextConditionCasterHasFact(checker_fact[0].UnlessFact, has: false)),
                                                     null,
                                                     Helpers.CreateConditional(Helpers.CreateConditionsCheckerAnd(Common.createContextConditionHasFacts(false, checker_fact[1].CheckedFacts), Common.createContextConditionCasterHasFact(checker_fact[1].UnlessFact, has: false)),
@@ -77,7 +77,7 @@ namespace CowWithHatsCustomSpellsMod
             buff.SetIcon(echolocation.Icon);
             buff.SetNameDescription("Suggestion", "This creature is under the compulsive effects of a Suggestion spell. They are lost in thought and they will take no actions until they are harmed.");
 
-            suggestion = CallOfTheWild.Helpers.CreateAbility("SuggestionAbility",
+            suggestion = Helpers.CreateAbility("SuggestionAbility",
                                       "Suggestion",
                                       "You suggest to a single creature that they should avoid combat and turn their thoughts inward. The spell magically influences the creature to follow the suggestion. They are fascinated by the effect for the duration or until they are harmed.",
                                       "",
@@ -85,11 +85,11 @@ namespace CowWithHatsCustomSpellsMod
                                       AbilityType.Spell,
                                       UnitCommand.CommandType.Standard,
                                       AbilityRange.Close,
-                                      CallOfTheWild.Helpers.minutesPerLevelDuration,
-                                      CallOfTheWild.Helpers.willNegates,
-                                      CallOfTheWild.Helpers.CreateRunActions(SavingThrowType.Will, CallOfTheWild.Helpers.CreateConditionalSaved(null, apply_buff)),
+                                      Helpers.minutesPerLevelDuration,
+                                      Helpers.willNegates,
+                                      Helpers.CreateRunActions(SavingThrowType.Will, Helpers.CreateConditionalSaved(null, apply_buff)),
                                       Helpers.CreateSpellDescriptor(SpellDescriptor.MindAffecting | SpellDescriptor.Compulsion),
-                                      CallOfTheWild.Helpers.CreateSpellComponent(SpellSchool.Enchantment)
+                                      Helpers.CreateSpellComponent(SpellSchool.Enchantment)
                                       );
             suggestion.setMiscAbilityParametersSingleTargetRangedHarmful(true);
             suggestion.ReplaceComponent<AbilityEffectRunAction>(a => a.Actions = Helpers.CreateActionList(action));
@@ -98,7 +98,7 @@ namespace CowWithHatsCustomSpellsMod
 
             //Creating Suggestion, Mass          
 
-            suggestion_mass = CallOfTheWild.Helpers.CreateAbility("SuggestionMassAbility",
+            suggestion_mass = Helpers.CreateAbility("SuggestionMassAbility",
                 "Suggestion, Mass",
                 "This spell functions like Suggestion, except several creatures may be affected. \n" +suggestion.Description,
                 "",
@@ -109,20 +109,19 @@ namespace CowWithHatsCustomSpellsMod
                 Helpers.minutesPerLevelDuration,
                 Helpers.willNegates,
                 Helpers.CreateAbilityTargetsAround(15.Feet(), TargetType.Enemy),
-                CallOfTheWild.Helpers.CreateRunActions(SavingThrowType.Will, CallOfTheWild.Helpers.CreateConditionalSaved(null, apply_buff)),
+                Helpers.CreateRunActions(SavingThrowType.Will, Helpers.CreateConditionalSaved(null, apply_buff)),
                 Helpers.CreateSpellDescriptor(SpellDescriptor.MindAffecting | SpellDescriptor.Compulsion),
-                CallOfTheWild.Helpers.CreateSpellComponent(SpellSchool.Enchantment)
+                Helpers.CreateSpellComponent(SpellSchool.Enchantment)
                 );
             suggestion_mass.setMiscAbilityParametersRangedDirectional();
             suggestion_mass.ReplaceComponent<AbilityEffectRunAction>(a => a.Actions = Helpers.CreateActionList(action));
             suggestion_mass.SpellResistance = true;
             suggestion_mass.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Persistent | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Piercing;
 
-            //can't use Call of the Wild's spell lists because they won't be populated yet
-            NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("25a5013493bdcf74bb2424532214d0c8"), 2);//bard spell list
-            NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("ba0401fdeb4062f40a7aa95b6f07fe89"), 3);//wizard spell list
-            NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("25a5013493bdcf74bb2424532214d0c8"), 5);
-            NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("ba0401fdeb4062f40a7aa95b6f07fe89"), 6);
+            NewSpells.suggestion.AddToSpellList(Helpers.bardSpellList, 2);//bard spell list
+            NewSpells.suggestion.AddToSpellList(Helpers.wizardSpellList, 3);//wizard spell list
+            NewSpells.suggestion_mass.AddToSpellList(Helpers.bardSpellList, 5);
+            NewSpells.suggestion_mass.AddToSpellList(Helpers.wizardSpellList, 6);
         }
 
     }

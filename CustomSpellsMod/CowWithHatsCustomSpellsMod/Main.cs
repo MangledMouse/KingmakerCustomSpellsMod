@@ -69,9 +69,7 @@ namespace CowWithHatsCustomSpellsMod
             return true;
         }
 
-        [Harmony12.HarmonyBefore(new string[] { "CallOfTheWild" })] // these want to launch before call so that the Call of the Wild's scraping of all spells sees the new spells
-        [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary")]
-        [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary", new Type[0])]
+        [Harmony12.HarmonyPatch(typeof(CallOfTheWild.NewSpells), "load")]
         static class LibraryScriptableObject_LoadDictionary_Patch_Before
         {
             static bool Run = false;
@@ -81,7 +79,6 @@ namespace CowWithHatsCustomSpellsMod
                 Main.library = __instance;
                 try
                 {
-                    Main.DebugLog("Loading CowWithHat's Custom Spells Mod before Call of the Wild");
                     Core.preLoad();
                 }
                 catch (Exception ex)
@@ -91,10 +88,29 @@ namespace CowWithHatsCustomSpellsMod
             }
         }
 
+        
+        //static class LibraryScriptableObject_LoadDictionary_Patch
+        //{
+        //    static bool Run = false;
+        //    static void Postfix()
+        //    {
+        //        if (Run) return; Run = true;
+        //        try
+        //        {
+        //            Main.DebugLog("Loading CowWithHat's Custom Spells");
+        //            
+        //        }
+        //        catch(Exception ex)
+        //        {
+        //            Main.DebugError(ex);
+        //        }
+        //    }
+        //}
+
         [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary")]
         [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary", new Type[0])]
         [Harmony12.HarmonyAfter("CallOfTheWild")] //These want to launch after Call of the Wild so that Call's stuff exists and can be editted
-        static class LibraryScriptableObject_LoadDictionary_Patch
+        static class LibraryScriptableObject_LoadDictionary_Patch_After
         {
             static void Postfix(LibraryScriptableObject __instance)
             {

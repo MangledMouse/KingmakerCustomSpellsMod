@@ -24,7 +24,7 @@ namespace CowWithHatsCustomSpellsMod
         {
             FixDomainsAndSpellLists();
             ReplaceEvangelistSpells();
-            UpdateInfectiousCharmsDiscovery();
+            //UpdateInfectiousCharmsDiscovery();
             //UpdateLoreShmanCapstone();
         }
 
