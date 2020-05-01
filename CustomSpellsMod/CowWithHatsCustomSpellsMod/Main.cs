@@ -14,6 +14,7 @@ using Kingmaker.Blueprints.Items;
 using Newtonsoft.Json;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using CallOfTheWild;
 
 namespace CowWithHatsCustomSpellsMod
 {
@@ -69,26 +70,6 @@ namespace CowWithHatsCustomSpellsMod
             return true;
         }
 
-        [Harmony12.HarmonyPatch(typeof(CallOfTheWild.NewSpells), "load")]
-        static class LibraryScriptableObject_LoadDictionary_Patch_Before
-        {
-            static bool Run = false;
-            static void Postfix(LibraryScriptableObject __instance)
-            {
-                if (Run) return; Run = true;
-                Main.library = __instance;
-                try
-                {
-                    Core.preLoad();
-                }
-                catch (Exception ex)
-                {
-                    Main.DebugError(ex);
-                }
-            }
-        }
-
-        
         //static class LibraryScriptableObject_LoadDictionary_Patch
         //{
         //    static bool Run = false;
@@ -106,6 +87,27 @@ namespace CowWithHatsCustomSpellsMod
         //        }
         //    }
         //}
+
+        [Harmony12.HarmonyPatch(typeof(CallOfTheWild.NewSpells), "load")]
+        static class LibraryScriptableObject_LoadDictionary_Patch_Before
+        {
+            static bool Run = false;
+            static void Postfix()
+            {
+                if (Run) return; Run = true;
+                Main.library = CallOfTheWild.NewSpells.library;
+                try
+                {
+                    Main.DebugLog("Loading CowWithHat's Custom Spells");
+                    Core.preLoad();
+                }
+                catch (Exception ex)
+                {
+                    Main.DebugError(ex);
+                }
+            }
+        }
+
 
         [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary")]
         [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary", new Type[0])]
