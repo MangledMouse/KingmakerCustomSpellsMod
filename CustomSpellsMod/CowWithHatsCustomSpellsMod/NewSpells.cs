@@ -48,10 +48,76 @@ namespace CowWithHatsCustomSpellsMod
 
         static public BlueprintAbility suggestion;
         static public BlueprintAbility suggestion_mass;
+        static public BlueprintAbility glue_seal;
 
         public static void load()
         {
             createSuggestion();
+            createGlueSeal();
+        }
+
+        public static void createGlueSeal()
+        {
+            //Main.logger.Log("create glue seal reached");
+            var entangledBuff = library.CopyAndAdd<BlueprintBuff>("631d255f6b89afe45b32cf66c35a4205", "GlueSealEntangledBuff", "bc79b5792c6642ef9e33fdef7e4b63f1"); //guid for tar pool entangled buff 631d255f6b89afe45b32cf66c35a4205
+            entangledBuff.SetNameDescriptionIcon("Stuck", "This creature is stuck in glue. It is entangled and cannot move until it breaks out.", entangledBuff.Icon);
+            var difficult_terrain = library.CopyAndAdd<BlueprintBuff>("525e4ff20086404419b3aab63917d6a0", "GlueSealDifficultTerrainBuff", "1a5e8d1825874231a740f83791905b84"); // guid for tarpool difficult terrain buff 525e4ff20086404419b3aab63917d6a0
+            var glueArea = library.CopyAndAdd<BlueprintAbilityAreaEffect>("eca936a9e235875498d1e74ff7c09ecd", "GlueSealArea", "eb78bfdb47154e9fbc14216079328688"); //spike stones area
+            glueArea.Size = 5.Feet();
+
+            glueArea.AddComponent(Helpers.CreateSpellDescriptor(SpellDescriptor.Ground));
+            glueArea.ReplaceComponent<AbilityAreaEffectBuff>(a => a.Buff = difficult_terrain);
+            glueArea.Fx = new Kingmaker.ResourceLinks.PrefabLink();
+            glueArea.Fx.AssetId = "28b114249fcea5241ab216930ddea100"; // guid for puddle tar 5ft 28b114249fcea5241ab216930ddea100
+
+            var apply_entangled = Common.createContextActionApplyBuff(entangledBuff, Helpers.CreateContextDuration(), is_child: true, is_permanent: true);
+            var failure_action = Common.createContextActionSkillCheck(StatType.SkillMobility, Helpers.CreateActionList(apply_entangled));
+            var break_free = Helpers.Create<CallOfTheWild.CombatManeuverMechanics.ContextActionBreakFreeFromSpellGrapple>(c =>
+            {
+                c.Failure = Helpers.CreateActionList(apply_entangled);
+                c.Success = null;
+            });
+            var area_effect = Helpers.CreateAreaEffectRunAction(unitEnter: Common.createContextActionApplyBuff(difficult_terrain, Helpers.CreateContextDuration(), is_permanent: true, dispellable: false),
+                                                                unitExit: Helpers.Create<ContextActionRemoveBuffSingleStack>(r => r.TargetBuff = difficult_terrain),
+                                                                unitMove: break_free);
+            glueArea.ReplaceComponent<AbilityAreaEffectRunAction>(area_effect);
+
+            var spawn_area = Common.createContextActionSpawnAreaEffect(glueArea, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.Default), DurationRate.Minutes));
+
+            glue_seal = Helpers.CreateAbility("GlueSealAbility",
+                                              "Glue Seal",
+                                              "You conjure a layer of sticky glue. Anyone in the area when the spell is cast must attempt a Reflex Save. Those who fail become trapped in the glue. They are entangled and unable to move. They can break free with a combat maneuver or mobility check as a standard action against the dc of this spell. A creature moving through the area must make a mobility check in order to avoid being entangled.",
+                                              "227fcc4e1c77404988b3f4ca5ee9ea46",
+                                              library.Get<BlueprintAbility>("e48638596c955a74c8a32dbc90b518c1").Icon, //icon for obsidian flow better than anything else I could find
+                                              AbilityType.Spell,
+                                              Kingmaker.UnitLogic.Commands.Base.UnitCommand.CommandType.Standard,
+                                              AbilityRange.Close,
+                                              Helpers.minutesPerLevelDuration,
+                                              library.Get<BlueprintAbility>("f8cea58227f59c64399044a82c9735c4").LocalizedSavingThrow,//f8cea58227f59c64399044a82c9735c4 is the id for chains of light which is reflex negates
+                                              Helpers.CreateRunActions(SavingThrowType.Reflex, Helpers.CreateConditionalSaved(null, apply_entangled)),
+                                              Helpers.Create<AbilityEffectRunActionOnClickedTarget>(a => a.Action = Helpers.CreateActionList(spawn_area)),
+                                              Helpers.CreateSpellComponent(SpellSchool.Conjuration),
+                                              Helpers.CreateAbilityTargetsAround(5.Feet(), TargetType.Any)
+                                              );
+            glue_seal.setMiscAbilityParametersRangedDirectional();
+
+            var newBreakFreeAction = Helpers.Create<CallOfTheWild.CombatManeuverMechanics.ContextActionBreakFreeFromSpellGrapple>();
+            var new_round_actions = entangledBuff.GetComponent<AddFactContextActions>().NewRound;
+            Main.logger.Log("Entangled buff has " + new_round_actions.Actions.Length + " actions before my medling");
+            //new_round_actions = new ActionList();
+            //new_round_actions.Actions.AddToArray<GameAction>(newBreakFreeAction);
+            var new_actions = Common.replaceActions<ContextActionBreakFree>(new_round_actions.Actions, newBreakFreeAction);
+            new_round_actions.Actions = new_actions;
+            Main.logger.Log("Entangled buff has " + new_round_actions.Actions.Length + " actions after my medling");
+
+            glue_seal.AvailableMetamagic = Metamagic.Extend | Metamagic.Quicken | Metamagic.Heighten | (Metamagic)MetamagicFeats.MetamagicExtender.Persistent;
+
+            glue_seal.AddToSpellList(Helpers.wizardSpellList, 1);
+            glue_seal.AddToSpellList(Helpers.bardSpellList, 1);
+            glue_seal.AddToSpellList(Helpers.magusSpellList, 1);
+
+            glue_seal.AddSpellAndScroll("de05d46f44c8439488a8bbcc0059c09f"); // scroll of icy guid de05d46f44c8439488a8bbcc0059c09f, looks pretty gluey
+            //Main.logger.Log("create glue seal finished");
         }
 
         public static void createSuggestion()

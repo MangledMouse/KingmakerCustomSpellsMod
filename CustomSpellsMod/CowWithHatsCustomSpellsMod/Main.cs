@@ -98,6 +98,12 @@ namespace CowWithHatsCustomSpellsMod
                 Main.library = CallOfTheWild.NewSpells.library;
                 try
                 {
+//#if DEBUG
+//                    bool allow_guid_generation = true;
+//#else
+//                    bool allow_guid_generation = false; //no guids should be ever generated in release
+//#endif
+//                    CallOfTheWild.Helpers.GuidStorage.load(Properties.Resources.blueprints, allow_guid_generation);
                     Main.DebugLog("Loading CowWithHat's Custom Spells");
                     Core.preLoad();
                 }
