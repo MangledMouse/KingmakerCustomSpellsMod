@@ -4,6 +4,7 @@ This spell adds the following spells from PnP:
 
 Suggestion
 Suggestion, Mass
+Glue Seal
 
 
 You will need the mods Unity Mod Manager and the Call of the Wild.
