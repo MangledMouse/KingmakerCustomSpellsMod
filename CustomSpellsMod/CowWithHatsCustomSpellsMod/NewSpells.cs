@@ -69,10 +69,10 @@ namespace CowWithHatsCustomSpellsMod
             glueArea.ReplaceComponent<AbilityAreaEffectBuff>(a => a.Buff = difficult_terrain);
             glueArea.Fx = new Kingmaker.ResourceLinks.PrefabLink();
             glueArea.Fx.AssetId = "28b114249fcea5241ab216930ddea100"; // guid for puddle tar 5ft 28b114249fcea5241ab216930ddea100
-            
+
             var apply_entangled = Common.createContextActionApplyBuff(entangledBuff, Helpers.CreateContextDuration(), is_child: true, is_permanent: true);
             var failure_action = Common.createContextActionSkillCheck(StatType.SkillMobility, Helpers.CreateActionList(apply_entangled));
-            var break_free = Helpers.Create<CallOfTheWild.CombatManeuverMechanics.ContextActionBreakFreeFromSpellGrapple>(c=>
+            var break_free = Helpers.Create<CallOfTheWild.CombatManeuverMechanics.ContextActionBreakFreeFromSpellGrapple>(c =>
             {
                 c.Failure = Helpers.CreateActionList(apply_entangled);
                 c.Success = null;
@@ -93,7 +93,7 @@ namespace CowWithHatsCustomSpellsMod
                                               Kingmaker.UnitLogic.Commands.Base.UnitCommand.CommandType.Standard,
                                               AbilityRange.Close,
                                               Helpers.minutesPerLevelDuration,
-                                              Helpers.reflexHalfDamage,
+                                              library.Get<BlueprintAbility>("f8cea58227f59c64399044a82c9735c4").LocalizedSavingThrow,//f8cea58227f59c64399044a82c9735c4 is the id for chains of light which is reflex negates
                                               Helpers.CreateRunActions(SavingThrowType.Reflex, Helpers.CreateConditionalSaved(null, apply_entangled)),
                                               Helpers.Create<AbilityEffectRunActionOnClickedTarget>(a => a.Action = Helpers.CreateActionList(spawn_area)),
                                               Helpers.CreateSpellComponent(SpellSchool.Conjuration),
@@ -101,18 +101,18 @@ namespace CowWithHatsCustomSpellsMod
                                               );
             glue_seal.setMiscAbilityParametersRangedDirectional();
 
+            var newBreakFreeAction = Helpers.Create<CallOfTheWild.CombatManeuverMechanics.ContextActionBreakFreeFromSpellGrapple>();
             var new_round_actions = entangledBuff.GetComponent<AddFactContextActions>().NewRound;
-            var new_actions = Common.replaceActions<ContextActionBreakFree>(new_round_actions.Actions,
-                                                                                a => Helpers.Create<CallOfTheWild.CombatManeuverMechanics.ContextActionBreakFreeFromSpellGrapple>(c =>
-                                                                                {
-                                                                                    c.Failure = a.Failure;
-                                                                                    c.Success = a.Success;
-                                                                                }));
+            Main.logger.Log("Entangled buff has " + new_round_actions.Actions.Length + " actions before my medling");
+            //new_round_actions = new ActionList();
+            //new_round_actions.Actions.AddToArray<GameAction>(newBreakFreeAction);
+            var new_actions = Common.replaceActions<ContextActionBreakFree>(new_round_actions.Actions, newBreakFreeAction);
             new_round_actions.Actions = new_actions;
+            Main.logger.Log("Entangled buff has " + new_round_actions.Actions.Length + " actions after my medling");
 
             glue_seal.AvailableMetamagic = Metamagic.Extend | Metamagic.Quicken | Metamagic.Heighten | (Metamagic)MetamagicFeats.MetamagicExtender.Persistent;
 
-            //glue_seal.AddToSpellList(Helpers.wizardSpellList, 1);
+            glue_seal.AddToSpellList(Helpers.wizardSpellList, 1);
             glue_seal.AddToSpellList(Helpers.bardSpellList, 1);
             glue_seal.AddToSpellList(Helpers.magusSpellList, 1);
 
