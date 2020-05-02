@@ -34,6 +34,9 @@ namespace CowWithHatsCustomSpellsMod
             NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 6); // witch spell list
             NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 3); // witch spell list
             NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 2); //psychic detective spell list
+
+            NewSpells.glue_seal.AddToSpellList(library.Get<BlueprintSpellList>("972048af37924e59b174653974b255a5"), 1); //Summoner
+            NewSpells.glue_seal.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 1); //psychic detective
         }
 
         private static void ReplaceEvangelistSpells()
