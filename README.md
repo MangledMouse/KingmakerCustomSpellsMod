@@ -6,7 +6,6 @@ Suggestion
 Suggestion, Mass
 Glue Seal
 
-
 You will need the mods Unity Mod Manager and the Call of the Wild.
 
 They be accessed here and here respectively
