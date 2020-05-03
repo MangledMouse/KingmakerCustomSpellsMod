@@ -22,6 +22,7 @@ namespace CowWithHatsCustomSpellsMod
     {
         internal class Settings
         {
+            internal bool undead_immunities_change { get; }
             internal Settings()
             {
 
@@ -29,6 +30,7 @@ namespace CowWithHatsCustomSpellsMod
                 using (JsonTextReader reader = new JsonTextReader(settings_file))
                 {
                     JObject jo = (JObject)JToken.ReadFrom(reader);
+                    undead_immunities_change = (bool)jo["undead_immunities_change"];
                 }
             }
         }
@@ -37,6 +39,7 @@ namespace CowWithHatsCustomSpellsMod
         internal static UnityModManagerNet.UnityModManager.ModEntry.ModLogger logger;
         internal static Harmony12.HarmonyInstance harmony;
         internal static LibraryScriptableObject library;
+
 
         static readonly Dictionary<Type, bool> typesPatched = new Dictionary<Type, bool>();
         static readonly List<String> failedPatches = new List<String>();
@@ -135,6 +138,11 @@ namespace CowWithHatsCustomSpellsMod
                     CallOfTheWild.Helpers.GuidStorage.load(Properties.Resources.blueprints, allow_guid_generation);
                     
                     Core.postLoad();
+                    //if (settings.undead_immunities_change)
+                    //{
+                    //    Main.logger.Log("Updating companion stats.");
+                    //    CowWithHatsCustomSpellsMod.Rebalance.undeadImmunitiesChange();
+                    //}
 
 #if DEBUG
                     string guid_file_name = @"./Mods/CowWithHatsCustomSpellsMod/blueprints.txt";

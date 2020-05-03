@@ -122,6 +122,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="NewSpells.cs" />
+    <Compile Include="Rebalance.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="blueprints.txt">
