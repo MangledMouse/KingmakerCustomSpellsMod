@@ -63,12 +63,11 @@ namespace CowWithHatsCustomSpellsMod
 
             entangledBuff.SetNameDescriptionIcon("Stuck", "This creature is stuck in glue. It is entangled and cannot move until it breaks out.", tarpoolBuff.Icon); //guid for tarpool entangled buff, looks like tar glue
             entangledBuff.FxOnStart = tarpoolBuff.FxOnStart;
-            entangledBuff.FxOnRemove= tarpoolBuff.FxOnRemove;
+            entangledBuff.FxOnRemove = tarpoolBuff.FxOnRemove;
 
             var difficult_terrain = library.CopyAndAdd<BlueprintBuff>("525e4ff20086404419b3aab63917d6a0", "GlueSealDifficultTerrainBuff", "1a5e8d1825874231a740f83791905b84"); // guid for tarpool difficult terrain buff 525e4ff20086404419b3aab63917d6a0
             var glueArea = library.CopyAndAdd<BlueprintAbilityAreaEffect>("fd323c05f76390749a8555b13156813d", "GlueSealArea", "eb78bfdb47154e9fbc14216079328688"); //web area
             glueArea.Size = 5.Feet();
-            glueArea.AddComponent(Helpers.CreateSpellDescriptor(SpellDescriptor.Ground));
             //glueArea.ReplaceComponent<AbilityAreaEffectBuff>(a => a.Buff = difficult_terrain);
             glueArea.Fx = new Kingmaker.ResourceLinks.PrefabLink();
             glueArea.Fx.AssetId = "28b114249fcea5241ab216930ddea100"; // guid for puddle tar 5ft 28b114249fcea5241ab216930ddea100
@@ -77,11 +76,17 @@ namespace CowWithHatsCustomSpellsMod
             var break_free = Helpers.Create<CallOfTheWild.CombatManeuverMechanics.ContextActionBreakFreeFromSpellGrapple>(c =>
             {
                 c.Failure = Helpers.CreateActionList(apply_entangled);
-                c.Success = null;
+                c.Success = Helpers.CreateActionList();
             });
-            var area_effect = Helpers.CreateAreaEffectRunAction(unitEnter: Common.createContextActionApplyBuff(difficult_terrain, Helpers.CreateContextDuration(), is_permanent: true, dispellable: false),
-                                                    unitExit: Helpers.Create<ContextActionRemoveBuffSingleStack>(r => r.TargetBuff = difficult_terrain),
-                                                    unitMove: break_free);
+
+            var area_effect = Helpers.CreateAreaEffectRunAction(unitEnter: new GameAction[] { Common.createContextActionApplyBuff(difficult_terrain, Helpers.CreateContextDuration(), is_permanent: true, dispellable: false) },
+                                                    unitExit: new GameAction[] { Helpers.Create<ContextActionRemoveBuffSingleStack>(r => r.TargetBuff = difficult_terrain), Helpers.Create<ContextActionRemoveBuffSingleStack>(r => r.TargetBuff = entangledBuff) },
+                                                    unitMove: new GameAction[] {break_free});
+                                                    //unitExit: Helpers.Create<ContextActionRemoveBuffSingleStack>(r => r.TargetBuff = difficult_terrain),
+                                                    //unitMove: break_free);
+            //var area_effect = Helpers.CreateAreaEffectRunAction(unitEnter: Common.createContextActionApplyBuff(difficult_terrain, Helpers.CreateContextDuration(), is_permanent: true, dispellable: false),
+            //                                        unitExit: Helpers.Create<ContextActionRemoveBuffSingleStack>(r => r.TargetBuff = difficult_terrain),
+            //                                        unitMove: break_free);
             glueArea.ReplaceComponent<AbilityAreaEffectRunAction>(area_effect);
             var spawn_area = Common.createContextActionSpawnAreaEffect(glueArea, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.Default), DurationRate.Minutes));
 
@@ -101,6 +106,7 @@ namespace CowWithHatsCustomSpellsMod
                                               Helpers.CreateAbilityTargetsAround(5.Feet(), TargetType.Any)
                                               );
             glue_seal.setMiscAbilityParametersRangedDirectional();
+            glue_seal.AddComponent(Helpers.CreateSpellDescriptor(SpellDescriptor.Ground));
 
             var new_round_actions = entangledBuff.GetComponent<AddFactContextActions>().NewRound;
             var new_actions = Common.replaceActions<ContextActionBreakFree>(new_round_actions.Actions,
