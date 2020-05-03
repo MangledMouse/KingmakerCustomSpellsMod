@@ -58,8 +58,6 @@ namespace CowWithHatsCustomSpellsMod
 
         public static void createGlueSeal()
         {
-            //var tanglefootEntangleAddCondition = library.Get<BlueprintBuff>("3642547f895815f4786b7f2ac716e03e").GetComponent<AddCondition>();//guid for the entangle buff 3642547f895815f4786b7f2ac716e03e
-            //var tanglefootStuckAddCondition = library.Get<BlueprintBuff>("3642547f895815f4786b7f2ac716e03e").GetComponent<AddCondition>();//guid for the stuck buff 3642547f895815f4786b7f2ac716e03e
             var entangledBuff = library.CopyAndAdd<BlueprintBuff>("a719abac0ea0ce346b401060754cc1c0", "GlueSealEntangledBuff", "bc79b5792c6642ef9e33fdef7e4b63f1"); //Guid for web grappled buff
             var tarpoolBuff = library.Get<BlueprintBuff>("631d255f6b89afe45b32cf66c35a4205"); //TarPoolEntangledBuff guid 
 
@@ -68,10 +66,10 @@ namespace CowWithHatsCustomSpellsMod
             entangledBuff.FxOnRemove= tarpoolBuff.FxOnRemove;
 
             var difficult_terrain = library.CopyAndAdd<BlueprintBuff>("525e4ff20086404419b3aab63917d6a0", "GlueSealDifficultTerrainBuff", "1a5e8d1825874231a740f83791905b84"); // guid for tarpool difficult terrain buff 525e4ff20086404419b3aab63917d6a0
-            var glueArea = library.CopyAndAdd<BlueprintAbilityAreaEffect>("eca936a9e235875498d1e74ff7c09ecd", "GlueSealArea", "eb78bfdb47154e9fbc14216079328688"); //spike stones area
+            var glueArea = library.CopyAndAdd<BlueprintAbilityAreaEffect>("fd323c05f76390749a8555b13156813d", "GlueSealArea", "eb78bfdb47154e9fbc14216079328688"); //web area
             glueArea.Size = 5.Feet();
             glueArea.AddComponent(Helpers.CreateSpellDescriptor(SpellDescriptor.Ground));
-            glueArea.ReplaceComponent<AbilityAreaEffectBuff>(a => a.Buff = difficult_terrain);
+            //glueArea.ReplaceComponent<AbilityAreaEffectBuff>(a => a.Buff = difficult_terrain);
             glueArea.Fx = new Kingmaker.ResourceLinks.PrefabLink();
             glueArea.Fx.AssetId = "28b114249fcea5241ab216930ddea100"; // guid for puddle tar 5ft 28b114249fcea5241ab216930ddea100
 
@@ -104,10 +102,15 @@ namespace CowWithHatsCustomSpellsMod
                                               );
             glue_seal.setMiscAbilityParametersRangedDirectional();
 
-            var new_round_actions = new ActionList();
-            var newBreakFreeAction = Helpers.Create<CallOfTheWild.CombatManeuverMechanics.ContextActionBreakFreeFromSpellGrapple>();
-            new_round_actions.Actions.AddToArray<GameAction>(newBreakFreeAction);
-            var new_actions = Common.replaceActions<ContextActionBreakFree>(new_round_actions.Actions, newBreakFreeAction);
+            var new_round_actions = entangledBuff.GetComponent<AddFactContextActions>().NewRound;
+            var new_actions = Common.replaceActions<ContextActionBreakFree>(new_round_actions.Actions,
+                                                                                a => Helpers.Create<CallOfTheWild.CombatManeuverMechanics.ContextActionBreakFreeFromSpellGrapple>(c =>
+                                                                                {
+                                                                                    c.Failure = a.Failure;
+                                                                                    c.Success = a.Success;
+                                                                                }
+                                                                                                                                                                    )
+                                                                             );
             new_round_actions.Actions = new_actions;
 
             glue_seal.AvailableMetamagic = Metamagic.Extend | Metamagic.Quicken | Metamagic.Heighten | (Metamagic)MetamagicFeats.MetamagicExtender.Persistent;
