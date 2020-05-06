@@ -100,6 +100,7 @@ namespace CowWithHatsCustomSpellsMod
 
             var remove_buff = Common.createContextActionRemoveBuffFromCaster(skill_buff);
             var apply_init_buff = Common.createContextActionApplyBuff(init_buff, Helpers.CreateContextDuration(3, DurationRate.Rounds));
+            //var runActions = new BlueprintComponent[] { remove_buff, apply_init_buff };
 
             var dismissAbility = Helpers.CreateAbility("HeightenedAwarenessDismissAbility",
                                                      "Initiative Boost",
@@ -111,8 +112,8 @@ namespace CowWithHatsCustomSpellsMod
                                                      AbilityRange.Personal,
                                                      "",
                                                      "",
-                                                     Helpers.CreateRunActions(apply_init_buff),
-                                                     Helpers.CreateRunActions(remove_buff)
+                                                     Helpers.CreateRunActions(apply_init_buff, remove_buff)
+                                                     //Helpers.CreateRunActions(remove_buff)
                                                      );
 
             heightened_awareness = Helpers.CreateAbility("HeightenedAwarenessAbility",
@@ -129,7 +130,7 @@ namespace CowWithHatsCustomSpellsMod
                                                            );
 
             skill_buff.AddComponent(Helpers.CreateAddFact(dismissAbility));
-            skill_buff.AddComponent(Helpers.Create<ReplaceAbilityParamsWithContext>(r => r.Ability = dismissAbility));
+            //skill_buff.AddComponent(Helpers.Create<ReplaceAbilityParamsWithContext>(r => r.Ability = dismissAbility));
 
             heightened_awareness.AvailableMetamagic = Metamagic.Heighten | Metamagic.Extend | Metamagic.Quicken;
 
