@@ -105,8 +105,8 @@ namespace CowWithHatsCustomSpellsMod
 //                    bool allow_guid_generation = false; //no guids should be ever generated in release
 //#endif
 //                    CallOfTheWild.Helpers.GuidStorage.load(Properties.Resources.blueprints, allow_guid_generation);
-                    //Main.DebugLog("Loading CowWithHat's Custom Spells");
-                    logger.Log("Made it to pre load");
+                    Main.DebugLog("Loading CowWithHat's Custom Spells");
+                    //logger.Log("Made it to pre load");
                     Core.preLoad();
                 }
                 catch (Exception ex)

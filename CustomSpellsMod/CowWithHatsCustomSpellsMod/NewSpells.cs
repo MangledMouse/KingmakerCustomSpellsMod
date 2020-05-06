@@ -49,11 +49,111 @@ namespace CowWithHatsCustomSpellsMod
         static public BlueprintAbility suggestion;
         static public BlueprintAbility suggestion_mass;
         static public BlueprintAbility glue_seal;
+        static public BlueprintAbility heightened_awareness;
 
         public static void load()
         {
             createSuggestion();
             createGlueSeal();
+            createHeightenedAwareness();
+        }
+
+        public static void createHeightenedAwareness()
+        {
+
+            //this.m_InitiativeModifier = this.Owner.Stats.Initiative.AddModifier(value, (GameLogicComponent)this, ModifierDescriptor.None);
+            BuffSkillBonus perceptionBuff = CreationFunctions.CreateBuffSkillBonus(2, StatType.SkillPerception, ModifierDescriptor.Competence);
+            BuffSkillBonus knowledgeArcanaBuff = CreationFunctions.CreateBuffSkillBonus(2, StatType.SkillKnowledgeArcana, ModifierDescriptor.Competence);
+            BuffSkillBonus knowledgeWorldBuff = CreationFunctions.CreateBuffSkillBonus(2, StatType.SkillKnowledgeWorld, ModifierDescriptor.Competence);
+            BuffSkillBonus loreNatureBuff = CreationFunctions.CreateBuffSkillBonus(2, StatType.SkillLoreNature, ModifierDescriptor.Competence);
+            BuffSkillBonus loreReligionBuff = CreationFunctions.CreateBuffSkillBonus(2, StatType.SkillLoreReligion, ModifierDescriptor.Competence);
+
+            BuffSkillBonus initiativeBuff = CreationFunctions.CreateBuffSkillBonus(4, StatType.Initiative, ModifierDescriptor.None);
+
+            //var baseHeightenedAwarenessBuff = library.CopyAndAdd<BlueprintBuff>("20b548bf09bb3ea4bafea78dcb4f3db6", "HeightenAwarenessBuff", "60c4b612e8e44b7b99eab47df517017d"); //copying echolocation and then making a fresh guid
+            var foresightIcon = library.Get<BlueprintBuff>("8c385a7610aa409468f3a6c0f904ac92").Icon;
+            var senseVitalsIcon = library.Get<BlueprintBuff>("dea0dba1f7bff064987e03f1307bfa84").Icon;
+
+            var skill_buff = Helpers.CreateBuff("HeightenedAwarenessSkillBuff",
+                                                "Heightened Awareness",
+                                                "You are in a heigtened state of awareness. You receive a +2 competence bonus on all Perception, Knowledge and Lore checks. You may dismiss this bonus to receive a +4 to initiative bonus checks for 3 rounds",
+                                                "77219411ea054e03a838c96aaa4ef207", //fresh guid
+                                                senseVitalsIcon,
+                                                null,
+                                                perceptionBuff,
+                                                knowledgeArcanaBuff,
+                                                knowledgeWorldBuff,
+                                                loreNatureBuff,
+                                                loreReligionBuff
+                                                );
+
+            var apply_buff = Common.createContextActionApplyBuff(skill_buff, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.StatBonus), DurationRate.TenMinutes), true);
+
+            var init_buff = Helpers.CreateBuff("HeightenAwarenessInitiativeBuff",
+                                                "Heightened Initiative",
+                                                "After dismissing Heigtened Awareness, you have received a +4 to initiative bonus checks for 3 rounds",
+                                                "2816472d6c0b4156b04ffdb96bd7e133", //fresh guid
+                                                foresightIcon,
+                                                null,
+                                                initiativeBuff
+                                                );
+
+            var remove_buff = Common.createContextActionRemoveBuffFromCaster(skill_buff);
+            var apply_init_buff = Common.createContextActionApplyBuff(init_buff, Helpers.CreateContextDuration(3, DurationRate.Rounds));
+
+            var dismissAbility = Helpers.CreateAbility("HeightenedAwarenessDismissAbility",
+                                                     "Initiative Boost",
+                                                     "Use this ability to dismiss the skill bonuses of Heightened Awareness and gain a +4 bonus to initiative for 3 rounds",
+                                                     "01f899d450474f66998c7ec4bea2760b", //fresh guid
+                                                     senseVitalsIcon,
+                                                     AbilityType.SpellLike,
+                                                     UnitCommand.CommandType.Free,
+                                                     AbilityRange.Personal,
+                                                     "",
+                                                     "",
+                                                     Helpers.CreateRunActions(apply_init_buff),
+                                                     Helpers.CreateRunActions(remove_buff)
+                                                     );
+
+            heightened_awareness = Helpers.CreateAbility("HeightenedAwarenessAbility",
+                                                             skill_buff.Name,
+                                                             skill_buff.Description,
+                                                             "9e142ed6623d4b8c8b1d4fb5804dbb5c",
+                                                             senseVitalsIcon,
+                                                             AbilityType.Spell,
+                                                             UnitCommand.CommandType.Standard,
+                                                             AbilityRange.Personal,
+                                                             Helpers.tenMinPerLevelDuration,
+                                                             "",
+                                                             Helpers.CreateRunActions(apply_buff)
+                                                           );
+
+            skill_buff.AddComponent(Helpers.CreateAddFact(dismissAbility));
+            skill_buff.AddComponent(Helpers.Create<ReplaceAbilityParamsWithContext>(r => r.Ability = dismissAbility));
+
+            heightened_awareness.AvailableMetamagic = Metamagic.Heighten | Metamagic.Extend | Metamagic.Quicken;
+
+            heightened_awareness.AddToSpellList(Helpers.alchemistSpellList, 1);
+            heightened_awareness.AddToSpellList(Helpers.wizardSpellList, 1);
+            heightened_awareness.AddToSpellList(Helpers.bardSpellList, 1);
+            heightened_awareness.AddToSpellList(Helpers.druidSpellList, 1);
+            heightened_awareness.AddToSpellList(Helpers.inquisitorSpellList, 1);
+
+            heightened_awareness.AddSpellAndScroll("d4dc796367b4fb342ad7e8221fb8d813"); // scroll of sense vitals
+            //var caster_buff = Helpers.CreateBuff("AggressiveThundercloudCasterBuff",
+            //                                     "Aggressive Thundercloud",
+            //                                     "A crackling, spherical storm cloud at the point you designate and deals electricity damage to those inside it. It has a fly speed of 20 feet with perfect maneuverability. If it enters a space that contains a creature, the storm stops moving for the round and deals 3d6 points of electricity damage to that creature, though a successful Reflex save negates that damage. It provides concealment (20% miss chance) to anything within it.\n"
+            //                                     + "You can move the sphere as a move action for you; otherwise, it stays at rest and crackles with lightning.",
+            //                                     "",
+            //                                     icon,
+            //                                     null
+            //                                     );
+            //that's aggressive thunderclouds personal buff
+
+            //presumably the spell gives you a buff with the skillcheck buffs and an ability which gives you a short term buff 
+            //that is all 6 buffs for two or 3 rounds
+            //Common.createContextActionApplyBuff(suffocation_buff, Helpers.CreateContextDuration(3, DurationRate.Rounds)
+            //that's what a 3 round buff looks like according to suffocate spell, this should be very doable
         }
 
         public static void createGlueSeal()
