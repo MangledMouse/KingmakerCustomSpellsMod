@@ -60,7 +60,7 @@ namespace CowWithHatsCustomSpellsMod
             createAcuteSenses();
         }
 
-        private static void createAcuteSenses()
+        public static void createAcuteSenses()
         {
             
             int powerOfBuff = 10;

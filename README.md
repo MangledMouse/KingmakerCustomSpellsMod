@@ -1,6 +1,6 @@
 CowWithHat's Custom Spells mod
 
-This spell adds the following spells from PnP:
+This mod adds the following spells from PnP:
 
 Suggestion,
 Suggestion, Mass,
