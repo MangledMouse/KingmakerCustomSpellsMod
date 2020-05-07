@@ -2,9 +2,11 @@ CowWithHat's Custom Spells mod
 
 This spell adds the following spells from PnP:
 
-Suggestion
-Suggestion, Mass
-Glue Seal
+Suggestion,
+Suggestion, Mass,
+Glue Seal,
+Heighten Awareness,
+Acute Senses
 
 You will need the mods Unity Mod Manager and the Call of the Wild version 1.82e or later.
 
