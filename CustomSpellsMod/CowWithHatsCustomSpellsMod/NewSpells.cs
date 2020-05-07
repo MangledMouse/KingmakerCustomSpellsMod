@@ -85,15 +85,15 @@ namespace CowWithHatsCustomSpellsMod
                 Main.logger.Log("Scorching ray context rank config division progression start:" + crc.IsDivisionProgressionStart + "class level " + crc.IsBasedOnClassLevel + " Custom rank " + crc.IsBasedOnCustomProperty);
             }
 
-            int powerOfBuff = 10;
-            BuffSkillBonus perceptionBuff = CreationFunctions.CreateBuffSkillBonus(powerOfBuff, StatType.SkillPerception, ModifierDescriptor.Enhancement);
-            var foresightIcon = library.Get<BlueprintBuff>("8c385a7610aa409468f3a6c0f904ac92").Icon;
-            (int, int)[] statProgression = new (int, int)[] { (7, 10), (15, 20), (20, 30) };
-
             //Helpers.CreateContextRankConfig(baseValueType: ContextRankBaseValueType.ClassLevel, classes: getOracleArray(), type: AbilityRankType.StatBonus,
             //                                                            progression: ContextRankProgression.Custom,
             //                                                            customProgression: new (int, int)[] { (4, -4), (20, 0) }
             //                                                            ),
+
+            int powerOfBuff = 10;
+            BuffSkillBonus perceptionBuff = CreationFunctions.CreateBuffSkillBonus(powerOfBuff, StatType.SkillPerception, ModifierDescriptor.Enhancement);
+            var foresightIcon = library.Get<BlueprintBuff>("8c385a7610aa409468f3a6c0f904ac92").Icon;
+            (int, int)[] statProgression = new (int, int)[] { (7, 10), (15, 20), (20, 30) };
 
             var acute_senses_buff = Helpers.CreateBuff("AcuteSensesBuff",
                                                         "Acute Senses",
