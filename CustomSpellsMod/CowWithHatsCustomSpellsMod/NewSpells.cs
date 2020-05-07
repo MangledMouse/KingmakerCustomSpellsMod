@@ -62,37 +62,11 @@ namespace CowWithHatsCustomSpellsMod
 
         private static void createAcuteSenses()
         {
-            //var clericTouchOfGood = library.Get<BlueprintBuff>("f185e4585bda72b479956772944ee665");
-            //foreach(BlueprintComponent bc in clericTouchOfGood.GetComponents<BlueprintComponent>())
-            //{
-            //    Main.logger.Log("Touch of Good component name: " + bc.name + " and type: " + bc.GetType().ToString());
-            //}
-            //BuffAllSkillsBonus basb = clericTouchOfGood.GetComponent<BuffAllSkillsBonus>();
-            //Main.logger.Log("Good touch buff all skills elements. Value: " + basb.Value + " and descriptor " + basb.Descriptor);
-            //ContextRankConfig crc = clericTouchOfGood.GetComponent<ContextRankConfig>();
-            //Main.logger.Log("Good touch Context rank config elements. based on class level: " + crc.IsBasedOnClassLevel + " based on stat bonus: " + crc.IsBasedOnStatBonus + " based on custom property " + crc.IsBasedOnCustomProperty + "" + crc.IsBasedOnFeatureRank + "" + ""+crc.IsDivisionProgression+""+crc.IsDivisionProgressionStart);
-
-            //ContextRankConfig fireballContextRankConfid = library.Get<BlueprintAbility>("2d81362af43aeac4387a3d4fced489c3").GetComponent<ContextRankConfig>();
-            //Main.logger.Log("Context rank config ")
-            var scorchingRayAbility = library.Get<BlueprintAbility>("cdb106d53c65bbc4086183d54c3b97c7");
-            foreach(BlueprintComponent bc in scorchingRayAbility.GetComponents<BlueprintComponent>())
-            {
-                Main.logger.Log("Scorching Ray components name " + bc.name + " and type " + bc.GetType().ToString());
-            }
-            ContextRankConfig crc = scorchingRayAbility.GetComponent<ContextRankConfig>();
-            if (crc != null)
-            {
-                Main.logger.Log("Scorching ray context rank config division progression start:" + crc.IsDivisionProgressionStart + "class level " + crc.IsBasedOnClassLevel + " Custom rank " + crc.IsBasedOnCustomProperty);
-            }
-
-            //Helpers.CreateContextRankConfig(baseValueType: ContextRankBaseValueType.ClassLevel, classes: getOracleArray(), type: AbilityRankType.StatBonus,
-            //                                                            progression: ContextRankProgression.Custom,
-            //                                                            customProgression: new (int, int)[] { (4, -4), (20, 0) }
-            //                                                            ),
-
+            
             int powerOfBuff = 10;
             BuffSkillBonus perceptionBuff = CreationFunctions.CreateBuffSkillBonus(powerOfBuff, StatType.SkillPerception, ModifierDescriptor.Enhancement);
             var foresightIcon = library.Get<BlueprintBuff>("8c385a7610aa409468f3a6c0f904ac92").Icon;
+            //This corresponds to base value until level 7 is 10, then until level 15 is value 20, then until level 20 is value 30
             (int, int)[] statProgression = new (int, int)[] { (7, 10), (15, 20), (20, 30) };
 
             var acute_senses_buff = Helpers.CreateBuff("AcuteSensesBuff",
@@ -101,11 +75,12 @@ namespace CowWithHatsCustomSpellsMod
                                                         "99da40d7f3f54a9f97c696fa19d6bddc",//fresh guid
                                                         foresightIcon,
                                                         null,
-                                                        perceptionBuff,
+                                                        Helpers.CreateAddContextStatBonus(StatType.SkillPerception, ModifierDescriptor.Enhancement, ContextValueType.Rank, AbilityRankType.Default),
+                                                        //perceptionBuff,
                                                         Helpers.CreateContextRankConfig(baseValueType: ContextRankBaseValueType.CasterLevel,
                                                                     progression:ContextRankProgression.Custom, 
-                                                                    customProgression: statProgression,
-                                                                    type:AbilityRankType.StatBonus)
+                                                                    customProgression: statProgression
+                                                                    )//, type:AbilityRankType.StatBonus)
                                                         );
             var apply_buff = Common.createContextActionApplyBuff(acute_senses_buff, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.StatBonus), DurationRate.Minutes), true);
 
