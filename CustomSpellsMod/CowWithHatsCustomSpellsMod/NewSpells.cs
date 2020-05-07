@@ -50,12 +50,85 @@ namespace CowWithHatsCustomSpellsMod
         static public BlueprintAbility suggestion_mass;
         static public BlueprintAbility glue_seal;
         static public BlueprintAbility heightened_awareness;
+        static public BlueprintAbility acute_senses;
 
         public static void load()
         {
             createSuggestion();
             createGlueSeal();
             createHeightenedAwareness();
+            createAcuteSenses();
+        }
+
+        private static void createAcuteSenses()
+        {
+            //var clericTouchOfGood = library.Get<BlueprintBuff>("f185e4585bda72b479956772944ee665");
+            //foreach(BlueprintComponent bc in clericTouchOfGood.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log("Touch of Good component name: " + bc.name + " and type: " + bc.GetType().ToString());
+            //}
+            //BuffAllSkillsBonus basb = clericTouchOfGood.GetComponent<BuffAllSkillsBonus>();
+            //Main.logger.Log("Good touch buff all skills elements. Value: " + basb.Value + " and descriptor " + basb.Descriptor);
+            //ContextRankConfig crc = clericTouchOfGood.GetComponent<ContextRankConfig>();
+            //Main.logger.Log("Good touch Context rank config elements. based on class level: " + crc.IsBasedOnClassLevel + " based on stat bonus: " + crc.IsBasedOnStatBonus + " based on custom property " + crc.IsBasedOnCustomProperty + "" + crc.IsBasedOnFeatureRank + "" + ""+crc.IsDivisionProgression+""+crc.IsDivisionProgressionStart);
+
+            //ContextRankConfig fireballContextRankConfid = library.Get<BlueprintAbility>("2d81362af43aeac4387a3d4fced489c3").GetComponent<ContextRankConfig>();
+            //Main.logger.Log("Context rank config ")
+            var scorchingRayAbility = library.Get<BlueprintAbility>("cdb106d53c65bbc4086183d54c3b97c7");
+            foreach(BlueprintComponent bc in scorchingRayAbility.GetComponents<BlueprintComponent>())
+            {
+                Main.logger.Log("Scorching Ray components name " + bc.name + " and type " + bc.GetType().ToString());
+            }
+            ContextRankConfig crc = scorchingRayAbility.GetComponent<ContextRankConfig>();
+            if (crc != null)
+            {
+                Main.logger.Log("Scorching ray context rank config division progression start:" + crc.IsDivisionProgressionStart + "class level " + crc.IsBasedOnClassLevel + " Custom rank " + crc.IsBasedOnCustomProperty);
+            }
+
+            int powerOfBuff = 10;
+            BuffSkillBonus perceptionBuff = CreationFunctions.CreateBuffSkillBonus(powerOfBuff, StatType.SkillPerception, ModifierDescriptor.Enhancement);
+            var foresightIcon = library.Get<BlueprintBuff>("8c385a7610aa409468f3a6c0f904ac92").Icon;
+            (int, int)[] statProgression = new (int, int)[] { (7, 10), (15, 20), (20, 30) };
+
+            //Helpers.CreateContextRankConfig(baseValueType: ContextRankBaseValueType.ClassLevel, classes: getOracleArray(), type: AbilityRankType.StatBonus,
+            //                                                            progression: ContextRankProgression.Custom,
+            //                                                            customProgression: new (int, int)[] { (4, -4), (20, 0) }
+            //                                                            ),
+
+            var acute_senses_buff = Helpers.CreateBuff("AcuteSensesBuff",
+                                                        "Acute Senses",
+                                                        "The target gains a +10 enhancement bonus on Perception checks. The bonus increases to +20 at caster level 8th, and +30 (the maximum) at caster level 16th.",
+                                                        "99da40d7f3f54a9f97c696fa19d6bddc",//fresh guid
+                                                        foresightIcon,
+                                                        null,
+                                                        perceptionBuff,
+                                                        Helpers.CreateContextRankConfig(baseValueType: ContextRankBaseValueType.CasterLevel,
+                                                                    progression:ContextRankProgression.Custom, 
+                                                                    customProgression: statProgression,
+                                                                    type:AbilityRankType.StatBonus)
+                                                        );
+            var apply_buff = Common.createContextActionApplyBuff(acute_senses_buff, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.StatBonus), DurationRate.Minutes), true);
+
+            acute_senses = Helpers.CreateAbility("AcuteSensesAbility",
+                                                    "Acute Senses",
+                                                    acute_senses_buff.Description,
+                                                    "b431e4098cd44849b8c3245933fdd588",//fresh guid
+                                                    foresightIcon,
+                                                    AbilityType.Spell,
+                                                    UnitCommand.CommandType.Standard,
+                                                    AbilityRange.Touch,
+                                                    Helpers.minutesPerLevelDuration,
+                                                    "",
+                                                    Helpers.CreateRunActions(apply_buff),
+                                                    Helpers.CreateSpellComponent(SpellSchool.Divination)
+                                                    );
+            acute_senses.setMiscAbilityParametersTouchFriendly();
+            //perceptionBuff.Value
+            //99da40d7f3f54a9f97c696fa19d6bddc guid for the buff
+
+            acute_senses.AddToSpellList(Helpers.alchemistSpellList, 2);
+            acute_senses.AddToSpellList(Helpers.bardSpellList, 2);
+            acute_senses.AddSpellAndScroll("d4dc796367b4fb342ad7e8221fb8d813");//28968352ed826da4e9c2af856aad7096 guid for scroll of foresight
         }
 
         public static void createHeightenedAwareness()
@@ -122,7 +195,8 @@ namespace CowWithHatsCustomSpellsMod
                                                              AbilityRange.Personal,
                                                              Helpers.tenMinPerLevelDuration,
                                                              "",
-                                                             Helpers.CreateRunActions(apply_buff)
+                                                             Helpers.CreateRunActions(apply_buff),
+                                                             Helpers.CreateSpellComponent(SpellSchool.Divination)
                                                            );
 
             skill_buff.AddComponent(Helpers.CreateAddFact(dismissAbility));
