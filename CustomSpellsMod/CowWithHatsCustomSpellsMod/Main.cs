@@ -134,11 +134,11 @@ namespace CowWithHatsCustomSpellsMod
 #else
                     bool allow_guid_generation = false; //no guids should be ever generated in release
 #endif
+                    Core.postLoad();
                     CallOfTheWild.Helpers.GuidStorage.load(Properties.Resources.blueprints, allow_guid_generation);
 
                     //logger.Log("Made it to post load");
-                    Core.postLoad();
-                  
+                    
 
 #if DEBUG
                     string guid_file_name = @"./Mods/CowWithHatsCustomSpellsMod/blueprints.txt";

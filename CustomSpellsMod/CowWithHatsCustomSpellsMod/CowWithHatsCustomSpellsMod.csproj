@@ -112,7 +112,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Buffs.cs" />
     <Compile Include="ClassUpdates.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="CreationFunctions.cs" />

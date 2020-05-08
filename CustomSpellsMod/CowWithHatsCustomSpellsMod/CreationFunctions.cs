@@ -1,4 +1,5 @@
-﻿using Kingmaker.Designers.Mechanics.Buffs;
+﻿using CallOfTheWild;
+using Kingmaker.Designers.Mechanics.Buffs;
 using Kingmaker.EntitySystem.Stats;
 using Kingmaker.Enums;
 using System;
@@ -13,7 +14,7 @@ namespace CowWithHatsCustomSpellsMod
     {
         public static BuffSkillBonus CreateBuffSkillBonus(int value, StatType stat, ModifierDescriptor descriptor)
         {
-            BuffSkillBonus bsb = new BuffSkillBonus();
+            BuffSkillBonus bsb = Helpers.Create<BuffSkillBonus>();             
             bsb.Value = value;
             bsb.Stat = stat;
             bsb.Descriptor = descriptor;
