@@ -101,6 +101,8 @@ namespace CowWithHatsCustomSpellsMod
             //perceptionBuff.Value
             //99da40d7f3f54a9f97c696fa19d6bddc guid for the buff
 
+            acute_senses.AvailableMetamagic = Metamagic.Heighten | Metamagic.Extend | Metamagic.Quicken;
+
             acute_senses.AddToSpellList(Helpers.alchemistSpellList, 2);
             acute_senses.AddToSpellList(Helpers.bardSpellList, 2);
             acute_senses.AddSpellAndScroll("d4dc796367b4fb342ad7e8221fb8d813");//28968352ed826da4e9c2af856aad7096 guid for scroll of foresight
