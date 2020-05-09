@@ -33,3 +33,7 @@ CustomSpellsMod/CowWithHatsCustomSpellsMod/bin/Release/CowWithHatsCustomSpellsMo
 *.resources
 *.ide
 CustomSpellsMod/.vs/CowWithHatsCustomSpellsMod/v16/.suo
+CustomSpellsMod/CowWithHatsCustomSpellsMod/obj/Debug/CowWithHatsCustomSpellsMod.csprojAssemblyReference.cache
+CustomSpellsMod/CowWithHatsCustomSpellsMod/bin/Debug/settings.json
+CustomSpellsMod/CowWithHatsCustomSpellsMod/bin/Debug/info.json
+CustomSpellsMod/CowWithHatsCustomSpellsMod/bin/Debug/blueprints.txt
