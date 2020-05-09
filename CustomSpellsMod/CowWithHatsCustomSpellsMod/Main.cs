@@ -108,6 +108,9 @@ namespace CowWithHatsCustomSpellsMod
                     Main.DebugLog("Loading CowWithHat's Custom Spells");
                     //logger.Log("Made it to pre load");
                     Core.preLoad();
+                    
+                    //this might break some stuff
+                    CallOfTheWild.Helpers.GuidStorage.dump(@"./Mods/CowWithHatsCustomSpellsMod/loaded_blueprints.txt");
                 }
                 catch (Exception ex)
                 {

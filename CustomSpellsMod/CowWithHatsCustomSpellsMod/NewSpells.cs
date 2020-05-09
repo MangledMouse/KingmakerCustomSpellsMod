@@ -226,6 +226,7 @@ namespace CowWithHatsCustomSpellsMod
             glue_seal = Helpers.CreateAbility("GlueSealAbility",
                                               "Glue Seal",
                                               "You conjure a layer of sticky glue. Anyone in the area when the spell is cast must attempt a Reflex Save. Those who fail become trapped in the glue. They are entangled and unable to move. They can break free with a combat maneuver or mobility check as a standard action against the DC of this spell. A creature moving through the area must make a mobility check in order to avoid being entangled.",
+                                              //Its unclear why but failing to initialize this ability with a guid causes many crashes. Something to do with area loading (its unclear)
                                               "227fcc4e1c77404988b3f4ca5ee9ea46",
                                               library.Get<BlueprintAbility>("e48638596c955a74c8a32dbc90b518c1").Icon, //icon for obsidian flow better than anything else I could find
                                               AbilityType.Spell,
