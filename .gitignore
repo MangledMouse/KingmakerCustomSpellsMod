@@ -31,3 +31,4 @@ CustomSpellsMod/CowWithHatsCustomSpellsMod/bin/Release/CowWithHatsCustomSpellsMo
 *.dll
 *.pdb
 *.resources
+*.ide
