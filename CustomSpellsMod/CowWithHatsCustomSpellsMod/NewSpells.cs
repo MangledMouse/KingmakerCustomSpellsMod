@@ -62,9 +62,6 @@ namespace CowWithHatsCustomSpellsMod
 
         public static void createAcuteSenses()
         {
-            
-            int powerOfBuff = 10;
-            BuffSkillBonus perceptionBuff = CreationFunctions.CreateBuffSkillBonus(powerOfBuff, StatType.SkillPerception, ModifierDescriptor.Enhancement);
             var foresightIcon = library.Get<BlueprintBuff>("8c385a7610aa409468f3a6c0f904ac92").Icon;
             //This corresponds to base value until level 7 is 10, then until level 15 is value 20, then until level 20 is value 30
             (int, int)[] statProgression = new (int, int)[] { (7, 10), (15, 20), (20, 30) };
@@ -73,6 +70,7 @@ namespace CowWithHatsCustomSpellsMod
                                                         "Acute Senses",
                                                         "The target gains a +10 enhancement bonus on Perception checks. The bonus increases to +20 at caster level 8th, and +30 (the maximum) at caster level 16th.",
                                                         "99da40d7f3f54a9f97c696fa19d6bddc ",//fresh guid
+                                                        //"",
                                                         foresightIcon,
                                                         null,
                                                         Helpers.CreateAddContextStatBonus(StatType.SkillPerception, ModifierDescriptor.Enhancement, ContextValueType.Rank, AbilityRankType.Default),
@@ -88,6 +86,7 @@ namespace CowWithHatsCustomSpellsMod
                                                     "Acute Senses",
                                                     acute_senses_buff.Description,
                                                     "b431e4098cd44849b8c3245933fdd588",//fresh guid
+                                                    //"",
                                                     foresightIcon,
                                                     AbilityType.Spell,
                                                     UnitCommand.CommandType.Standard,
@@ -125,6 +124,7 @@ namespace CowWithHatsCustomSpellsMod
                                                 "Heightened Awareness",
                                                 "You are in a heigtened state of awareness. You receive a +2 competence bonus on all Perception, Knowledge and Lore checks. You may dismiss this bonus to receive a +4 to initiative bonus checks for 3 rounds",
                                                 "77219411ea054e03a838c96aaa4ef207", //fresh guid
+                                                //"",
                                                 senseVitalsIcon,
                                                 null,
                                                 perceptionBuff,
@@ -140,6 +140,7 @@ namespace CowWithHatsCustomSpellsMod
                                                 "Heightened Initiative",
                                                 "After dismissing Heigtened Awareness, you have received a +4 to initiative bonus checks for 3 rounds",
                                                 "2816472d6c0b4156b04ffdb96bd7e133", //fresh guid
+                                                //"",
                                                 foresightIcon,
                                                 null,
                                                 initiativeBuff
@@ -152,6 +153,7 @@ namespace CowWithHatsCustomSpellsMod
                                                      "Initiative Boost",
                                                      "Use this ability to dismiss the skill bonuses of Heightened Awareness and gain a +4 bonus to initiative for 3 rounds",
                                                      "01f899d450474f66998c7ec4bea2760b", //fresh guid
+                                                     //"",
                                                      senseVitalsIcon,
                                                      AbilityType.SpellLike,
                                                      UnitCommand.CommandType.Free,
@@ -166,6 +168,7 @@ namespace CowWithHatsCustomSpellsMod
                                                              skill_buff.Name,
                                                              skill_buff.Description,
                                                              "9e142ed6623d4b8c8b1d4fb5804dbb5c",
+                                                             //"",
                                                              senseVitalsIcon,
                                                              AbilityType.Spell,
                                                              UnitCommand.CommandType.Standard,
@@ -291,6 +294,7 @@ namespace CowWithHatsCustomSpellsMod
                                       "Suggestion",
                                       "You suggest to a single creature that they should avoid combat and turn their thoughts inward. The spell magically influences the creature to follow the suggestion. They are fascinated by the effect for the duration or until they are harmed.",
                                       "3682197d956543e2a694e163b5fdcc6c",
+                                      //"",
                                       echolocation.Icon,
                                       AbilityType.Spell,
                                       UnitCommand.CommandType.Standard,
@@ -312,6 +316,7 @@ namespace CowWithHatsCustomSpellsMod
                 "Suggestion, Mass",
                 "This spell functions like Suggestion, except several creatures may be affected. \n" +suggestion.Description,
                 "033e70b6c72f46cab793eab5ff9f3a87",
+                //"",
                 echolocation.Icon,
                 AbilityType.Spell,
                 UnitCommand.CommandType.Standard,
