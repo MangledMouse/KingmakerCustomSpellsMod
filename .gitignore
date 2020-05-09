@@ -10,3 +10,24 @@
 
     # ignore all files with suo
     *.suo
+CustomSpellsMod/.vs/CowWithHatsCustomSpellsMod/v16/.suo
+CustomSpellsMod/.vs/CowWithHatsCustomSpellsMod/v16/.suo
+*.ide
+*.ide-shm
+*.ide-wal
+CustomSpellsMod/CowWithHatsCustomSpellsMod/bin/CowWithHatsCustomSpellsMod.zip
+*.dll
+*.pdb
+*.dll
+*.pdb
+CustomSpellsMod/CowWithHatsCustomSpellsMod/bin/Release/CowWithHatsCustomSpellsMod.zip
+*.dll
+*.pdb
+*.cache
+*.dll
+*.pdb
+*.resources
+*.cache
+*.dll
+*.pdb
+*.resources
