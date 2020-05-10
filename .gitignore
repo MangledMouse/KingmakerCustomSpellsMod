@@ -32,6 +32,7 @@ CustomSpellsMod/CowWithHatsCustomSpellsMod/bin/Release/CowWithHatsCustomSpellsMo
 *.pdb
 *.resources
 *.ide
+CustomSpellsMod/.vs/
 CustomSpellsMod/.vs/CowWithHatsCustomSpellsMod/v16/.suo
 CustomSpellsMod/CowWithHatsCustomSpellsMod/obj/Debug/CowWithHatsCustomSpellsMod.csprojAssemblyReference.cache
 CustomSpellsMod/CowWithHatsCustomSpellsMod/bin/Debug/settings.json
@@ -42,3 +43,4 @@ CustomSpellsMod/CowWithHatsCustomSpellsMod/bin/Release/CowWithHatsCustomSpellsMo
 CustomSpellsMod/CowWithHatsCustomSpellsMod/bin/Release/CowWithHatsCustomSpellsMod/info.json
 CustomSpellsMod/CowWithHatsCustomSpellsMod/bin/Release/CowWithHatsCustomSpellsMod/settings.json
 CustomSpellsMod/CowWithHatsCustomSpellsMod/obj/Release/CowWithHatsCustomSpellsMod.csproj.FileListAbsolute.txt
+CustomSpellsMod/.vs/CowWithHatsCustomSpellsMod/v16/Server/sqlite3/storage.ide

@@ -110,7 +110,7 @@ namespace CowWithHatsCustomSpellsMod
                     Core.preLoad();
                     
                     //this might break some stuff
-                    CallOfTheWild.Helpers.GuidStorage.dump(@"./Mods/CowWithHatsCustomSpellsMod/loaded_blueprints.txt");
+                    //CallOfTheWild.Helpers.GuidStorage.dump(@"./Mods/CowWithHatsCustomSpellsMod/loaded_blueprints.txt");
                 }
                 catch (Exception ex)
                 {
