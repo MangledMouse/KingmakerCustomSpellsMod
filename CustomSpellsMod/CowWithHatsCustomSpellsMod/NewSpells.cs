@@ -39,6 +39,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using CallOfTheWild;
+using Kingmaker.RuleSystem.Rules;
 
 namespace CowWithHatsCustomSpellsMod
 {
@@ -51,6 +52,7 @@ namespace CowWithHatsCustomSpellsMod
         static public BlueprintAbility glue_seal;
         static public BlueprintAbility heightened_awareness;
         static public BlueprintAbility acute_senses;
+        static public BlueprintAbility mages_disjunction;
 
         public static void load()
         {
@@ -58,6 +60,100 @@ namespace CowWithHatsCustomSpellsMod
             createGlueSeal();
             createHeightenedAwareness();
             createAcuteSenses();
+            createMagesDisjunction();
+        }
+
+        public static void createMagesDisjunction()
+        {
+            // guid for greater dispel magic target 6d490c80598f1d34bb277735b52d52c1
+            // guid for greater dispel magic area b9be852b03568064b8d2275a6cf9e2de these two are abilities
+            // guid for the spell itself f0f761b808dc4b149b08eaf44b99f633
+            //BlueprintAbility greaterTargetDispel = library.Get<BlueprintAbility>("6d490c80598f1d34bb277735b52d52c1");
+            //foreach(BlueprintComponent bc in greaterTargetDispel.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log("Component of greater target dispel: " + bc.name + " and type " + bc.GetType().ToString());
+            //}
+            //above gets a spell component, an ability effect run action, which seems like the stuff, and an ability spawn fx which we probably want to steal
+            //AbilityEffectRunAction aera = greaterTargetDispel.GetComponent<AbilityEffectRunAction>();
+            //foreach (GameAction ga in aera.Actions.Actions)
+            //{
+            //    Main.logger.Log("Game action in target dispel's ability effect run action name: " + ga.name + " and type: " + ga.GetType().ToString());
+            //    ContextActionDispelMagic cadm = (ContextActionDispelMagic)ga;
+            //    if (cadm != null)
+            //    {
+            //        Main.logger.Log(" context action dispel magic exists");
+            //        var stopAfterOne = Helpers.GetField(cadm, "m_StopAfterFirstRemoved");
+            //        Main.logger.Log("stops after 1? " + stopAfterOne.ToString());
+            //        foreach (GameAction successAction in cadm.OnSuccess.Actions)
+            //            Main.logger.Log("game action for on success of dispelling name: " + successAction.name + " and type " + successAction.GetType().ToString());
+            //        foreach (GameAction failureAction in cadm.OnFail.Actions)
+            //            Main.logger.Log("game action for on failure of dispelling name: " + failureAction.name + " and type " + failureAction.GetType().ToString());
+            //    }
+            //}
+            //so it look like greaterTargetDispel has a spell component, which is presumably its school, an effect run action which is the ContextActionDispelMagic carring no success or failure actions, 
+            //and a spawn fx which is the effect that plays on cast
+
+
+            BlueprintAbility greaterAreaDispel = library.Get<BlueprintAbility>("b9be852b03568064b8d2275a6cf9e2de");
+            AbilitySpawnFx greaterDispelFx = greaterAreaDispel.GetComponent<AbilitySpawnFx>(); //well there is that
+            //this one has a AbilityTargetsAround and all the stuff that the targeted one has. I definitely want this one's ability spawn fx not the the target one
+            //foreach (BlueprintComponent bc in greaterAreaDispel.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log("Component of greater area dispel: " + bc.name + " and type " + bc.GetType().ToString());
+            //}
+            //AbilityEffectRunAction areaAera = greaterAreaDispel.GetComponent<AbilityEffectRunAction>();
+            //foreach (GameAction ga in areaAera.Actions.Actions)
+            //{
+            //    Main.logger.Log("Game action in area dispel's ability effect run action name: " + ga.name + " and type: " + ga.GetType().ToString());
+            //    ContextActionDispelMagic cadm = (ContextActionDispelMagic)ga;
+            //    var stopAfterOne = Helpers.GetField(cadm, "m_StopAfterFirstRemoved");
+            //    Main.logger.Log("stops after 1? " + stopAfterOne.ToString());
+            //}
+            //mages_disjunction.SetNameDescriptionIcon("Mages Disjunction", "All magical effects in the area are unraveled as if by a dispel magic effect", shadowEvocIcon);
+            //magesDisjunctionDispel.ReplaceComponent<bc>
+            //ContextActionDispelMagic dispel = Common.createContextActionDispelMagic(SpellDescriptor.None, new SpellSchool[0], RuleDispelMagic.CheckType.None);
+            //Helpers.SetField(dispel, "m_BuffType", 1); //The enum value 1 should equal ContextActionDispelMagic.BuffType.FromSpells
+            //Helpers.SetField(dispel, "m_StopAfterFirstRemoved", false); //this should allow the spell to effect everything on each target but does not appear to at the moment
+
+            var shadowEvocIcon = library.Get<BlueprintAbility>("237427308e48c3341b3d532b9d3a001f").Icon; //Shadow Evoc
+
+            AbilityExecuteActionOnCast castExecution = new AbilityExecuteActionOnCast
+            {
+                Actions = Helpers.CreateActionList(Helpers.Create<ContextActionDispellMagicAreasAndSummons>())
+            };
+            //Maybe I want to implement it "As each creature within range is hit with a burst of disjunctive magic. All magical effects on theses creatures are dispelled including buffs provided by items
+            //Any area effect spells which a creature is being effected by are also dispelled
+            //All summoned creatures are dismissed"
+            mages_disjunction = Helpers.CreateAbility("MagesDisjunctionAbility",
+                                                      "Mage's Disjunction",
+                                                      "You cause disjunctive magic to surge through each creature within range. " +
+                                                      "All spell effects on these creatures are dispelled including spell effects from items." +
+                                                      "Any summoned creatures in the area are dismissed. " +
+                                                      "Any magical area effect that is touching an effected creture is disrupted by the spells magic.",
+                                                      //"This spell targets a point within range and strips away all nearby magical effects and spells. All area spell effects which touch " +
+                                                      //"the target point are ended. All creatures within 20 feet of the" +
+                                                      //"target point have all magical effects dispelled. This includes spell like buffs provided by items." +
+                                                      //"Additionally, all summoned creatures near the target point are dismissed.",
+                                                      "05d81b81d7c54375b38f2a3bebd3fd6e",
+                                                      shadowEvocIcon,
+                                                      AbilityType.Spell,
+                                                      UnitCommand.CommandType.Standard,
+                                                      AbilityRange.Medium,
+                                                      "",
+                                                      "",
+                                                      Helpers.CreateAbilityTargetsAround(20.Feet(), TargetType.Any),
+                                                      Helpers.CreateSpellComponent(SpellSchool.Abjuration),
+                                                      //castExecution,
+                                                      greaterDispelFx,
+                                                      Helpers.CreateRunActions(Helpers.Create<ContextActionDispellMagicAreasAndSummons>())
+                                                      //Helpers.CreateRunActions(dispel)
+                                                      );
+            mages_disjunction.setMiscAbilityParametersRangedDirectional();
+
+            mages_disjunction.AvailableMetamagic = Metamagic.Quicken | Metamagic.Reach;
+
+            mages_disjunction.AddToSpellList(Helpers.wizardSpellList, 9);
+            mages_disjunction.AddSpellAndScroll("4b2d0e65fb9775341b6c4f7c178f0fe5");//guid for scroll of dispel magic 4b2d0e65fb9775341b6c4f7c178f0fe5
         }
 
         public static void createAcuteSenses()
