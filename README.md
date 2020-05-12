@@ -6,7 +6,8 @@ Suggestion,
 Suggestion, Mass,
 Glue Seal,
 Heighten Awareness,
-Acute Senses
+Acute Senses,
+Mage's Disjunction
 
 
 You will need the mods Unity Mod Manager and the Call of the Wild version 1.82e or later.
