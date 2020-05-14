@@ -7,8 +7,10 @@ Suggestion, Mass,
 Glue Seal,
 Heighten Awareness,
 Acute Senses,
-Mage's Disjunction
+Mage's Disjunction,
+Euphoric Cloud
 
+The mod also updates the Dismiss functionality of the Call of the Wild mod to additionally allow players to release creatures from their own domination effects.
 
 You will need the mods Unity Mod Manager and the Call of the Wild version 1.82e or later.
 
