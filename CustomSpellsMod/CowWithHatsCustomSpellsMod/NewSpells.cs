@@ -40,6 +40,9 @@ using System.Threading.Tasks;
 using UnityEngine;
 using CallOfTheWild;
 using Kingmaker.RuleSystem.Rules;
+using Kingmaker.UnitLogic.Buffs;
+using Kingmaker.Designers.EventConditionActionSystem.Actions;
+using Kingmaker.Blueprints.Facts;
 
 namespace CowWithHatsCustomSpellsMod
 {
@@ -53,6 +56,7 @@ namespace CowWithHatsCustomSpellsMod
         static public BlueprintAbility heightened_awareness;
         static public BlueprintAbility acute_senses;
         static public BlueprintAbility mages_disjunction;
+        static public BlueprintAbility euphoric_cloud;
 
         public static void load()
         {
@@ -61,59 +65,252 @@ namespace CowWithHatsCustomSpellsMod
             createHeightenedAwareness();
             createAcuteSenses();
             createMagesDisjunction();
+            createEuphoricCloud();
+        }
+
+        public static void createEuphoricCloud()
+        {
+            //Euphoric cloud should work like stinking cloud except that it applies fascinated and when it applies the condition it also gives a "recently Euphoric" buff for caster level rounds
+            //When the everyRound and onEnter checks happen to poison the target, first check the condition, that they don't have "recently Euphoric" don't make the save check if they have that buff
+
+            //BlueprintAbilityAreaEffect scArea = library.Get<BlueprintAbilityAreaEffect>("aa2e0a0fe89693f4e9205fd52c5ba3e5"); //stinking cloud area
+
+            //AbilityAreaEffectRunAction actionsInCloud = scArea.GetComponent<AbilityAreaEffectRunAction>();
+            //foreach (GameAction ga in actionsInCloud.UnitEnter.Actions)
+            //{
+            //    Main.logger.Log($"Stinking Cloud area unit Enter action {ga.name} and type {ga.GetType().ToString() }");
+            //    Conditional c = ga as Conditional;
+            //    if (c != null)
+            //    {
+            //        foreach (Condition con in c.ConditionsChecker.Conditions)
+            //        {
+            //            Main.logger.Log($"Condition name {con.name} and type {con.GetType().ToString()}");
+            //            ContextConditionHasFact factCondition = con as ContextConditionHasFact;
+            //            if (factCondition != null)
+            //            {
+            //                Main.logger.Log($"The conditional fact {factCondition.Fact.name}, the not value is {factCondition.Not} and its type {factCondition.Fact.GetType().ToString()}");
+            //            }
+            //        }
+            //        foreach (GameAction internalGa in c.IfTrue.Actions)
+            //        {
+            //            Main.logger.Log($" Conditional if true action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+            //        }
+            //        foreach (GameAction internalGa in c.IfFalse.Actions)
+            //        {
+            //            Main.logger.Log($" Conditional if false action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+            //        }
+            //    }
+            //}
+            //foreach (GameAction ga in actionsInCloud.Round.Actions)
+            //{
+            //    Main.logger.Log($"Stinking Cloud area Round action {ga.name} and type {ga.GetType().ToString() }");
+            //    Conditional c = ga as Conditional;
+            //    if (c != null)
+            //    {
+            //        foreach (Condition con in c.ConditionsChecker.Conditions)
+            //        {
+            //            Main.logger.Log($"Condition name {con.name} and type {con.GetType().ToString()}");
+            //            ContextConditionHasFact factCondition = con as ContextConditionHasFact;
+            //            if (factCondition != null)
+            //            {
+            //                Main.logger.Log($"The conditional fact {factCondition.Fact.name}, the not value is {factCondition.Not} and its type {factCondition.Fact.GetType().ToString()} ");
+            //            }
+            //        }
+            //        foreach (GameAction internalGa in c.IfTrue.Actions)
+            //        {
+            //            Main.logger.Log($" Conditional if true action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+            //        }
+            //        foreach (GameAction internalGa in c.IfFalse.Actions)
+            //        {
+            //            Main.logger.Log($" Conditional if false action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+            //        }
+            //    }
+            //}
+            //foreach (GameAction ga in actionsInCloud.UnitMove.Actions)
+            //{
+            //    Main.logger.Log($"Stinking Cloud area unit Move action {ga.name} and type {ga.GetType().ToString() }");
+            //}
+            //foreach (GameAction ga in actionsInCloud.UnitExit.Actions)
+            //{
+            //    Main.logger.Log($"Stinking Cloud area unit Exit action {ga.name} and type {ga.GetType().ToString() }");
+            //    Conditional c = ga as Conditional;
+            //    if (c != null)
+            //    {
+            //        foreach (Condition con in c.ConditionsChecker.Conditions)
+            //        {
+            //            Main.logger.Log($"Condition name {con.name} and type {con.GetType().ToString()}");
+            //        }
+            //        foreach (GameAction internalGa in c.IfTrue.Actions)
+            //        {
+            //            Main.logger.Log($" Conditional if true action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+            //        }
+            //        foreach (GameAction internalGa in c.IfFalse.Actions)
+            //        {
+            //            Main.logger.Log($" Conditional if false action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+            //        }
+            //    }
+            //}
+            //BlueprintBuff Stinkingbuff = library.Get<BlueprintBuff>("f85351ee696d98246ae5dc182b410447");
+            //foreach (BlueprintComponent bc in Stinkingbuff.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"     Stinking cloud buff {bc.name} has type {bc.GetType().ToString()}");
+            //}
+            //BlueprintBuff stinkingAfterBuff = library.Get<BlueprintBuff>("fa039d873ee3f3e42abaf19877abaae1");
+            //foreach (BlueprintComponent bc in stinkingAfterBuff.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"Stinking cloud after buff {bc.name} has type {bc.GetType().ToString()}");
+            //}
+            //BlueprintBuff rainbowpatternBuff = library.Get<BlueprintBuff>("6477ae917b0ec7a4ca76bc9f36b023ac");
+            //foreach (BlueprintComponent bc in rainbowpatternBuff.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"Rainbow pattern buff component {bc.name} has type {bc.GetType().ToString()}");
+            //    AddCondition ac = bc as AddCondition;
+            //    if (ac != null)
+            //        Main.logger.Log($" the condition is {ac.Condition}");
+            //    SpellDescriptorComponent sdc = bc as SpellDescriptorComponent;
+            //    if (sdc != null)
+            //        Main.logger.Log($"  Spell Descriptor value {sdc.Descriptor.Value}");
+            //    AddIncomingDamageTrigger aidt = bc as AddIncomingDamageTrigger;
+            //    if (aidt != null)
+            //    {
+            //        foreach(GameAction ga in aidt.Actions.Actions)
+            //            Main.logger.Log($" Damage trigger actions {ga.name} of type {ga.GetType().ToString()}");
+            //    }
+            //    AddFactContextActions afca = bc as AddFactContextActions;
+            //    if(afca !=null)
+            //    {
+            //        foreach(GameAction ga in afca.Activated.Actions)
+            //            Main.logger.Log($" Activated action {ga.name} and {ga.GetType().ToString()}");
+            //        foreach(GameAction ga in afca.Deactivated.Actions)
+            //            Main.logger.Log($" Deactivated action {ga.name} and {ga.GetType().ToString()}");
+            //        foreach (GameAction ga in afca.NewRound.Actions)
+            //            Main.logger.Log($" New round action {ga.name} and {ga.GetType().ToString()}");
+            //    }
+            //}
+
+            //Actual Euphoric Cloud Stuff
+            //BlueprintBuff stinkingCloudBuff = library.Get<BlueprintBuff>("f85351ee696d98246ae5dc182b410447"); //StinkingCloudBuff
+            BlueprintAbility mindFog = library.Get<BlueprintAbility>("eabf94e4edc6e714cabd96aa69f8b207");//mind fog base spell
+            BlueprintAbilityAreaEffect euphoricCloudArea = library.CopyAndAdd<BlueprintAbilityAreaEffect>("aa2e0a0fe89693f4e9205fd52c5ba3e5", "EuphoricCloudBuff", "8f79fea823c946ca95529ee731a6500c");//stinking cloud area and then a new guid
+            BlueprintBuff rainbowPattern = library.Get<BlueprintBuff>("6477ae917b0ec7a4ca76bc9f36b023ac");
+            BlueprintBuff euphoricCloudBuff = library.CopyAndAdd<BlueprintBuff>("6477ae917b0ec7a4ca76bc9f36b023ac", "EuphoricCloudFascinateBuff", "78c37a35c0d74a4eb638fd59bcaaeb72"); //Rainbow pattern buff and then a new guid
+            euphoricCloudBuff.ReplaceComponent<SpellDescriptorComponent>(Helpers.CreateSpellDescriptor(SpellDescriptor.Daze | SpellDescriptor.Poison));
+            AddFactContextActions theAddFact = euphoricCloudBuff.GetComponent<AddFactContextActions>();
+            euphoricCloudBuff.RemoveComponent(theAddFact);
+
+            euphoricCloudArea.Fx = library.Get<BlueprintAbilityAreaEffect>("fe5102d734382b74586f56980086e5e8").Fx;
+            //SpellDescriptorComponent poison = Helpers.CreateSpellDescriptor();
+            //poison.Descriptor = SpellDescriptor.Poison;
+            //euphoricCloudBuff.AddComponent(poison);
+            euphoricCloudBuff.SetNameDescriptionIcon("Euphoric Cloud", "This unit is fascinated by the intoxicating vapors of a Euphoric Cloud", mindFog.Icon);
+            euphoricCloudBuff.FxOnRemove = new Kingmaker.ResourceLinks.PrefabLink();
+
+            BlueprintBuff euphoricCloudLeavingBuff = library.CopyAndAdd<BlueprintBuff>("78c37a35c0d74a4eb638fd59bcaaeb72", "EuphoricCloudFascinateAfterBuff", "083e89bb9fc54c72a612a2d5b3424add");
+            //euphoricCloudLeavingBuff.FxOnStart = new Kingmaker.ResourceLinks.PrefabLink();
+
+            BlueprintBuff euphoricResistanceBuff = Helpers.CreateBuff("EuphoricResistanceBuff",
+                "Euphoric Drug Resistance",
+                "This creature has recently been effected by Euphoric Cloud's intoxicating vapors. While in the cloud and for a short period afterwards, " +
+                "additional exposure to Euphoric Cloud will not cause fascination",
+                "0108c3c478194ea68921a806c53b03ad", //fresh guid
+                mindFog.Icon,
+                null
+                );
+            BlueprintBuff euphoricTemporaryResistanceBuff = Helpers.CreateBuff("EuphoricResistanceAfterBuff",
+               "Euphoric Drug Resistance",
+               "This creature has recently been effected by Euphoric Cloud's intoxicating vapors. While in the cloud and for a short period afterwards, " +
+               "additional exposure to Euphoric Cloud will not cause fascination",
+               "83172efde22d487dbcb4215cfb0d4ed4", //fresh guid
+               mindFog.Icon,
+               null
+               );
+
+            //apply buff actions
+            ContextActionApplyBuff applyPermanentResistance = Common.createContextActionApplyBuff(euphoricResistanceBuff, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.Default)), is_permanent: true, dispellable: false, is_from_spell: true);
+            ContextActionApplyBuff applyTempResistance = Common.createContextActionApplyBuff(euphoricTemporaryResistanceBuff, Helpers.CreateContextDuration(5, DurationRate.Rounds), dispellable: false, is_from_spell: true);
+            ContextActionApplyBuff applyCloudBuffPermanent = Common.createContextActionApplyBuff(euphoricCloudBuff, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.Default)), is_permanent: true, dispellable: false, is_from_spell: true);
+            ContextActionApplyBuff applyCloudBuffTemp = Common.createContextActionApplyBuff(euphoricCloudLeavingBuff, Helpers.CreateContextDuration(1, diceType: DiceType.D4, diceCount: 1), dispellable: false, is_from_spell: true);
+
+            ContextConditionHasFact doesntHaveEuphoricResistance = Common.createContextConditionHasFact(euphoricResistanceBuff, false);
+            ContextConditionHasFact doesntHaveTempEuphoricResistance = Common.createContextConditionHasFact(euphoricTemporaryResistanceBuff, false);
+            ContextConditionHasFact doesntHaveEuphoricCloudBuff = Common.createContextConditionHasFact(euphoricCloudBuff, false);
+            ContextConditionHasFact hasEuphoricResistance = Common.createContextConditionHasFact(euphoricResistanceBuff);
+            ContextConditionHasFact hasEuphoricCloudBuff = Common.createContextConditionHasFact(euphoricCloudBuff);
+
+            BlueprintFeature undeadType = library.Get<BlueprintFeature>("734a29b693e9ec346ba2951b27987e33");//undeadtype guid
+            ContextConditionHasFact notUndead = Common.createContextConditionHasFact(undeadType, false);
+            BlueprintFeature constructType = library.Get<BlueprintFeature>("fd389783027d63343b4a5634bd81645f");//contructType guid
+            ContextConditionHasFact notConstruct = Common.createContextConditionHasFact(undeadType, false);
+
+            Condition[] enterConditions = new Condition[] { notUndead, notConstruct, doesntHaveEuphoricCloudBuff, doesntHaveEuphoricResistance, doesntHaveTempEuphoricResistance };
+            ContextActionRemoveBuffSingleStack removeTempCloudBuff = CreationFunctions.CreateContextRemoveSingleBuffStack(euphoricCloudLeavingBuff);
+            GameAction[] enterActionsOnFailedSave = new GameAction[] { applyPermanentResistance,removeTempCloudBuff, applyCloudBuffPermanent };
+            ContextActionConditionalSaved saveCondition = Helpers.CreateConditionalSaved(new GameAction[] { }, enterActionsOnFailedSave);
+            //Common.createContextActionSavingThrow(SavingThrowType.Fortitude, Helpers.CreateActionList(apply_attack)));
+            ContextActionSavingThrow inCloudSaveFailed = Common.createContextActionSavingThrow(SavingThrowType.Fortitude, Helpers.CreateActionList(saveCondition));
+            //Conditional onEnterConditional = Helpers.CreateConditional(enterConditions, null, inCloudSaveFailed);
+            Conditional onEnterConditional = Helpers.CreateConditional(enterConditions, inCloudSaveFailed);
+
+            Condition[] roundConditions = new Condition[] { notUndead, notConstruct, doesntHaveEuphoricCloudBuff, doesntHaveEuphoricResistance, doesntHaveTempEuphoricResistance };
+            GameAction[] roundActionsOnFailedSave = new GameAction[] { applyCloudBuffPermanent, removeTempCloudBuff, applyPermanentResistance };
+            //ContextActionConditionalSaved inCloudSaveFailed = Helpers.CreateConditionalSaved(enterActionsOnFailedSave, new GameAction[] { });
+            //Conditional everyRoundConditional = Helpers.CreateConditional(enterConditions, null, inCloudSaveFailed);
+            Conditional everyRoundConditional = Helpers.CreateConditional(enterConditions, inCloudSaveFailed);
+
+            Condition[] exitingWithCloudBuff = new Condition[] { hasEuphoricCloudBuff };
+            ContextActionRemoveBuffSingleStack removeEuphoriaBuff = CreationFunctions.CreateContextRemoveSingleBuffStack(euphoricCloudBuff);
+            GameAction[] exitActionsWithCloudBuff = new GameAction[] { removeEuphoriaBuff, applyCloudBuffTemp};
+            Conditional exitingConditional = Helpers.CreateConditional(exitingWithCloudBuff, exitActionsWithCloudBuff);
+
+            Condition[] exitingWithResistanceBuff = new Condition[] { hasEuphoricResistance };
+            ContextActionRemoveBuffSingleStack removeResistanceBuff = CreationFunctions.CreateContextRemoveSingleBuffStack(euphoricResistanceBuff);
+            GameAction[] exitActionsWithResitance = new GameAction[] { removeResistanceBuff, applyTempResistance };
+            Conditional exitingConditionForResistance = Helpers.CreateConditional(exitingWithResistanceBuff, exitActionsWithResitance);
+
+            //euphoricCloudAreaActions = Helpers.CreateAreaEffectRunAction(unitEnter: onEnterConditional, round: everyRoundConditional, unitExit: exitingConditional);
+            euphoricCloudArea.ReplaceComponent<AbilityAreaEffectRunAction>(Helpers.CreateAreaEffectRunAction(unitEnter: new GameAction[]{ onEnterConditional}, 
+                round: new GameAction[] { everyRoundConditional }, 
+                unitExit: new GameAction[] { exitingConditional, exitingConditionForResistance }));
+
+            var spawn_area = Common.createContextActionSpawnAreaEffect(euphoricCloudArea, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.Default), DurationRate.Rounds));
+
+            euphoric_cloud = Helpers.CreateAbility("EuphoricCloudAbility",
+                "Euphoric Cloud",
+                "You create a bank of fog similar to that created by fog cloud except its vapors are intoxicating. Living creatures in the cloud become fascinated. " +
+                "This condition lasts as long as a creature is in the cloud and for 1d4+1 rounds after it leaves. " +
+                "Any creature that succeeds at its save but remains in the cloud must continue to save each round on your turn. " +
+                "Creatures who are intoxicated by the cloud and are roused from the fascination are not effected in further rounds.",
+                "c80b7411bc744737974fc0418df733ca",//fresh guid
+                mindFog.Icon,
+                AbilityType.Spell,
+                UnitCommand.CommandType.Standard,
+                AbilityRange.Medium,
+                Helpers.roundsPerLevelDuration,
+                Helpers.fortNegates,
+                Helpers.Create<AbilityEffectRunActionOnClickedTarget>(a => a.Action = Helpers.CreateActionList(spawn_area)),
+                //Helpers.CreateRunActions(SavingThrowType.Reflex, Helpers.CreateConditionalSaved(null, apply_entangled)),
+                Helpers.CreateSpellComponent(SpellSchool.Conjuration),
+                Helpers.CreateAbilityTargetsAround(20.Feet(), TargetType.Any)
+                );
+            euphoric_cloud.setMiscAbilityParametersRangedDirectional();
+            euphoric_cloud.AvailableMetamagic = Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | Metamagic.Extend | (Metamagic)MetamagicFeats.MetamagicExtender.Persistent;
+            //MindFog eabf94e4edc6e714cabd96aa69f8b207 Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbility
+            //StinkingCloud   68a9e6d7256f1354289a39003a46d826 Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbility
+            //StinkingCloudAfterBuff  fa039d873ee3f3e42abaf19877abaae1 Kingmaker.UnitLogic.Buffs.Blueprints.BlueprintBuff
+            //StinkingCloudArea   aa2e0a0fe89693f4e9205fd52c5ba3e5 Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbilityAreaEffect
+            //StinkingCloudBuff   f85351ee696d98246ae5dc182b410447 Kingmaker.UnitLogic.Buffs.Blueprints.BlueprintBuff
+
+            euphoric_cloud.AddToSpellList(Helpers.wizardSpellList, 2);
+            euphoric_cloud.AddToSpellList(Helpers.druidSpellList, 2);
+            euphoric_cloud.AddToSpellList(Helpers.magusSpellList, 2);
+
+            euphoric_cloud.AddSpellAndScroll("61bacc43652d76c42b60d965b65cd741");//mind fog scroll image
         }
 
         public static void createMagesDisjunction()
         {
-            // guid for greater dispel magic target 6d490c80598f1d34bb277735b52d52c1
-            // guid for greater dispel magic area b9be852b03568064b8d2275a6cf9e2de these two are abilities
-            // guid for the spell itself f0f761b808dc4b149b08eaf44b99f633
-            //BlueprintAbility greaterTargetDispel = library.Get<BlueprintAbility>("6d490c80598f1d34bb277735b52d52c1");
-            //foreach(BlueprintComponent bc in greaterTargetDispel.GetComponents<BlueprintComponent>())
-            //{
-            //    Main.logger.Log("Component of greater target dispel: " + bc.name + " and type " + bc.GetType().ToString());
-            //}
-            //above gets a spell component, an ability effect run action, which seems like the stuff, and an ability spawn fx which we probably want to steal
-            //AbilityEffectRunAction aera = greaterTargetDispel.GetComponent<AbilityEffectRunAction>();
-            //foreach (GameAction ga in aera.Actions.Actions)
-            //{
-            //    Main.logger.Log("Game action in target dispel's ability effect run action name: " + ga.name + " and type: " + ga.GetType().ToString());
-            //    ContextActionDispelMagic cadm = (ContextActionDispelMagic)ga;
-            //    if (cadm != null)
-            //    {
-            //        Main.logger.Log(" context action dispel magic exists");
-            //        var stopAfterOne = Helpers.GetField(cadm, "m_StopAfterFirstRemoved");
-            //        Main.logger.Log("stops after 1? " + stopAfterOne.ToString());
-            //        foreach (GameAction successAction in cadm.OnSuccess.Actions)
-            //            Main.logger.Log("game action for on success of dispelling name: " + successAction.name + " and type " + successAction.GetType().ToString());
-            //        foreach (GameAction failureAction in cadm.OnFail.Actions)
-            //            Main.logger.Log("game action for on failure of dispelling name: " + failureAction.name + " and type " + failureAction.GetType().ToString());
-            //    }
-            //}
-            //so it look like greaterTargetDispel has a spell component, which is presumably its school, an effect run action which is the ContextActionDispelMagic carring no success or failure actions, 
-            //and a spawn fx which is the effect that plays on cast
-
-
             BlueprintAbility greaterAreaDispel = library.Get<BlueprintAbility>("b9be852b03568064b8d2275a6cf9e2de");
-            AbilitySpawnFx greaterDispelFx = greaterAreaDispel.GetComponent<AbilitySpawnFx>(); //well there is that
-            //this one has a AbilityTargetsAround and all the stuff that the targeted one has. I definitely want this one's ability spawn fx not the the target one
-            //foreach (BlueprintComponent bc in greaterAreaDispel.GetComponents<BlueprintComponent>())
-            //{
-            //    Main.logger.Log("Component of greater area dispel: " + bc.name + " and type " + bc.GetType().ToString());
-            //}
-            //AbilityEffectRunAction areaAera = greaterAreaDispel.GetComponent<AbilityEffectRunAction>();
-            //foreach (GameAction ga in areaAera.Actions.Actions)
-            //{
-            //    Main.logger.Log("Game action in area dispel's ability effect run action name: " + ga.name + " and type: " + ga.GetType().ToString());
-            //    ContextActionDispelMagic cadm = (ContextActionDispelMagic)ga;
-            //    var stopAfterOne = Helpers.GetField(cadm, "m_StopAfterFirstRemoved");
-            //    Main.logger.Log("stops after 1? " + stopAfterOne.ToString());
-            //}
-            //mages_disjunction.SetNameDescriptionIcon("Mages Disjunction", "All magical effects in the area are unraveled as if by a dispel magic effect", shadowEvocIcon);
-            //magesDisjunctionDispel.ReplaceComponent<bc>
-            //ContextActionDispelMagic dispel = Common.createContextActionDispelMagic(SpellDescriptor.None, new SpellSchool[0], RuleDispelMagic.CheckType.None);
-            //Helpers.SetField(dispel, "m_BuffType", 1); //The enum value 1 should equal ContextActionDispelMagic.BuffType.FromSpells
-            //Helpers.SetField(dispel, "m_StopAfterFirstRemoved", false); //this should allow the spell to effect everything on each target but does not appear to at the moment
+            AbilitySpawnFx greaterDispelFx = greaterAreaDispel.GetComponent<AbilitySpawnFx>(); 
 
             var shadowEvocIcon = library.Get<BlueprintAbility>("237427308e48c3341b3d532b9d3a001f").Icon; //Shadow Evoc
 
@@ -121,13 +318,10 @@ namespace CowWithHatsCustomSpellsMod
             {
                 Actions = Helpers.CreateActionList(Helpers.Create<ContextActionDispellMagicAreasAndSummons>())
             };
-            //Maybe I want to implement it "As each creature within range is hit with a burst of disjunctive magic. All magical effects on theses creatures are dispelled including buffs provided by items
-            //Any area effect spells which a creature is being effected by are also dispelled
-            //All summoned creatures are dismissed"
             mages_disjunction = Helpers.CreateAbility("MagesDisjunctionAbility",
                                                       "Mage's Disjunction",
                                                       "You cause disjunctive magic to surge through each creature within range. " +
-                                                      "All spell effects on these creatures are dispelled including spell effects from items." +
+                                                      "All spell effects on these creatures are dispelled." +
                                                       "Any summoned creatures in the area are dismissed. " +
                                                       "Any magical area effect that is touching an effected creture is disrupted by the spells magic.",
                                                       //"This spell targets a point within range and strips away all nearby magical effects and spells. All area spell effects which touch " +
@@ -243,7 +437,7 @@ namespace CowWithHatsCustomSpellsMod
                                                 );
 
             var remove_buff = Common.createContextActionRemoveBuffFromCaster(skill_buff);
-            var apply_init_buff = Common.createContextActionApplyBuff(init_buff, Helpers.CreateContextDuration(3, DurationRate.Rounds));
+            var apply_init_buff = Common.createContextActionApplyBuff(init_buff, Helpers.CreateContextDuration(3, DurationRate.Rounds), is_from_spell: true);
 
             var dismissAbility = Helpers.CreateAbility("HeightenedAwarenessDismissAbility",
                                                      "Initiative Boost",
@@ -365,13 +559,13 @@ namespace CowWithHatsCustomSpellsMod
 
         public static void createSuggestion()
         {
-            var buff = library.Get<BlueprintBuff>("6477ae917b0ec7a4ca76bc9f36b023ac"); //rainbow pattern
+            var buff = library.CopyAndAdd<BlueprintBuff>("6477ae917b0ec7a4ca76bc9f36b023ac", "SuggestionBuff", "729fa06959ad4a0ca1e761b955b6ff62"); //rainbow pattern then new guid
             var echolocation = library.Get<BlueprintAbility>("20b548bf09bb3ea4bafea78dcb4f3db6"); //Echolocation
             var hold_monster = library.Get<BlueprintAbility>("41e8a952da7a5c247b3ec1c2dbb73018");
             var checker_fact = hold_monster.GetComponents<AbilityTargetHasNoFactUnless>().ToArray();
             var does_not_work = hold_monster.GetComponent<AbilityTargetHasFact>();
             buff.SetDescription("");
-            var apply_buff = CallOfTheWild.Common.createContextActionApplyBuff(buff, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.Default), DurationRate.Minutes));
+            var apply_buff = CallOfTheWild.Common.createContextActionApplyBuff(buff, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.Default), DurationRate.Minutes), is_from_spell: true);
             var action = Helpers.CreateConditional(Helpers.CreateConditionsCheckerAnd(Common.createContextConditionHasFacts(false, checker_fact[0].CheckedFacts), Common.createContextConditionCasterHasFact(checker_fact[0].UnlessFact, has: false)),
                                                     null,
                                                     Helpers.CreateConditional(Helpers.CreateConditionsCheckerAnd(Common.createContextConditionHasFacts(false, checker_fact[1].CheckedFacts), Common.createContextConditionCasterHasFact(checker_fact[1].UnlessFact, has: false)),

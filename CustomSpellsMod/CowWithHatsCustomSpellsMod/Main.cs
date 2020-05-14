@@ -22,14 +22,14 @@ namespace CowWithHatsCustomSpellsMod
     {
         internal class Settings
         {
-
+            internal bool domination_dismissal;
             internal Settings()
             {
-
                 using (StreamReader settings_file = File.OpenText("Mods/CowWithHatsCustomSpellsMod/settings.json"))
                 using (JsonTextReader reader = new JsonTextReader(settings_file))
                 {
                     JObject jo = (JObject)JToken.ReadFrom(reader);
+                    domination_dismissal = (bool)jo["domination_dismissal"];
                 }
             }
         }
@@ -138,6 +138,10 @@ namespace CowWithHatsCustomSpellsMod
                     bool allow_guid_generation = false; //no guids should be ever generated in release
 #endif
                     Core.postLoad();
+                    if(settings.domination_dismissal)
+                    {
+                        Core.UpdateDismiss();
+                    }
                     CallOfTheWild.Helpers.GuidStorage.load(Properties.Resources.blueprints, allow_guid_generation);
 
                     //logger.Log("Made it to post load");
