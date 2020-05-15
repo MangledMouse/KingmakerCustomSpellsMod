@@ -57,6 +57,7 @@ namespace CowWithHatsCustomSpellsMod
         static public BlueprintAbility acute_senses;
         static public BlueprintAbility mages_disjunction;
         static public BlueprintAbility euphoric_cloud;
+        static public BlueprintAbility euphoric_cloud_trueFascinate;
 
         public static void load()
         {
@@ -66,147 +67,35 @@ namespace CowWithHatsCustomSpellsMod
             createAcuteSenses();
             createMagesDisjunction();
             createEuphoricCloud();
+        
+            //outputSpellInfoToLog();
         }
+
 
         public static void createEuphoricCloud()
         {
-            //Euphoric cloud should work like stinking cloud except that it applies fascinated and when it applies the condition it also gives a "recently Euphoric" buff for caster level rounds
-            //When the everyRound and onEnter checks happen to poison the target, first check the condition, that they don't have "recently Euphoric" don't make the save check if they have that buff
-
-            //BlueprintAbilityAreaEffect scArea = library.Get<BlueprintAbilityAreaEffect>("aa2e0a0fe89693f4e9205fd52c5ba3e5"); //stinking cloud area
-
-            //AbilityAreaEffectRunAction actionsInCloud = scArea.GetComponent<AbilityAreaEffectRunAction>();
-            //foreach (GameAction ga in actionsInCloud.UnitEnter.Actions)
-            //{
-            //    Main.logger.Log($"Stinking Cloud area unit Enter action {ga.name} and type {ga.GetType().ToString() }");
-            //    Conditional c = ga as Conditional;
-            //    if (c != null)
-            //    {
-            //        foreach (Condition con in c.ConditionsChecker.Conditions)
-            //        {
-            //            Main.logger.Log($"Condition name {con.name} and type {con.GetType().ToString()}");
-            //            ContextConditionHasFact factCondition = con as ContextConditionHasFact;
-            //            if (factCondition != null)
-            //            {
-            //                Main.logger.Log($"The conditional fact {factCondition.Fact.name}, the not value is {factCondition.Not} and its type {factCondition.Fact.GetType().ToString()}");
-            //            }
-            //        }
-            //        foreach (GameAction internalGa in c.IfTrue.Actions)
-            //        {
-            //            Main.logger.Log($" Conditional if true action name {internalGa.name} and type {internalGa.GetType().ToString()}");
-            //        }
-            //        foreach (GameAction internalGa in c.IfFalse.Actions)
-            //        {
-            //            Main.logger.Log($" Conditional if false action name {internalGa.name} and type {internalGa.GetType().ToString()}");
-            //        }
-            //    }
-            //}
-            //foreach (GameAction ga in actionsInCloud.Round.Actions)
-            //{
-            //    Main.logger.Log($"Stinking Cloud area Round action {ga.name} and type {ga.GetType().ToString() }");
-            //    Conditional c = ga as Conditional;
-            //    if (c != null)
-            //    {
-            //        foreach (Condition con in c.ConditionsChecker.Conditions)
-            //        {
-            //            Main.logger.Log($"Condition name {con.name} and type {con.GetType().ToString()}");
-            //            ContextConditionHasFact factCondition = con as ContextConditionHasFact;
-            //            if (factCondition != null)
-            //            {
-            //                Main.logger.Log($"The conditional fact {factCondition.Fact.name}, the not value is {factCondition.Not} and its type {factCondition.Fact.GetType().ToString()} ");
-            //            }
-            //        }
-            //        foreach (GameAction internalGa in c.IfTrue.Actions)
-            //        {
-            //            Main.logger.Log($" Conditional if true action name {internalGa.name} and type {internalGa.GetType().ToString()}");
-            //        }
-            //        foreach (GameAction internalGa in c.IfFalse.Actions)
-            //        {
-            //            Main.logger.Log($" Conditional if false action name {internalGa.name} and type {internalGa.GetType().ToString()}");
-            //        }
-            //    }
-            //}
-            //foreach (GameAction ga in actionsInCloud.UnitMove.Actions)
-            //{
-            //    Main.logger.Log($"Stinking Cloud area unit Move action {ga.name} and type {ga.GetType().ToString() }");
-            //}
-            //foreach (GameAction ga in actionsInCloud.UnitExit.Actions)
-            //{
-            //    Main.logger.Log($"Stinking Cloud area unit Exit action {ga.name} and type {ga.GetType().ToString() }");
-            //    Conditional c = ga as Conditional;
-            //    if (c != null)
-            //    {
-            //        foreach (Condition con in c.ConditionsChecker.Conditions)
-            //        {
-            //            Main.logger.Log($"Condition name {con.name} and type {con.GetType().ToString()}");
-            //        }
-            //        foreach (GameAction internalGa in c.IfTrue.Actions)
-            //        {
-            //            Main.logger.Log($" Conditional if true action name {internalGa.name} and type {internalGa.GetType().ToString()}");
-            //        }
-            //        foreach (GameAction internalGa in c.IfFalse.Actions)
-            //        {
-            //            Main.logger.Log($" Conditional if false action name {internalGa.name} and type {internalGa.GetType().ToString()}");
-            //        }
-            //    }
-            //}
-            //BlueprintBuff Stinkingbuff = library.Get<BlueprintBuff>("f85351ee696d98246ae5dc182b410447");
-            //foreach (BlueprintComponent bc in Stinkingbuff.GetComponents<BlueprintComponent>())
-            //{
-            //    Main.logger.Log($"     Stinking cloud buff {bc.name} has type {bc.GetType().ToString()}");
-            //}
-            //BlueprintBuff stinkingAfterBuff = library.Get<BlueprintBuff>("fa039d873ee3f3e42abaf19877abaae1");
-            //foreach (BlueprintComponent bc in stinkingAfterBuff.GetComponents<BlueprintComponent>())
-            //{
-            //    Main.logger.Log($"Stinking cloud after buff {bc.name} has type {bc.GetType().ToString()}");
-            //}
-            //BlueprintBuff rainbowpatternBuff = library.Get<BlueprintBuff>("6477ae917b0ec7a4ca76bc9f36b023ac");
-            //foreach (BlueprintComponent bc in rainbowpatternBuff.GetComponents<BlueprintComponent>())
-            //{
-            //    Main.logger.Log($"Rainbow pattern buff component {bc.name} has type {bc.GetType().ToString()}");
-            //    AddCondition ac = bc as AddCondition;
-            //    if (ac != null)
-            //        Main.logger.Log($" the condition is {ac.Condition}");
-            //    SpellDescriptorComponent sdc = bc as SpellDescriptorComponent;
-            //    if (sdc != null)
-            //        Main.logger.Log($"  Spell Descriptor value {sdc.Descriptor.Value}");
-            //    AddIncomingDamageTrigger aidt = bc as AddIncomingDamageTrigger;
-            //    if (aidt != null)
-            //    {
-            //        foreach(GameAction ga in aidt.Actions.Actions)
-            //            Main.logger.Log($" Damage trigger actions {ga.name} of type {ga.GetType().ToString()}");
-            //    }
-            //    AddFactContextActions afca = bc as AddFactContextActions;
-            //    if(afca !=null)
-            //    {
-            //        foreach(GameAction ga in afca.Activated.Actions)
-            //            Main.logger.Log($" Activated action {ga.name} and {ga.GetType().ToString()}");
-            //        foreach(GameAction ga in afca.Deactivated.Actions)
-            //            Main.logger.Log($" Deactivated action {ga.name} and {ga.GetType().ToString()}");
-            //        foreach (GameAction ga in afca.NewRound.Actions)
-            //            Main.logger.Log($" New round action {ga.name} and {ga.GetType().ToString()}");
-            //    }
-            //}
-
             //Actual Euphoric Cloud Stuff
             //BlueprintBuff stinkingCloudBuff = library.Get<BlueprintBuff>("f85351ee696d98246ae5dc182b410447"); //StinkingCloudBuff
             BlueprintAbility mindFog = library.Get<BlueprintAbility>("eabf94e4edc6e714cabd96aa69f8b207");//mind fog base spell
             BlueprintAbilityAreaEffect euphoricCloudArea = library.CopyAndAdd<BlueprintAbilityAreaEffect>("aa2e0a0fe89693f4e9205fd52c5ba3e5", "EuphoricCloudBuff", "8f79fea823c946ca95529ee731a6500c");//stinking cloud area and then a new guid
-            BlueprintBuff rainbowPattern = library.Get<BlueprintBuff>("6477ae917b0ec7a4ca76bc9f36b023ac");
             BlueprintBuff euphoricCloudBuff = library.CopyAndAdd<BlueprintBuff>("6477ae917b0ec7a4ca76bc9f36b023ac", "EuphoricCloudFascinateBuff", "78c37a35c0d74a4eb638fd59bcaaeb72"); //Rainbow pattern buff and then a new guid
             euphoricCloudBuff.ReplaceComponent<SpellDescriptorComponent>(Helpers.CreateSpellDescriptor(SpellDescriptor.Daze | SpellDescriptor.Poison));
             AddFactContextActions theAddFact = euphoricCloudBuff.GetComponent<AddFactContextActions>();
-            euphoricCloudBuff.RemoveComponent(theAddFact);
-
+            euphoricCloudBuff.RemoveComponent(theAddFact); //this removes the sfx that plays when creatures get fascinated by rainbow pattern
             euphoricCloudArea.Fx = library.Get<BlueprintAbilityAreaEffect>("fe5102d734382b74586f56980086e5e8").Fx;
-            //SpellDescriptorComponent poison = Helpers.CreateSpellDescriptor();
-            //poison.Descriptor = SpellDescriptor.Poison;
-            //euphoricCloudBuff.AddComponent(poison);
             euphoricCloudBuff.SetNameDescriptionIcon("Euphoric Cloud", "This unit is fascinated by the intoxicating vapors of a Euphoric Cloud", mindFog.Icon);
-            euphoricCloudBuff.FxOnRemove = new Kingmaker.ResourceLinks.PrefabLink();
 
-            BlueprintBuff euphoricCloudLeavingBuff = library.CopyAndAdd<BlueprintBuff>("78c37a35c0d74a4eb638fd59bcaaeb72", "EuphoricCloudFascinateAfterBuff", "083e89bb9fc54c72a612a2d5b3424add");
-            //euphoricCloudLeavingBuff.FxOnStart = new Kingmaker.ResourceLinks.PrefabLink();
+            ContextActionRemoveSelf removeSelf = Helpers.Create<ContextActionRemoveSelf>();
+            ContextActionConditionalSaved whatHappensOnExtraFortSaves = Helpers.CreateConditionalSaved(new GameAction[] {removeSelf }, new GameAction[] { });
+            ContextActionSavingThrow extraFortSaves = Common.createContextActionSavingThrow(SavingThrowType.Fortitude, Helpers.CreateActionList(whatHappensOnExtraFortSaves));
+            Conditional proximityCheck = Helpers.CreateConditional(Helpers.Create<ContextConditionHasFascinateBreaker>(), extraFortSaves);
+            AddFactContextActions roundlyProximityCheck = Helpers.CreateAddFactContextActions(newRound: new GameAction[] { proximityCheck });
+            euphoricCloudBuff.SetComponents(euphoricCloudBuff.ComponentsArray.AddToArray<BlueprintComponent>(roundlyProximityCheck));
+
+            BlueprintBuff euphoricCloudLeavingBuff = library.CopyAndAdd<BlueprintBuff>("78c37a35c0d74a4eb638fd59bcaaeb72", "EuphoricCloudFascinateAfterBuff", "083e89bb9fc54c72a612a2d5b3424add"); //copy of new euphoricCloudBuff
+
+            foreach(BlueprintComponent bc in euphoricCloudBuff.GetComponents<BlueprintComponent>())
+                Main.logger.Log($"Euphoric cloud component {bc.name} with type {bc.GetType().ToString()}");
 
             BlueprintBuff euphoricResistanceBuff = Helpers.CreateBuff("EuphoricResistanceBuff",
                 "Euphoric Drug Resistance",
@@ -276,10 +165,11 @@ namespace CowWithHatsCustomSpellsMod
 
             euphoric_cloud = Helpers.CreateAbility("EuphoricCloudAbility",
                 "Euphoric Cloud",
-                "You create a bank of fog similar to that created by fog cloud except its vapors are intoxicating. Living creatures in the cloud become fascinated. " +
-                "This condition lasts as long as a creature is in the cloud and for 1d4+1 rounds after it leaves. " +
-                "Any creature that succeeds at its save but remains in the cloud must continue to save each round on your turn. " +
-                "Creatures who are intoxicated by the cloud and are roused from the fascination are not effected in further rounds.",
+                "You create a bank of fog similar to that created by fog cloud except its vapors are intoxicating. Living creatures are distracted by the fumes and behave as if dazed. " +
+                "Any creature that succeeds at its save at the initial save but remains in the cloud must continue to save each round on your turn. " +
+                "If the creature is undisturbed this condition lasts as long as a creature is in the cloud and for 1d4+1 rounds after it leaves. " +
+                "Distracted creatures that are damaged immediately snap out of the condition. Distracted creatures receive additional saving throws each round to break the condition if there are enemies within 10 feet." +
+                "Creatures who are intoxicated by the cloud and break free from its effects from damage or extra saves are not effected in further rounds.",
                 "c80b7411bc744737974fc0418df733ca",//fresh guid
                 mindFog.Icon,
                 AbilityType.Spell,
@@ -629,6 +519,150 @@ namespace CowWithHatsCustomSpellsMod
             NewSpells.suggestion_mass.AddToSpellList(Helpers.wizardSpellList, 6);
             NewSpells.suggestion.AddSpellAndScroll("4d80ff5fde0655a41bf3c8bfa653bfe9"); //scroll of euphoric tranquility
             NewSpells.suggestion_mass.AddSpellAndScroll("4d80ff5fde0655a41bf3c8bfa653bfe9");  //scroll of euphoric tranquility
+        }
+
+        public static void outputSpellInfoToLog()
+        {
+            //Euphoric cloud should work like stinking cloud except that it applies fascinated and when it applies the condition it also gives a "recently Euphoric" buff for caster level rounds
+            //When the everyRound and onEnter checks happen to poison the target, first check the condition, that they don't have "recently Euphoric" don't make the save check if they have that buff
+            //stinking cloud
+            BlueprintAbilityAreaEffect scArea = library.Get<BlueprintAbilityAreaEffect>("aa2e0a0fe89693f4e9205fd52c5ba3e5"); //stinking cloud area
+            AbilityAreaEffectRunAction actionsInCloud = scArea.GetComponent<AbilityAreaEffectRunAction>();
+            foreach (GameAction ga in actionsInCloud.UnitEnter.Actions)
+            {
+                Main.logger.Log($"Stinking Cloud area unit Enter action {ga.name} and type {ga.GetType().ToString() }");
+                Conditional c = ga as Conditional;
+                if (c != null)
+                {
+                    foreach (Condition con in c.ConditionsChecker.Conditions)
+                    {
+                        Main.logger.Log($"Condition name {con.name} and type {con.GetType().ToString()}");
+                        ContextConditionHasFact factCondition = con as ContextConditionHasFact;
+                        if (factCondition != null)
+                        {
+                            Main.logger.Log($"The conditional fact {factCondition.Fact.name}, the not value is {factCondition.Not} and its type {factCondition.Fact.GetType().ToString()}");
+                        }
+                    }
+                    foreach (GameAction internalGa in c.IfTrue.Actions)
+                    {
+                        Main.logger.Log($" Conditional if true action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+                    }
+                    foreach (GameAction internalGa in c.IfFalse.Actions)
+                    {
+                        Main.logger.Log($" Conditional if false action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+                    }
+                }
+            }
+            foreach (GameAction ga in actionsInCloud.Round.Actions)
+            {
+                Main.logger.Log($"Stinking Cloud area Round action {ga.name} and type {ga.GetType().ToString() }");
+                Conditional c = ga as Conditional;
+                if (c != null)
+                {
+                    foreach (Condition con in c.ConditionsChecker.Conditions)
+                    {
+                        Main.logger.Log($"Condition name {con.name} and type {con.GetType().ToString()}");
+                        ContextConditionHasFact factCondition = con as ContextConditionHasFact;
+                        if (factCondition != null)
+                        {
+                            Main.logger.Log($"The conditional fact {factCondition.Fact.name}, the not value is {factCondition.Not} and its type {factCondition.Fact.GetType().ToString()} ");
+                        }
+                    }
+                    foreach (GameAction internalGa in c.IfTrue.Actions)
+                    {
+                        Main.logger.Log($" Conditional if true action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+                    }
+                    foreach (GameAction internalGa in c.IfFalse.Actions)
+                    {
+                        Main.logger.Log($" Conditional if false action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+                    }
+                }
+            }
+            foreach (GameAction ga in actionsInCloud.UnitMove.Actions)
+            {
+                Main.logger.Log($"Stinking Cloud area unit Move action {ga.name} and type {ga.GetType().ToString() }");
+            }
+            foreach (GameAction ga in actionsInCloud.UnitExit.Actions)
+            {
+                Main.logger.Log($"Stinking Cloud area unit Exit action {ga.name} and type {ga.GetType().ToString() }");
+                Conditional c = ga as Conditional;
+                if (c != null)
+                {
+                    foreach (Condition con in c.ConditionsChecker.Conditions)
+                    {
+                        Main.logger.Log($"Condition name {con.name} and type {con.GetType().ToString()}");
+                    }
+                    foreach (GameAction internalGa in c.IfTrue.Actions)
+                    {
+                        Main.logger.Log($" Conditional if true action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+                    }
+                    foreach (GameAction internalGa in c.IfFalse.Actions)
+                    {
+                        Main.logger.Log($" Conditional if false action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+                    }
+                }
+            }
+            BlueprintBuff Stinkingbuff = library.Get<BlueprintBuff>("f85351ee696d98246ae5dc182b410447");
+            foreach (BlueprintComponent bc in Stinkingbuff.GetComponents<BlueprintComponent>())
+            {
+                Main.logger.Log($"     Stinking cloud buff {bc.name} has type {bc.GetType().ToString()}");
+            }
+            BlueprintBuff stinkingAfterBuff = library.Get<BlueprintBuff>("fa039d873ee3f3e42abaf19877abaae1");
+            foreach (BlueprintComponent bc in stinkingAfterBuff.GetComponents<BlueprintComponent>())
+            {
+                Main.logger.Log($"Stinking cloud after buff {bc.name} has type {bc.GetType().ToString()}");
+            }
+
+            //rainbowpattern buff
+            BlueprintBuff rainbowpatternBuff = library.Get<BlueprintBuff>("6477ae917b0ec7a4ca76bc9f36b023ac");
+            foreach (BlueprintComponent bc in rainbowpatternBuff.GetComponents<BlueprintComponent>())
+            {
+                Main.logger.Log($"Rainbow pattern buff component {bc.name} has type {bc.GetType().ToString()}");
+                AddCondition ac = bc as AddCondition;
+                if (ac != null)
+                    Main.logger.Log($" the condition is {ac.Condition}");
+                SpellDescriptorComponent sdc = bc as SpellDescriptorComponent;
+                if (sdc != null)
+                    Main.logger.Log($"  Spell Descriptor value {sdc.Descriptor.Value}");
+                AddIncomingDamageTrigger aidt = bc as AddIncomingDamageTrigger;
+                if (aidt != null)
+                {
+                    foreach (GameAction ga in aidt.Actions.Actions)
+                        Main.logger.Log($" Damage trigger actions {ga.name} of type {ga.GetType().ToString()}");
+                }
+                AddFactContextActions afca = bc as AddFactContextActions;
+                if (afca != null)
+                {
+                    foreach (GameAction ga in afca.Activated.Actions)
+                        Main.logger.Log($" Activated action {ga.name} and {ga.GetType().ToString()}");
+                    foreach (GameAction ga in afca.Deactivated.Actions)
+                        Main.logger.Log($" Deactivated action {ga.name} and {ga.GetType().ToString()}");
+                    foreach (GameAction ga in afca.NewRound.Actions)
+                        Main.logger.Log($" New round action {ga.name} and {ga.GetType().ToString()}");
+                }
+            }
+
+            BlueprintBuff holdPersonBuff = library.Get<BlueprintBuff>("11cb2fe4fe9c44b448cfe1788ae1ab59");
+            foreach (BlueprintComponent bc in holdPersonBuff.GetComponents<BlueprintComponent>())
+            {
+                Main.logger.Log($"Hold person component {bc.name} with type {bc.GetType().ToString()}");
+            }
+
+            BlueprintBuff dominatePersonbuff = library.Get<BlueprintBuff>("c0f4e1c24c9cd334ca988ed1bd9d201f");
+            foreach (BlueprintComponent bc in dominatePersonbuff.GetComponents<BlueprintComponent>())
+            {
+                Main.logger.Log($"Dominate person component {bc.name} with type {bc.GetType().ToString()}");
+                AddFactContextActions afca = bc as AddFactContextActions;
+                if(afca != null)
+                {
+                    foreach (GameAction action in afca.Activated.Actions)
+                        Main.logger.Log($"Activated action {action.name} and type {action.GetType().ToString()}");
+                    foreach (GameAction action in afca.Deactivated.Actions)
+                        Main.logger.Log($"Deactivated action {action.name} and type {action.GetType().ToString()}");
+                    foreach (GameAction action in afca.NewRound.Actions)
+                        Main.logger.Log($"New Round action {action.name} and type {action.GetType().ToString()}");
+                }
+            }
         }
 
     }
