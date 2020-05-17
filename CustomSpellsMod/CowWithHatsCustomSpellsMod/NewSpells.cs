@@ -43,6 +43,7 @@ using Kingmaker.RuleSystem.Rules;
 using Kingmaker.UnitLogic.Buffs;
 using Kingmaker.Designers.EventConditionActionSystem.Actions;
 using Kingmaker.Blueprints.Facts;
+using Kingmaker.UnitLogic.Commands;
 
 namespace CowWithHatsCustomSpellsMod
 {
@@ -662,6 +663,12 @@ namespace CowWithHatsCustomSpellsMod
                     foreach (GameAction action in afca.NewRound.Actions)
                         Main.logger.Log($"New Round action {action.name} and type {action.GetType().ToString()}");
                 }
+            }
+
+            BlueprintBuff confusionBuff = library.Get<BlueprintBuff>("886c7407dc629dc499b9f1465ff382df");
+            foreach(BlueprintComponent bc in confusionBuff.GetComponents<BlueprintComponent>())
+            {
+                Main.logger.Log($"Confusion buff component {bc.name} and type {bc.GetType().ToString()}");
             }
         }
 

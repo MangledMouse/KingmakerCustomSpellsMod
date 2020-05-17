@@ -6,6 +6,6 @@
   "ManagerVersion": "0.13.0",
   "Requirements": [ "CallOfTheWild" ],
   "AssemblyName": "CowWithHatsCustomSpellsMod.dll",
-  "HomePage": "",
+  "HomePage": "https://www.nexusmods.com/pathfinderkingmaker/mods/175",
   "EntryMethod": "CowWithHatsCustomSpellsMod.Main.Load"
 }
