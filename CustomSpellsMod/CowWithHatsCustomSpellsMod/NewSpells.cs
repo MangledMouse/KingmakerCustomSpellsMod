@@ -44,6 +44,7 @@ using Kingmaker.UnitLogic.Buffs;
 using Kingmaker.Designers.EventConditionActionSystem.Actions;
 using Kingmaker.Blueprints.Facts;
 using Kingmaker.UnitLogic.Commands;
+using Kingmaker.UnitLogic.Parts;
 
 namespace CowWithHatsCustomSpellsMod
 {
@@ -94,9 +95,6 @@ namespace CowWithHatsCustomSpellsMod
             euphoricCloudBuff.SetComponents(euphoricCloudBuff.ComponentsArray.AddToArray<BlueprintComponent>(roundlyProximityCheck));
 
             BlueprintBuff euphoricCloudLeavingBuff = library.CopyAndAdd<BlueprintBuff>("78c37a35c0d74a4eb638fd59bcaaeb72", "EuphoricCloudFascinateAfterBuff", "083e89bb9fc54c72a612a2d5b3424add"); //copy of new euphoricCloudBuff
-
-            foreach(BlueprintComponent bc in euphoricCloudBuff.GetComponents<BlueprintComponent>())
-                Main.logger.Log($"Euphoric cloud component {bc.name} with type {bc.GetType().ToString()}");
 
             BlueprintBuff euphoricResistanceBuff = Helpers.CreateBuff("EuphoricResistanceBuff",
                 "Euphoric Drug Resistance",
@@ -524,152 +522,184 @@ namespace CowWithHatsCustomSpellsMod
 
         public static void outputSpellInfoToLog()
         {
+            BlueprintAbilityAreaEffect createPitAoe = library.Get<BlueprintAbilityAreaEffect>("cf742a1d377378e4c8799f6a3afff1ba"); //create pit guid
+            foreach(BlueprintComponent bc in createPitAoe.GetComponents<BlueprintComponent>())
+            {
+                Main.logger.Log($"Create pit aoe component {bc.name} and type {bc.GetType().ToString()}");
+                AreaEffectPit aep = bc as AreaEffectPit;
+                if(aep!=null)
+                {
+                    foreach (GameAction ga in aep.OnFallAction.Actions)
+                        Main.logger.Log($"AreaEffectPit action list OnFallAction action {ga.name} with type {ga.GetType().ToString()}");
+                    foreach (GameAction ga in aep.EveryRoundAction.Actions)
+                        Main.logger.Log($"AreaEffectPit action list EveryRoundAction action {ga.name} with type {ga.GetType().ToString()}");
+                    foreach (GameAction ga in aep.OnEndedActionForUnitsInside.Actions)
+                        Main.logger.Log($"AreaEffectPit action list OnEndedActionForUnitsInside action {ga.name} with type {ga.GetType().ToString()}");
+                    foreach (BlueprintUnitFact buf in aep.ImmunityFacts)
+                        Main.logger.Log($"Immunity fact for areaeffectpit {buf.name} with type {buf.GetType().ToString()} "); 
+                }
+            }
+            //Units in a pit have a UnityPartInPit which has the function 
+            //ResilientSphere would presumably want something that makes the target IsUnTargetable and AddConditions for CantMove and CantAct. I'm not sure how IsUntargetable should work in terms of applying
+
+            //public void CaptureUnit()
+            //{
+            //    if (this.m_Captured)
+            //        return;
+            //    this.Owner.State.IsUntargetable.Retain();
+            //    this.Owner.State.AddCondition(UnitCondition.CantMove, (Buff)null);
+            //    this.Owner.State.AddCondition(UnitCondition.CantAct, (Buff)null);
+            //    this.m_Captured = true;
+            //}
+            //UnitPartInPit upip = new UnitPartInPit;
+            //upip.Owner
+
             //Euphoric cloud should work like stinking cloud except that it applies fascinated and when it applies the condition it also gives a "recently Euphoric" buff for caster level rounds
             //When the everyRound and onEnter checks happen to poison the target, first check the condition, that they don't have "recently Euphoric" don't make the save check if they have that buff
             //stinking cloud
-            BlueprintAbilityAreaEffect scArea = library.Get<BlueprintAbilityAreaEffect>("aa2e0a0fe89693f4e9205fd52c5ba3e5"); //stinking cloud area
-            AbilityAreaEffectRunAction actionsInCloud = scArea.GetComponent<AbilityAreaEffectRunAction>();
-            foreach (GameAction ga in actionsInCloud.UnitEnter.Actions)
-            {
-                Main.logger.Log($"Stinking Cloud area unit Enter action {ga.name} and type {ga.GetType().ToString() }");
-                Conditional c = ga as Conditional;
-                if (c != null)
-                {
-                    foreach (Condition con in c.ConditionsChecker.Conditions)
-                    {
-                        Main.logger.Log($"Condition name {con.name} and type {con.GetType().ToString()}");
-                        ContextConditionHasFact factCondition = con as ContextConditionHasFact;
-                        if (factCondition != null)
-                        {
-                            Main.logger.Log($"The conditional fact {factCondition.Fact.name}, the not value is {factCondition.Not} and its type {factCondition.Fact.GetType().ToString()}");
-                        }
-                    }
-                    foreach (GameAction internalGa in c.IfTrue.Actions)
-                    {
-                        Main.logger.Log($" Conditional if true action name {internalGa.name} and type {internalGa.GetType().ToString()}");
-                    }
-                    foreach (GameAction internalGa in c.IfFalse.Actions)
-                    {
-                        Main.logger.Log($" Conditional if false action name {internalGa.name} and type {internalGa.GetType().ToString()}");
-                    }
-                }
-            }
-            foreach (GameAction ga in actionsInCloud.Round.Actions)
-            {
-                Main.logger.Log($"Stinking Cloud area Round action {ga.name} and type {ga.GetType().ToString() }");
-                Conditional c = ga as Conditional;
-                if (c != null)
-                {
-                    foreach (Condition con in c.ConditionsChecker.Conditions)
-                    {
-                        Main.logger.Log($"Condition name {con.name} and type {con.GetType().ToString()}");
-                        ContextConditionHasFact factCondition = con as ContextConditionHasFact;
-                        if (factCondition != null)
-                        {
-                            Main.logger.Log($"The conditional fact {factCondition.Fact.name}, the not value is {factCondition.Not} and its type {factCondition.Fact.GetType().ToString()} ");
-                        }
-                    }
-                    foreach (GameAction internalGa in c.IfTrue.Actions)
-                    {
-                        Main.logger.Log($" Conditional if true action name {internalGa.name} and type {internalGa.GetType().ToString()}");
-                    }
-                    foreach (GameAction internalGa in c.IfFalse.Actions)
-                    {
-                        Main.logger.Log($" Conditional if false action name {internalGa.name} and type {internalGa.GetType().ToString()}");
-                    }
-                }
-            }
-            foreach (GameAction ga in actionsInCloud.UnitMove.Actions)
-            {
-                Main.logger.Log($"Stinking Cloud area unit Move action {ga.name} and type {ga.GetType().ToString() }");
-            }
-            foreach (GameAction ga in actionsInCloud.UnitExit.Actions)
-            {
-                Main.logger.Log($"Stinking Cloud area unit Exit action {ga.name} and type {ga.GetType().ToString() }");
-                Conditional c = ga as Conditional;
-                if (c != null)
-                {
-                    foreach (Condition con in c.ConditionsChecker.Conditions)
-                    {
-                        Main.logger.Log($"Condition name {con.name} and type {con.GetType().ToString()}");
-                    }
-                    foreach (GameAction internalGa in c.IfTrue.Actions)
-                    {
-                        Main.logger.Log($" Conditional if true action name {internalGa.name} and type {internalGa.GetType().ToString()}");
-                    }
-                    foreach (GameAction internalGa in c.IfFalse.Actions)
-                    {
-                        Main.logger.Log($" Conditional if false action name {internalGa.name} and type {internalGa.GetType().ToString()}");
-                    }
-                }
-            }
-            BlueprintBuff Stinkingbuff = library.Get<BlueprintBuff>("f85351ee696d98246ae5dc182b410447");
-            foreach (BlueprintComponent bc in Stinkingbuff.GetComponents<BlueprintComponent>())
-            {
-                Main.logger.Log($"     Stinking cloud buff {bc.name} has type {bc.GetType().ToString()}");
-            }
-            BlueprintBuff stinkingAfterBuff = library.Get<BlueprintBuff>("fa039d873ee3f3e42abaf19877abaae1");
-            foreach (BlueprintComponent bc in stinkingAfterBuff.GetComponents<BlueprintComponent>())
-            {
-                Main.logger.Log($"Stinking cloud after buff {bc.name} has type {bc.GetType().ToString()}");
-            }
+            //BlueprintAbilityAreaEffect scArea = library.Get<BlueprintAbilityAreaEffect>("aa2e0a0fe89693f4e9205fd52c5ba3e5"); //stinking cloud area
+            //AbilityAreaEffectRunAction actionsInCloud = scArea.GetComponent<AbilityAreaEffectRunAction>();
+            //foreach (GameAction ga in actionsInCloud.UnitEnter.Actions)
+            //{
+            //    Main.logger.Log($"Stinking Cloud area unit Enter action {ga.name} and type {ga.GetType().ToString() }");
+            //    Conditional c = ga as Conditional;
+            //    if (c != null)
+            //    {
+            //        foreach (Condition con in c.ConditionsChecker.Conditions)
+            //        {
+            //            Main.logger.Log($"Condition name {con.name} and type {con.GetType().ToString()}");
+            //            ContextConditionHasFact factCondition = con as ContextConditionHasFact;
+            //            if (factCondition != null)
+            //            {
+            //                Main.logger.Log($"The conditional fact {factCondition.Fact.name}, the not value is {factCondition.Not} and its type {factCondition.Fact.GetType().ToString()}");
+            //            }
+            //        }
+            //        foreach (GameAction internalGa in c.IfTrue.Actions)
+            //        {
+            //            Main.logger.Log($" Conditional if true action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+            //        }
+            //        foreach (GameAction internalGa in c.IfFalse.Actions)
+            //        {
+            //            Main.logger.Log($" Conditional if false action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+            //        }
+            //    }
+            //}
+            //foreach (GameAction ga in actionsInCloud.Round.Actions)
+            //{
+            //    Main.logger.Log($"Stinking Cloud area Round action {ga.name} and type {ga.GetType().ToString() }");
+            //    Conditional c = ga as Conditional;
+            //    if (c != null)
+            //    {
+            //        foreach (Condition con in c.ConditionsChecker.Conditions)
+            //        {
+            //            Main.logger.Log($"Condition name {con.name} and type {con.GetType().ToString()}");
+            //            ContextConditionHasFact factCondition = con as ContextConditionHasFact;
+            //            if (factCondition != null)
+            //            {
+            //                Main.logger.Log($"The conditional fact {factCondition.Fact.name}, the not value is {factCondition.Not} and its type {factCondition.Fact.GetType().ToString()} ");
+            //            }
+            //        }
+            //        foreach (GameAction internalGa in c.IfTrue.Actions)
+            //        {
+            //            Main.logger.Log($" Conditional if true action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+            //        }
+            //        foreach (GameAction internalGa in c.IfFalse.Actions)
+            //        {
+            //            Main.logger.Log($" Conditional if false action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+            //        }
+            //    }
+            //}
+            //foreach (GameAction ga in actionsInCloud.UnitMove.Actions)
+            //{
+            //    Main.logger.Log($"Stinking Cloud area unit Move action {ga.name} and type {ga.GetType().ToString() }");
+            //}
+            //foreach (GameAction ga in actionsInCloud.UnitExit.Actions)
+            //{
+            //    Main.logger.Log($"Stinking Cloud area unit Exit action {ga.name} and type {ga.GetType().ToString() }");
+            //    Conditional c = ga as Conditional;
+            //    if (c != null)
+            //    {
+            //        foreach (Condition con in c.ConditionsChecker.Conditions)
+            //        {
+            //            Main.logger.Log($"Condition name {con.name} and type {con.GetType().ToString()}");
+            //        }
+            //        foreach (GameAction internalGa in c.IfTrue.Actions)
+            //        {
+            //            Main.logger.Log($" Conditional if true action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+            //        }
+            //        foreach (GameAction internalGa in c.IfFalse.Actions)
+            //        {
+            //            Main.logger.Log($" Conditional if false action name {internalGa.name} and type {internalGa.GetType().ToString()}");
+            //        }
+            //    }
+            //}
+            //BlueprintBuff Stinkingbuff = library.Get<BlueprintBuff>("f85351ee696d98246ae5dc182b410447");
+            //foreach (BlueprintComponent bc in Stinkingbuff.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"     Stinking cloud buff {bc.name} has type {bc.GetType().ToString()}");
+            //}
+            //BlueprintBuff stinkingAfterBuff = library.Get<BlueprintBuff>("fa039d873ee3f3e42abaf19877abaae1");
+            //foreach (BlueprintComponent bc in stinkingAfterBuff.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"Stinking cloud after buff {bc.name} has type {bc.GetType().ToString()}");
+            //}
 
-            //rainbowpattern buff
-            BlueprintBuff rainbowpatternBuff = library.Get<BlueprintBuff>("6477ae917b0ec7a4ca76bc9f36b023ac");
-            foreach (BlueprintComponent bc in rainbowpatternBuff.GetComponents<BlueprintComponent>())
-            {
-                Main.logger.Log($"Rainbow pattern buff component {bc.name} has type {bc.GetType().ToString()}");
-                AddCondition ac = bc as AddCondition;
-                if (ac != null)
-                    Main.logger.Log($" the condition is {ac.Condition}");
-                SpellDescriptorComponent sdc = bc as SpellDescriptorComponent;
-                if (sdc != null)
-                    Main.logger.Log($"  Spell Descriptor value {sdc.Descriptor.Value}");
-                AddIncomingDamageTrigger aidt = bc as AddIncomingDamageTrigger;
-                if (aidt != null)
-                {
-                    foreach (GameAction ga in aidt.Actions.Actions)
-                        Main.logger.Log($" Damage trigger actions {ga.name} of type {ga.GetType().ToString()}");
-                }
-                AddFactContextActions afca = bc as AddFactContextActions;
-                if (afca != null)
-                {
-                    foreach (GameAction ga in afca.Activated.Actions)
-                        Main.logger.Log($" Activated action {ga.name} and {ga.GetType().ToString()}");
-                    foreach (GameAction ga in afca.Deactivated.Actions)
-                        Main.logger.Log($" Deactivated action {ga.name} and {ga.GetType().ToString()}");
-                    foreach (GameAction ga in afca.NewRound.Actions)
-                        Main.logger.Log($" New round action {ga.name} and {ga.GetType().ToString()}");
-                }
-            }
+            ////rainbowpattern buff
+            //BlueprintBuff rainbowpatternBuff = library.Get<BlueprintBuff>("6477ae917b0ec7a4ca76bc9f36b023ac");
+            //foreach (BlueprintComponent bc in rainbowpatternBuff.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"Rainbow pattern buff component {bc.name} has type {bc.GetType().ToString()}");
+            //    AddCondition ac = bc as AddCondition;
+            //    if (ac != null)
+            //        Main.logger.Log($" the condition is {ac.Condition}");
+            //    SpellDescriptorComponent sdc = bc as SpellDescriptorComponent;
+            //    if (sdc != null)
+            //        Main.logger.Log($"  Spell Descriptor value {sdc.Descriptor.Value}");
+            //    AddIncomingDamageTrigger aidt = bc as AddIncomingDamageTrigger;
+            //    if (aidt != null)
+            //    {
+            //        foreach (GameAction ga in aidt.Actions.Actions)
+            //            Main.logger.Log($" Damage trigger actions {ga.name} of type {ga.GetType().ToString()}");
+            //    }
+            //    AddFactContextActions afca = bc as AddFactContextActions;
+            //    if (afca != null)
+            //    {
+            //        foreach (GameAction ga in afca.Activated.Actions)
+            //            Main.logger.Log($" Activated action {ga.name} and {ga.GetType().ToString()}");
+            //        foreach (GameAction ga in afca.Deactivated.Actions)
+            //            Main.logger.Log($" Deactivated action {ga.name} and {ga.GetType().ToString()}");
+            //        foreach (GameAction ga in afca.NewRound.Actions)
+            //            Main.logger.Log($" New round action {ga.name} and {ga.GetType().ToString()}");
+            //    }
+            //}
 
-            BlueprintBuff holdPersonBuff = library.Get<BlueprintBuff>("11cb2fe4fe9c44b448cfe1788ae1ab59");
-            foreach (BlueprintComponent bc in holdPersonBuff.GetComponents<BlueprintComponent>())
-            {
-                Main.logger.Log($"Hold person component {bc.name} with type {bc.GetType().ToString()}");
-            }
+            //BlueprintBuff holdPersonBuff = library.Get<BlueprintBuff>("11cb2fe4fe9c44b448cfe1788ae1ab59");
+            //foreach (BlueprintComponent bc in holdPersonBuff.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"Hold person component {bc.name} with type {bc.GetType().ToString()}");
+            //}
 
-            BlueprintBuff dominatePersonbuff = library.Get<BlueprintBuff>("c0f4e1c24c9cd334ca988ed1bd9d201f");
-            foreach (BlueprintComponent bc in dominatePersonbuff.GetComponents<BlueprintComponent>())
-            {
-                Main.logger.Log($"Dominate person component {bc.name} with type {bc.GetType().ToString()}");
-                AddFactContextActions afca = bc as AddFactContextActions;
-                if(afca != null)
-                {
-                    foreach (GameAction action in afca.Activated.Actions)
-                        Main.logger.Log($"Activated action {action.name} and type {action.GetType().ToString()}");
-                    foreach (GameAction action in afca.Deactivated.Actions)
-                        Main.logger.Log($"Deactivated action {action.name} and type {action.GetType().ToString()}");
-                    foreach (GameAction action in afca.NewRound.Actions)
-                        Main.logger.Log($"New Round action {action.name} and type {action.GetType().ToString()}");
-                }
-            }
+            //BlueprintBuff dominatePersonbuff = library.Get<BlueprintBuff>("c0f4e1c24c9cd334ca988ed1bd9d201f");
+            //foreach (BlueprintComponent bc in dominatePersonbuff.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"Dominate person component {bc.name} with type {bc.GetType().ToString()}");
+            //    AddFactContextActions afca = bc as AddFactContextActions;
+            //    if(afca != null)
+            //    {
+            //        foreach (GameAction action in afca.Activated.Actions)
+            //            Main.logger.Log($"Activated action {action.name} and type {action.GetType().ToString()}");
+            //        foreach (GameAction action in afca.Deactivated.Actions)
+            //            Main.logger.Log($"Deactivated action {action.name} and type {action.GetType().ToString()}");
+            //        foreach (GameAction action in afca.NewRound.Actions)
+            //            Main.logger.Log($"New Round action {action.name} and type {action.GetType().ToString()}");
+            //    }
+            //}
 
-            BlueprintBuff confusionBuff = library.Get<BlueprintBuff>("886c7407dc629dc499b9f1465ff382df");
-            foreach(BlueprintComponent bc in confusionBuff.GetComponents<BlueprintComponent>())
-            {
-                Main.logger.Log($"Confusion buff component {bc.name} and type {bc.GetType().ToString()}");
-            }
+            //BlueprintBuff confusionBuff = library.Get<BlueprintBuff>("886c7407dc629dc499b9f1465ff382df");
+            //foreach(BlueprintComponent bc in confusionBuff.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"Confusion buff component {bc.name} and type {bc.GetType().ToString()}");
+            //}
         }
 
     }

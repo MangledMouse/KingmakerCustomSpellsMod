@@ -50,7 +50,7 @@ namespace CowWithHatsCustomSpellsMod
                     ChangeFaction fcf = new ChangeFaction();
                     //fcf.Fact.MaybeContext?.MaybeCaster
                     buffsToRemove[0].Remove();
-                    Common.AddBattleLogMessage($"Dismissed {unit.CharacterName} released from domination");
+                    Common.AddBattleLogMessage($"{unit.CharacterName} released from domination");
                     return;
                 }
             }
