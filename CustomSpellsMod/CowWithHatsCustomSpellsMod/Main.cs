@@ -36,12 +36,24 @@ namespace CowWithHatsCustomSpellsMod
 
         static internal Settings settings = new Settings();
         internal static UnityModManagerNet.UnityModManager.ModEntry.ModLogger logger;
+        public bool ranOnce = false;
         internal static Harmony12.HarmonyInstance harmony;
         internal static LibraryScriptableObject library;
 
         static readonly Dictionary<Type, bool> typesPatched = new Dictionary<Type, bool>();
         static readonly List<String> failedPatches = new List<String>();
         static readonly List<String> failedLoading = new List<String>();
+
+        internal bool CheckIfRun()
+        {
+            if (!ranOnce)
+            {
+                ranOnce = true;
+                return false;
+            }
+            else
+                return true;
+        }
 
         [System.Diagnostics.Conditional("DEBUG")]
         internal static void DebugLog(string msg)
@@ -119,39 +131,50 @@ namespace CowWithHatsCustomSpellsMod
             }
         }
 
-
+        //[Harmony12.HarmonyPatch(typeof(Helpers.GuidStorage), "dump")]
+        //LibraryScriptableObject_LoadDictionary_Patch
         [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary")]
         [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary", new Type[0])]
         [Harmony12.HarmonyAfter("CallOfTheWild")] //These want to launch after Call of the Wild so that Call's stuff exists and can be editted
         static class LibraryScriptableObject_LoadDictionary_Patch_After
         {
+            static bool alreadyRan = false;
             static void Postfix()
             {
                 try
                 {
                     Main.DebugLog("Loading CowWithHat's CustomSpellsMod after Call of the Wild");
-
+                     
                     CallOfTheWild.LoadIcons.Image2Sprite.icons_folder = @"./Mods/CowWithHatsCustomSpellsMod/Icons/";
 #if DEBUG                
                     bool allow_guid_generation = true;
 #else
                     bool allow_guid_generation = false; //no guids should be ever generated in release
 #endif
-                    Core.postLoad();
-                    if(settings.domination_dismissal)
+                    if (!alreadyRan)
                     {
-                        Core.UpdateDismiss();
+                        Main.logger.Log("Loaddictionary postfix is running");
+                        Core.postLoad();
+                        if (settings.domination_dismissal)
+                        {
+                            Core.UpdateDismiss();
+                        }
+                        alreadyRan = true;
                     }
-                    CallOfTheWild.Helpers.GuidStorage.load(Properties.Resources.blueprints, allow_guid_generation);
+                    else
+                    {
+                        Main.logger.Log("That should work now");
+                    }
+                    //CallOfTheWild.Helpers.GuidStorage.load(Properties.Resources.blueprints, allow_guid_generation);
 
                     //logger.Log("Made it to post load");
                     
 
 #if DEBUG
                     string guid_file_name = @"./Mods/CowWithHatsCustomSpellsMod/blueprints.txt";
-                    CallOfTheWild.Helpers.GuidStorage.dump(guid_file_name);
+                    //CallOfTheWild.Helpers.GuidStorage.dump(guid_file_name);
 #endif
-                    CallOfTheWild.Helpers.GuidStorage.dump(@"./Mods/CowWithHatsCustomSpellsMod/loaded_blueprints.txt");
+                    //CallOfTheWild.Helpers.GuidStorage.dump(@"./Mods/CowWithHatsCustomSpellsMod/loaded_blueprints.txt");
                 }
                 catch (Exception ex)
                 {

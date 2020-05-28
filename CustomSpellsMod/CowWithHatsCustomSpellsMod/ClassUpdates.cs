@@ -27,6 +27,7 @@ namespace CowWithHatsCustomSpellsMod
             FixDomainsAndSpellLists();
             ReplaceEvangelistSpells();
             AddAppropriateSpellsToMindKnifePsychicAccess();
+            //Main.logger.Log($"load being called");
         }
 
         public static void AddAppropriateSpellsToMindKnifePsychicAccess()
@@ -37,15 +38,35 @@ namespace CowWithHatsCustomSpellsMod
             //PsychicAccess4ParametrizedFeature   9494f83a9e6c48cc8886bf3352ac60ec Kingmaker.Blueprints.Classes.Selection.BlueprintParametrizedFeature
             //PsychicAccess5ParametrizedFeature   215b8ce7010143f5bceb27ebd8ad5117 Kingmaker.Blueprints.Classes.Selection.BlueprintParametrizedFeature
             //PsychicAccess6ParametrizedFeature   52a471ba48964f5ca52a375c9efd1040 Kingmaker.Blueprints.Classes.Selection.BlueprintParametrizedFeature
+            
             var mindbladeList = CallOfTheWild.Archetypes.MindBlade.extra_psychic_spell_list;
-            NewSpells.glue_seal.AddToSpellList(mindbladeList, 1);
-            NewSpells.heightened_awareness.AddToSpellList(mindbladeList, 1);
+            //foreach (SpellLevelList spellList in mindbladeList.SpellsByLevel)
+            //{
+            //    foreach(BlueprintAbility spell in spellList.Spells)
+            //    Main.logger.Log($"Mindblade spell entry {spell.name} at level {spellList.SpellLevel}");
+            //}
+            Common.addSpellToSpellList(mindbladeList, NewSpells.glue_seal, 1);
+            Common.addSpellToSpellList(mindbladeList, NewSpells.heightened_awareness, 1);
 
-            NewSpells.suggestion.AddToSpellList(mindbladeList, 2);
-            NewSpells.euphoric_cloud.AddToSpellList(mindbladeList, 2);
-            NewSpells.acute_senses.AddToSpellList(mindbladeList, 2);
+            Common.addSpellToSpellList(mindbladeList, NewSpells.suggestion, 2);
+            Common.addSpellToSpellList(mindbladeList, NewSpells.euphoric_cloud, 2);
+            Common.addSpellToSpellList(mindbladeList, NewSpells.acute_senses, 2);
 
-            NewSpells.suggestion_mass.AddToSpellList(mindbladeList, 5);
+            Common.addSpellToSpellList(mindbladeList, NewSpells.suggestion_mass, 5);
+            //foreach (SpellLevelList spellList in mindbladeList.SpellsByLevel)
+            //{
+            //    foreach (BlueprintAbility spell in spellList.Spells)
+            //        Main.logger.Log($"After my adds Mindblade spell entry {spell.name} at level {spellList.SpellLevel}");
+            //}
+
+            //NewSpells.glue_seal.AddToSpellList(mindbladeList, 1);
+            //NewSpells.heightened_awareness.AddToSpellList(mindbladeList, 1);
+
+            //NewSpells.suggestion.AddToSpellList(mindbladeList, 2);
+            //NewSpells.euphoric_cloud.AddToSpellList(mindbladeList, 2);
+            //NewSpells.acute_senses.AddToSpellList(mindbladeList, 2);
+
+            //NewSpells.suggestion_mass.AddToSpellList(mindbladeList, 5);
 
             //var mindbladePsychicSpellAccessFeature1 = library.Get<BlueprintParametrizedFeature>("bf5b8dc7938d4e6c881ea9b585d22141");
             //NewSpells.glue_seal.AddToSpellList(mindbladePsychicSpellAccessFeature1.SpellList, 1);
