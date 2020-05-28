@@ -45,6 +45,7 @@ using Kingmaker.Designers.EventConditionActionSystem.Actions;
 using Kingmaker.Blueprints.Facts;
 using Kingmaker.UnitLogic.Commands;
 using Kingmaker.UnitLogic.Parts;
+using Kingmaker.Blueprints.Classes.Prerequisites;
 
 namespace CowWithHatsCustomSpellsMod
 {
@@ -522,23 +523,43 @@ namespace CowWithHatsCustomSpellsMod
 
         public static void outputSpellInfoToLog()
         {
-            BlueprintAbilityAreaEffect createPitAoe = library.Get<BlueprintAbilityAreaEffect>("cf742a1d377378e4c8799f6a3afff1ba"); //create pit guid
-            foreach(BlueprintComponent bc in createPitAoe.GetComponents<BlueprintComponent>())
-            {
-                Main.logger.Log($"Create pit aoe component {bc.name} and type {bc.GetType().ToString()}");
-                AreaEffectPit aep = bc as AreaEffectPit;
-                if(aep!=null)
-                {
-                    foreach (GameAction ga in aep.OnFallAction.Actions)
-                        Main.logger.Log($"AreaEffectPit action list OnFallAction action {ga.name} with type {ga.GetType().ToString()}");
-                    foreach (GameAction ga in aep.EveryRoundAction.Actions)
-                        Main.logger.Log($"AreaEffectPit action list EveryRoundAction action {ga.name} with type {ga.GetType().ToString()}");
-                    foreach (GameAction ga in aep.OnEndedActionForUnitsInside.Actions)
-                        Main.logger.Log($"AreaEffectPit action list OnEndedActionForUnitsInside action {ga.name} with type {ga.GetType().ToString()}");
-                    foreach (BlueprintUnitFact buf in aep.ImmunityFacts)
-                        Main.logger.Log($"Immunity fact for areaeffectpit {buf.name} with type {buf.GetType().ToString()} "); 
-                }
-            }
+            //BlueprintCharacterClass sorcerer_class = ResourcesLibrary.TryGetBlueprint<BlueprintCharacterClass>("b3a505fb61437dc4097f43c3f8f9a4cf");
+            //foreach (BlueprintComponent bc in sorcerer_class.ComponentsArray)
+            //{
+            //    Main.logger.Log($"Sorcerer class component {bc.name} with type {bc.GetType().ToString()}");
+            //    PrerequisiteNoClassLevel pncl = bc as PrerequisiteNoClassLevel;
+            //    if (pncl != null)
+            //        Main.logger.Log($" Sorcerer's can't have class levels in {pncl.CharacterClass.LocalizedName.ToString()}");
+            //}
+            //BlueprintCharacterClass cleric_Class = ResourcesLibrary.TryGetBlueprint<BlueprintCharacterClass>("67819271767a9dd4fbfd4ae700befea0");
+            //foreach (BlueprintComponent bc in cleric_Class.ComponentsArray)
+            //{
+            //    Main.logger.Log($"Cleric class component {bc.name} with type {bc.GetType().ToString()}");
+            //    PrerequisiteNoClassLevel pncl = bc as PrerequisiteNoClassLevel;
+            //    if (pncl != null)
+            //        Main.logger.Log($" Cleric's can't have class levels in {pncl.CharacterClass.LocalizedName.ToString()}");
+            //    PrerequisiteNoFeature noFeature = bc as PrerequisiteNoFeature;
+            //    if (noFeature != null)
+            //        Main.logger.Log($"Clerics can't have {noFeature.Feature.Name} with description {noFeature.Feature.Description}");
+            //}
+
+            //BlueprintAbilityAreaEffect createPitAoe = library.Get<BlueprintAbilityAreaEffect>("cf742a1d377378e4c8799f6a3afff1ba"); //create pit guid
+            //foreach(BlueprintComponent bc in createPitAoe.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"Create pit aoe component {bc.name} and type {bc.GetType().ToString()}");
+            //    AreaEffectPit aep = bc as AreaEffectPit;
+            //    if(aep!=null)
+            //    {
+            //        foreach (GameAction ga in aep.OnFallAction.Actions)
+            //            Main.logger.Log($"AreaEffectPit action list OnFallAction action {ga.name} with type {ga.GetType().ToString()}");
+            //        foreach (GameAction ga in aep.EveryRoundAction.Actions)
+            //            Main.logger.Log($"AreaEffectPit action list EveryRoundAction action {ga.name} with type {ga.GetType().ToString()}");
+            //        foreach (GameAction ga in aep.OnEndedActionForUnitsInside.Actions)
+            //            Main.logger.Log($"AreaEffectPit action list OnEndedActionForUnitsInside action {ga.name} with type {ga.GetType().ToString()}");
+            //        foreach (BlueprintUnitFact buf in aep.ImmunityFacts)
+            //            Main.logger.Log($"Immunity fact for areaeffectpit {buf.name} with type {buf.GetType().ToString()} "); 
+            //    }
+            //}
             //Units in a pit have a UnityPartInPit which has the function 
             //ResilientSphere would presumably want something that makes the target IsUnTargetable and AddConditions for CantMove and CantAct. I'm not sure how IsUntargetable should work in terms of applying
 
