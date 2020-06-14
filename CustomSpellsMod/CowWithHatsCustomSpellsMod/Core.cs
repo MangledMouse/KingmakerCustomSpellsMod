@@ -44,7 +44,6 @@ namespace CowWithHatsCustomSpellsMod
         static internal void postLoad()
         {
             ClassUpdates.load();
-            //UpdateDismiss();
         }
 
         static internal void UpdateDismiss()

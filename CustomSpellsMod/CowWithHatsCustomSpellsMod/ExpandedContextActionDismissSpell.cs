@@ -27,7 +27,6 @@ namespace CowWithHatsCustomSpellsMod
         {
             //relevant dominate buffs
             // guid for dominatepersonbuff c0f4e1c24c9cd334ca988ed1bd9d201f
-            // guid for dominate animal buff
             UnitEntityData unit = GameHelper.GetTargetsAround(this.Target.Point, 1.Feet().Meters * 0.1f, false, false).FirstOrDefault();
 
             if(unit != null && unit.IsPlayerFaction)

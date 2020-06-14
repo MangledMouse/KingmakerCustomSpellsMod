@@ -153,7 +153,7 @@ namespace CowWithHatsCustomSpellsMod
 #endif
                     if (!alreadyRan)
                     {
-                        Main.logger.Log("Loaddictionary postfix is running");
+                        //Main.logger.Log("Loaddictionary postfix is running");
                         Core.postLoad();
                         if (settings.domination_dismissal)
                         {
@@ -163,7 +163,7 @@ namespace CowWithHatsCustomSpellsMod
                     }
                     else
                     {
-                        Main.logger.Log("That should work now");
+                        //Main.logger.Log("That should work now");
                     }
                     //CallOfTheWild.Helpers.GuidStorage.load(Properties.Resources.blueprints, allow_guid_generation);
 
