@@ -453,22 +453,40 @@ namespace CowWithHatsCustomSpellsMod
             var echolocation = library.Get<BlueprintAbility>("20b548bf09bb3ea4bafea78dcb4f3db6"); //Echolocation
             var hold_monster = library.Get<BlueprintAbility>("41e8a952da7a5c247b3ec1c2dbb73018");
             var checker_fact = hold_monster.GetComponents<AbilityTargetHasNoFactUnless>().ToArray();
+            //foreach(BlueprintComponent bc in hold_monster.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"Hold_monster comoponent {bc.name} with type {bc.GetType().ToString()}");
+            //}
+            //foreach(AbilityTargetHasNoFactUnless athnfu in checker_fact)
+            //{
+            //    Main.logger.Log($"HasFactUnless from HoldMonster {athnfu.name}");
+            //    Main.logger.Log($"HasFactUnless unless fact name {athnfu.UnlessFact.name} description {athnfu.UnlessFact.Description} and type {athnfu.UnlessFact.GetType().ToString()}");
+            //    foreach(BlueprintUnitFact checkedFact in athnfu.CheckedFacts)
+            //    {
+            //        Main.logger.Log($"Checked fact name {checkedFact.name} description {checkedFact.Description} and type {checkedFact.GetType().ToString()}");
+            //    }
+            //}
+            
+
+
             var does_not_work = hold_monster.GetComponent<AbilityTargetHasFact>();
             buff.SetDescription("");
             var apply_buff = CallOfTheWild.Common.createContextActionApplyBuff(buff, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.Default), DurationRate.Minutes), is_from_spell: true);
-            var action = Helpers.CreateConditional(Helpers.CreateConditionsCheckerAnd(Common.createContextConditionHasFacts(false, checker_fact[0].CheckedFacts), Common.createContextConditionCasterHasFact(checker_fact[0].UnlessFact, has: false)),
-                                                    null,
-                                                    Helpers.CreateConditional(Helpers.CreateConditionsCheckerAnd(Common.createContextConditionHasFacts(false, checker_fact[1].CheckedFacts), Common.createContextConditionCasterHasFact(checker_fact[1].UnlessFact, has: false)),
-                                                                              null,
-                                                                                Helpers.CreateConditional(Common.createContextConditionHasFacts(false, does_not_work.CheckedFacts),
-                                                                                                        null,
-                                                                                                        apply_buff
-                                                                                                        )
-                                                                             )
-                                                    );
+            //var action = Helpers.CreateConditional(Helpers.CreateConditionsCheckerAnd(Common.createContextConditionHasFacts(false, checker_fact[0].CheckedFacts), Common.createContextConditionCasterHasFact(checker_fact[0].UnlessFact, has: false)),
+            //                                        null,
+            //                                        Helpers.CreateConditional(Helpers.CreateConditionsCheckerAnd(Common.createContextConditionHasFacts(false, checker_fact[1].CheckedFacts), Common.createContextConditionCasterHasFact(checker_fact[1].UnlessFact, has: false)),
+            //                                                                  null,
+            //                                                                    Helpers.CreateConditional(Common.createContextConditionHasFacts(false, does_not_work.CheckedFacts),
+            //                                                                                            null,
+            //                                                                                            apply_buff
+            //                                                                                            )
+            //                                                                 )
+            //                                        );
 
             buff.SetIcon(echolocation.Icon);
             buff.SetNameDescription("Suggestion", "This creature is under the compulsive effects of a Suggestion spell. They are lost in thought and they will take no actions until they are harmed.");
+
+            //Main.logger.Log($"Passes first array point");
 
             suggestion = Helpers.CreateAbility("SuggestionAbility",
                                       "Suggestion",
@@ -486,10 +504,12 @@ namespace CowWithHatsCustomSpellsMod
                                       Helpers.CreateSpellComponent(SpellSchool.Enchantment)
                                       );
             suggestion.setMiscAbilityParametersSingleTargetRangedHarmful(true);
-            suggestion.ReplaceComponent<AbilityEffectRunAction>(a => a.Actions = Helpers.CreateActionList(action));
+            suggestion.ReplaceComponent<AbilityEffectRunAction>(a => a.Actions = Helpers.CreateActionList(apply_buff));
             suggestion.SpellResistance = true;
             suggestion.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Persistent | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Piercing;
 
+
+            //Main.logger.Log($"Finished creating suggestion");
             //Creating Suggestion, Mass          
 
             suggestion_mass = Helpers.CreateAbility("SuggestionMassAbility",
@@ -509,7 +529,7 @@ namespace CowWithHatsCustomSpellsMod
                 Helpers.CreateSpellComponent(SpellSchool.Enchantment)
                 );
             suggestion_mass.setMiscAbilityParametersRangedDirectional();
-            suggestion_mass.ReplaceComponent<AbilityEffectRunAction>(a => a.Actions = Helpers.CreateActionList(action));
+            suggestion_mass.ReplaceComponent<AbilityEffectRunAction>(a => a.Actions = Helpers.CreateActionList(apply_buff));
             suggestion_mass.SpellResistance = true;
             suggestion_mass.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Persistent | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Piercing;
 
