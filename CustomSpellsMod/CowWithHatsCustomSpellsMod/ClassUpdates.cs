@@ -50,8 +50,10 @@ namespace CowWithHatsCustomSpellsMod
 
             NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 5); //psychic detective spell list
             NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 6); // witch spell list
+            NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("f5b78576b9ea4014a66211d2386720bf"), 2); //winter witch spell list (gets its own because of fire spell ban)
             NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 5); //psychic spell list
             NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 3); // witch spell list
+            NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("f5b78576b9ea4014a66211d2386720bf"), 2); //winter witch spell list (gets its own because of fire spell ban)
             NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 2); //psychic detective spell list
             NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 2); //psychic spell list
 
@@ -67,8 +69,11 @@ namespace CowWithHatsCustomSpellsMod
 
             NewSpells.euphoric_cloud.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 2); //psychic detective spell list
             NewSpells.euphoric_cloud.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 2); //witch spell list
+            NewSpells.euphoric_cloud.AddToSpellList(library.Get<BlueprintSpellList>("f5b78576b9ea4014a66211d2386720bf"), 2); //winter witch spell list (gets its own because of fire spell ban)
             NewSpells.euphoric_cloud.AddToSpellList(library.Get<BlueprintSpellList>("b161506e0b8f4116806a243f6838ae01"), 2); //hunter spell list
             NewSpells.euphoric_cloud.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 2); //psychic spell list
+
+            
 
         }
 
