@@ -60,7 +60,8 @@ namespace CowWithHatsCustomSpellsMod
         static public BlueprintAbility acute_senses;
         static public BlueprintAbility mages_disjunction;
         static public BlueprintAbility euphoric_cloud;
-        static public BlueprintAbility euphoric_cloud_trueFascinate;
+        //static public BlueprintAbility mydriatic_spontaneity;
+        //static public BlueprintAbility euphoric_cloud_trueFascinate;
 
         public static void load()
         {
@@ -70,10 +71,14 @@ namespace CowWithHatsCustomSpellsMod
             createAcuteSenses();
             createMagesDisjunction();
             createEuphoricCloud();
-        
+            //createMydriaticSpontaneity();
             //outputSpellInfoToLog();
         }
 
+        //public static void createMydriaticSpontaneity()
+        //{
+
+        //}
 
         public static void createEuphoricCloud()
         {
@@ -450,7 +455,7 @@ namespace CowWithHatsCustomSpellsMod
         public static void createSuggestion()
         {
             var buff = library.CopyAndAdd<BlueprintBuff>("6477ae917b0ec7a4ca76bc9f36b023ac", "SuggestionBuff", "729fa06959ad4a0ca1e761b955b6ff62"); //rainbow pattern then new guid
-            var echolocation = library.Get<BlueprintAbility>("20b548bf09bb3ea4bafea78dcb4f3db6"); //Echolocation
+            var mindblank = library.Get<BlueprintAbility>("df2a0ba6b6dcecf429cbb80a56fee5cf"); //Mindblank
             var hold_monster = library.Get<BlueprintAbility>("41e8a952da7a5c247b3ec1c2dbb73018");
             var checker_fact = hold_monster.GetComponents<AbilityTargetHasNoFactUnless>().ToArray();
             //foreach(BlueprintComponent bc in hold_monster.GetComponents<BlueprintComponent>())
@@ -483,7 +488,7 @@ namespace CowWithHatsCustomSpellsMod
             //                                                                 )
             //                                        );
 
-            buff.SetIcon(echolocation.Icon);
+            buff.SetIcon(mindblank.Icon);
             buff.SetNameDescription("Suggestion", "This creature is under the compulsive effects of a Suggestion spell. They are lost in thought and they will take no actions until they are harmed.");
 
             //Main.logger.Log($"Passes first array point");
@@ -493,7 +498,7 @@ namespace CowWithHatsCustomSpellsMod
                                       "You suggest to a single creature that they should avoid combat and turn their thoughts inward. The spell magically influences the creature to follow the suggestion. They are fascinated by the effect for the duration or until they are harmed.",
                                       "3682197d956543e2a694e163b5fdcc6c",
                                       //"",
-                                      echolocation.Icon,
+                                      mindblank.Icon,
                                       AbilityType.Spell,
                                       UnitCommand.CommandType.Standard,
                                       AbilityRange.Close,
@@ -517,7 +522,7 @@ namespace CowWithHatsCustomSpellsMod
                 "This spell functions like Suggestion, except several creatures may be affected. \n" +suggestion.Description,
                 "033e70b6c72f46cab793eab5ff9f3a87",
                 //"",
-                echolocation.Icon,
+                mindblank.Icon,
                 AbilityType.Spell,
                 UnitCommand.CommandType.Standard,
                 AbilityRange.Medium,
