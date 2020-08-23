@@ -77,7 +77,8 @@ namespace CowWithHatsCustomSpellsMod
 
         //public static void createMydriaticSpontaneity()
         //{
-
+        //41cf93453b027b94886901dbfc680cb9 is the blueprint ID for overwhelming presecnce
+        //a1bc9bf104a3c614391eccdcdf37d4ad	 is the blueprint id for overwhelming presecnce scroll
         //}
 
         public static void createEuphoricCloud()
