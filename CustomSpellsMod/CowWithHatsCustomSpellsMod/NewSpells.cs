@@ -510,7 +510,7 @@ namespace CowWithHatsCustomSpellsMod
                                       Helpers.CreateSpellComponent(SpellSchool.Enchantment)
                                       );
             suggestion.setMiscAbilityParametersSingleTargetRangedHarmful(true);
-            suggestion.ReplaceComponent<AbilityEffectRunAction>(a => a.Actions = Helpers.CreateActionList(apply_buff));
+            //suggestion.ReplaceComponent<AbilityEffectRunAction>(a => a.Actions = Helpers.CreateActionList(apply_buff));
             suggestion.SpellResistance = true;
             suggestion.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Persistent | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Piercing;
 
@@ -535,7 +535,7 @@ namespace CowWithHatsCustomSpellsMod
                 Helpers.CreateSpellComponent(SpellSchool.Enchantment)
                 );
             suggestion_mass.setMiscAbilityParametersRangedDirectional();
-            suggestion_mass.ReplaceComponent<AbilityEffectRunAction>(a => a.Actions = Helpers.CreateActionList(apply_buff));
+            //suggestion_mass.ReplaceComponent<AbilityEffectRunAction>(a => a.Actions = Helpers.CreateActionList(apply_buff));
             suggestion_mass.SpellResistance = true;
             suggestion_mass.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Persistent | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Piercing;
 
