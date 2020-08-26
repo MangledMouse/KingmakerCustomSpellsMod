@@ -60,8 +60,12 @@ namespace CowWithHatsCustomSpellsMod
         static public BlueprintAbility acute_senses;
         static public BlueprintAbility mages_disjunction;
         static public BlueprintAbility euphoric_cloud;
-        //static public BlueprintAbility mydriatic_spontaneity;
+        static public BlueprintAbility mydriatic_spontaneity;
+        static public BlueprintAbility mydriatic_spontaneity_mass;
         //static public BlueprintAbility euphoric_cloud_trueFascinate;
+
+        static public BlueprintBuff mydriatic_spontaneity_buff;
+        static public BlueprintBuff blind_with_new_icon;
 
         public static void load()
         {
@@ -71,15 +75,98 @@ namespace CowWithHatsCustomSpellsMod
             createAcuteSenses();
             createMagesDisjunction();
             createEuphoricCloud();
-            //createMydriaticSpontaneity();
+            createMydriaticSpontaneity();
             //outputSpellInfoToLog();
         }
 
-        //public static void createMydriaticSpontaneity()
-        //{
-        //41cf93453b027b94886901dbfc680cb9 is the blueprint ID for overwhelming presecnce
-        //a1bc9bf104a3c614391eccdcdf37d4ad	 is the blueprint id for overwhelming presecnce scroll
-        //}
+        public static void createMydriaticSpontaneity()
+        {
+            //41cf93453b027b94886901dbfc680cb9 is the blueprint ID for overwhelming presecnce
+            //a1bc9bf104a3c614391eccdcdf37d4ad is the blueprint id for overwhelming presecnce scroll
+
+            var overwhelming_presence = library.Get<BlueprintAbility>("41cf93453b027b94886901dbfc680cb9");//overwhelming presence
+
+            var undead = library.Get<BlueprintFeature>("734a29b693e9ec346ba2951b27987e33");
+            var construct = library.Get<BlueprintFeature>("fd389783027d63343b4a5634bd81645f");
+            //Common.createAbilityTargetHasFact(true, undead),
+            //Common.createAbilityTargetHasFact(true, construct),
+
+            var blind = library.Get<BlueprintBuff>("0ec36e7596a4928489d2049e1e1c76a7");
+            var dazzled = library.Get<BlueprintBuff>("df6d1025da07524429afbae248845ecc");
+            var nauseated = library.Get<BlueprintBuff>("956331dba5125ef48afe41875a00ca0e");
+
+            var apply_blind = Common.createContextActionApplyBuff(blind, Helpers.CreateContextDuration(1));
+            var apply_dazzled = Common.createContextActionApplyBuff(dazzled, Helpers.CreateContextDuration(1));
+            var apply_blind_quick = Common.createContextActionApplyBuff(blind, Helpers.CreateContextDuration(), is_child: true, is_from_spell: true, duration_seconds: 0);
+            var apply_dazzle_quick = Common.createContextActionApplyBuff(dazzled, Helpers.CreateContextDuration(), is_child: true, is_from_spell: true, duration_seconds: 0);
+            // might want to make a contactaction/gameaction var do_nothing
+
+            var apply_nauseated = Common.createContextActionApplyBuff(nauseated, Helpers.CreateContextDuration(), true, true, true, true);
+            var new_round_after = Common.createContextActionRandomize(apply_blind, apply_dazzled, null, null);//, apply_blind_quick, apply_dazzle_quick);
+
+            
+
+            mydriatic_spontaneity_buff = Helpers.CreateBuff("MydriaticSpontaneityBuff",
+                                          "Mydriatic Spontaneity",
+                                          "Subject is being overstimulated by flashes of light and surges of shadow. They are racked with splitting headaches and are nauseated. Each round their eyes are randomly either rapidly dialated or contracted. This process has a 25% change to dazzle them and 25% change to blind them for that round",
+                                          "e9f794cc9da94a14861b200b83daa265",
+                                          overwhelming_presence.Icon,
+                                          null,
+                                          Helpers.CreateAddFactContextActions(activated: apply_nauseated, newRound: new_round_after),
+                                          Helpers.CreateSpellDescriptor(SpellDescriptor.Nauseated | SpellDescriptor.Blindness)
+                                          );
+
+            var apply_buff = CallOfTheWild.Common.createContextActionApplyBuff(mydriatic_spontaneity_buff, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.Default), DurationRate.Rounds), is_from_spell: true);
+
+            mydriatic_spontaneity = Helpers.CreateAbility("MydriaticSpontaneityAbility",
+                "Mydriatic Spontaneity",
+                "You overstimulate the target with alternating flashes of light and shadow within its eyes, causing its pupils to rapidly dilate and contract. While under the effects of this spell, the target is racked by splitting headaches and unable to see clearly, becoming nauseated for the spell’s duration. Each round, the target’s pupils randomly become dilated or contracted for 1 round. This has a 25% chance to blind the target and a 25% chance to dazzle them each turn.",
+                "c0017bedbfab480781fa5a3aca39bb26",
+                overwhelming_presence.Icon,
+                AbilityType.Spell,
+                UnitCommand.CommandType.Standard,
+                AbilityRange.Close,
+                Helpers.roundsPerLevelDuration,
+                Helpers.willNegates,
+                Common.createAbilityTargetHasFact(true, undead),
+                Common.createAbilityTargetHasFact(true, construct),
+                Helpers.CreateRunActions(SavingThrowType.Will, Helpers.CreateConditionalSaved(null, apply_buff)),
+                Helpers.CreateSpellDescriptor(SpellDescriptor.Blindness | SpellDescriptor.Nauseated),
+                Helpers.CreateSpellComponent(SpellSchool.Evocation)
+                );
+
+            mydriatic_spontaneity_mass = Helpers.CreateAbility("MydriaticSponaneityMassAbility",
+                "Mydriatic Spontaneity, Mass",
+                "This spell functions like Mydriatic Spontaneity, except several creatures may be affected. \n" + mydriatic_spontaneity.Description,
+                "ec568d9c02574873a60d0b61434b8329",
+                overwhelming_presence.Icon,
+                AbilityType.Spell,
+                UnitCommand.CommandType.Standard,
+                AbilityRange.Close,
+                Helpers.roundsPerLevelDuration,
+                Helpers.willNegates,
+                Common.createAbilityTargetHasFact(true, undead),
+                Common.createAbilityTargetHasFact(true, construct),
+                Helpers.CreateRunActions(SavingThrowType.Will, Helpers.CreateConditionalSaved(null, apply_buff)),
+                Helpers.CreateSpellDescriptor(SpellDescriptor.Blindness | SpellDescriptor.Nauseated),
+                Helpers.CreateSpellComponent(SpellSchool.Evocation)
+                );
+
+            mydriatic_spontaneity.setMiscAbilityParametersSingleTargetRangedHarmful(true);
+            mydriatic_spontaneity_mass.setMiscAbilityParametersRangedDirectional();
+            mydriatic_spontaneity.SpellResistance = true;
+            mydriatic_spontaneity_mass.SpellResistance = true;
+
+            mydriatic_spontaneity.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Persistent | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Piercing;
+            mydriatic_spontaneity_mass.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Persistent | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Piercing;
+
+            NewSpells.mydriatic_spontaneity.AddToSpellList(Helpers.bardSpellList, 3);//bard spell list
+            NewSpells.mydriatic_spontaneity.AddToSpellList(Helpers.wizardSpellList, 4);//wizard spell list
+            NewSpells.mydriatic_spontaneity_mass.AddToSpellList(Helpers.bardSpellList, 5);
+            NewSpells.mydriatic_spontaneity_mass.AddToSpellList(Helpers.wizardSpellList, 7);
+            NewSpells.mydriatic_spontaneity.AddSpellAndScroll("a1bc9bf104a3c614391eccdcdf37d4ad"); //overwhelming presecnce scroll
+            NewSpells.mydriatic_spontaneity_mass.AddSpellAndScroll("a1bc9bf104a3c614391eccdcdf37d4ad");  //overwhelming presecnce scroll
+        }
 
         public static void createEuphoricCloud()
         {
@@ -174,7 +261,7 @@ namespace CowWithHatsCustomSpellsMod
                 "You create a bank of fog similar to that created by fog cloud except its vapors are intoxicating. Living creatures are distracted by the fumes and behave as if dazed. " +
                 "Any creature that succeeds at its save at the initial save but remains in the cloud must continue to save each round on your turn. " +
                 "If the creature is undisturbed this condition lasts as long as a creature is in the cloud and for 1d4+1 rounds after it leaves. " +
-                "Distracted creatures that are damaged immediately snap out of the condition. Distracted creatures receive additional saving throws each round to break the condition if there are enemies within 10 feet." +
+                "Distracted creatures that are damaged immediately snap out of the condition. Distracted creatures receive additional saving throws each round to break the condition if there are enemies within 10 feet. " +
                 "Creatures who are intoxicated by the cloud and break free from its effects from damage or extra saves are not effected in further rounds.",
                 "c80b7411bc744737974fc0418df733ca",//fresh guid
                 mindFog.Icon,
@@ -529,7 +616,7 @@ namespace CowWithHatsCustomSpellsMod
                 AbilityRange.Medium,
                 Helpers.minutesPerLevelDuration,
                 Helpers.willNegates,
-                Helpers.CreateAbilityTargetsAround(15.Feet(), TargetType.Enemy),
+                Helpers.CreateAbilityTargetsAround(30.Feet(), TargetType.Enemy),
                 Helpers.CreateRunActions(SavingThrowType.Will, Helpers.CreateConditionalSaved(null, apply_buff)),
                 Helpers.CreateSpellDescriptor(SpellDescriptor.MindAffecting | SpellDescriptor.Compulsion),
                 Helpers.CreateSpellComponent(SpellSchool.Enchantment)
@@ -549,6 +636,38 @@ namespace CowWithHatsCustomSpellsMod
 
         public static void outputSpellInfoToLog()
         {
+            //BlueprintAbility dazzle = library.Get<BlueprintAbility>("f0f8e5b9808f44e4eadd22b138131d52");
+            //foreach(BlueprintComponent bc in dazzle.GetComponents<BlueprintComponent>())
+            //{
+            //    var aera = bc as AbilityEffectRunAction;
+            //    if(aera != null)
+            //    {
+            //        foreach(GameAction ga in aera.Actions.Actions)
+            //        {
+            //            Main.logger.Log($"The ability effect run action from flare name {ga.name} and type {ga.GetType().ToString()} ");
+            //            ContextActionConditionalSaved cacs = ga as ContextActionConditionalSaved;
+            //            if(cacs !=null)
+            //            {
+            //                foreach (GameAction conditionalAction in cacs.Failed.Actions)
+            //                {
+            //                    Main.logger.Log($"Context Action Conditional Saved failed action {conditionalAction.name} of type {conditionalAction.GetType().ToString()}");
+            //                    ContextActionApplyBuff caab = conditionalAction as ContextActionApplyBuff;
+            //                    if (caab != null)
+            //                        Main.logger.Log($"The name of the buff applied is {caab.Buff.name} and has type {caab.Buff.GetType().ToString()}");
+            //                }
+
+            //            }
+            //        }
+            //    }
+            //    Main.logger.Log($"Flare spell Blueprint Component of type {bc.GetType().ToString()} with name {bc.name} ");
+            //}
+
+            //var dominate_monster = library.Get<BlueprintAbility>("3c17035ec4717674cae2e841a190e757");
+            //foreach(BlueprintComponent bc in dominate_monster.GetComponents<BlueprintComponent>())
+            //{
+            //    if(bc as )
+            //}
+
             //BlueprintCharacterClass sorcerer_class = ResourcesLibrary.TryGetBlueprint<BlueprintCharacterClass>("b3a505fb61437dc4097f43c3f8f9a4cf");
             //foreach (BlueprintComponent bc in sorcerer_class.ComponentsArray)
             //{

@@ -73,7 +73,12 @@ namespace CowWithHatsCustomSpellsMod
             NewSpells.euphoric_cloud.AddToSpellList(library.Get<BlueprintSpellList>("b161506e0b8f4116806a243f6838ae01"), 2); //hunter spell list
             NewSpells.euphoric_cloud.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 2); //psychic spell list
 
-            
+            NewSpells.mydriatic_spontaneity.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 3); //psychic spell list
+            NewSpells.mydriatic_spontaneity.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 4); //witch spell list
+            NewSpells.mydriatic_spontaneity.AddToSpellList(library.Get<BlueprintSpellList>("90a9bcf466f740639902446dfd2230e5"), 4); //winter witch spell list (gets its own because of fire spell ban)
+            NewSpells.mydriatic_spontaneity_mass.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 6); //psychic spell list
+            NewSpells.mydriatic_spontaneity_mass.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 7); //witch spell list
+            NewSpells.mydriatic_spontaneity_mass.AddToSpellList(library.Get<BlueprintSpellList>("90a9bcf466f740639902446dfd2230e5"), 7); //winter witch spell list (gets its own because of fire spell ban)
 
         }
 
