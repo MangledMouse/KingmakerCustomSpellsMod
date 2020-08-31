@@ -535,7 +535,7 @@ namespace CowWithHatsCustomSpellsMod
         public static void createSuggestion()
         {
             var buff = library.CopyAndAdd<BlueprintBuff>("6477ae917b0ec7a4ca76bc9f36b023ac", "SuggestionBuff", "729fa06959ad4a0ca1e761b955b6ff62"); //rainbow pattern then new guid
-            var mindblank = library.Get<BlueprintAbility>("df2a0ba6b6dcecf429cbb80a56fee5cf"); //Mindblank
+            var litany_of_eloquence = library.Get<BlueprintAbility>("c9198d9dfd2515d4ba98335b57bb66c7"); //litany of eloquence
             var hold_monster = library.Get<BlueprintAbility>("41e8a952da7a5c247b3ec1c2dbb73018");
             var checker_fact = hold_monster.GetComponents<AbilityTargetHasNoFactUnless>().ToArray();
             //foreach(BlueprintComponent bc in hold_monster.GetComponents<BlueprintComponent>())
@@ -568,7 +568,7 @@ namespace CowWithHatsCustomSpellsMod
             //                                                                 )
             //                                        );
 
-            buff.SetIcon(mindblank.Icon);
+            buff.SetIcon(litany_of_eloquence.Icon);
             buff.SetNameDescription("Suggestion", "This creature is under the compulsive effects of a Suggestion spell. They are lost in thought and they will take no actions until they are harmed.");
 
             //Main.logger.Log($"Passes first array point");
@@ -578,7 +578,7 @@ namespace CowWithHatsCustomSpellsMod
                                       "You suggest to a single creature that they should avoid combat and turn their thoughts inward. The spell magically influences the creature to follow the suggestion. They are fascinated by the effect for the duration or until they are harmed.",
                                       "3682197d956543e2a694e163b5fdcc6c",
                                       //"",
-                                      mindblank.Icon,
+                                      litany_of_eloquence.Icon,
                                       AbilityType.Spell,
                                       UnitCommand.CommandType.Standard,
                                       AbilityRange.Close,
@@ -602,7 +602,7 @@ namespace CowWithHatsCustomSpellsMod
                 "This spell functions like Suggestion, except several creatures may be affected. \n" +suggestion.Description,
                 "033e70b6c72f46cab793eab5ff9f3a87",
                 //"",
-                mindblank.Icon,
+                litany_of_eloquence.Icon,
                 AbilityType.Spell,
                 UnitCommand.CommandType.Standard,
                 AbilityRange.Medium,
@@ -622,8 +622,8 @@ namespace CowWithHatsCustomSpellsMod
             NewSpells.suggestion.AddToSpellList(Helpers.wizardSpellList, 3);//wizard spell list
             NewSpells.suggestion_mass.AddToSpellList(Helpers.bardSpellList, 5);
             NewSpells.suggestion_mass.AddToSpellList(Helpers.wizardSpellList, 6);
-            NewSpells.suggestion.AddSpellAndScroll("4d80ff5fde0655a41bf3c8bfa653bfe9"); //scroll of euphoric tranquility
-            NewSpells.suggestion_mass.AddSpellAndScroll("4d80ff5fde0655a41bf3c8bfa653bfe9");  //scroll of euphoric tranquility
+            NewSpells.suggestion.AddSpellAndScroll("71289f8d77db10e4d90174c902e1b6eb"); //scroll of euphoric tranquility
+            NewSpells.suggestion_mass.AddSpellAndScroll("71289f8d77db10e4d90174c902e1b6eb");  //scroll of euphoric tranquility
         }
 
         public static void outputSpellInfoToLog()
