@@ -62,10 +62,8 @@ namespace CowWithHatsCustomSpellsMod
         static public BlueprintAbility euphoric_cloud;
         static public BlueprintAbility mydriatic_spontaneity;
         static public BlueprintAbility mydriatic_spontaneity_mass;
-        //static public BlueprintAbility euphoric_cloud_trueFascinate;
 
         static public BlueprintBuff mydriatic_spontaneity_buff;
-        static public BlueprintBuff blind_with_new_icon;
 
         public static void load()
         {
@@ -76,7 +74,7 @@ namespace CowWithHatsCustomSpellsMod
             createMagesDisjunction();
             createEuphoricCloud();
             createMydriaticSpontaneity();
-            //outputSpellInfoToLog();
+            outputSpellInfoToLog();
         }
 
         public static void createMydriaticSpontaneity()
@@ -93,28 +91,19 @@ namespace CowWithHatsCustomSpellsMod
 
             var blind = library.Get<BlueprintBuff>("0ec36e7596a4928489d2049e1e1c76a7");
             var dazzled = library.Get<BlueprintBuff>("df6d1025da07524429afbae248845ecc");
-            var nauseated = library.Get<BlueprintBuff>("956331dba5125ef48afe41875a00ca0e");
 
             var apply_blind = Common.createContextActionApplyBuff(blind, Helpers.CreateContextDuration(1));
             var apply_dazzled = Common.createContextActionApplyBuff(dazzled, Helpers.CreateContextDuration(1));
-            var apply_blind_quick = Common.createContextActionApplyBuff(blind, Helpers.CreateContextDuration(), is_child: true, is_from_spell: true, duration_seconds: 0);
-            var apply_dazzle_quick = Common.createContextActionApplyBuff(dazzled, Helpers.CreateContextDuration(), is_child: true, is_from_spell: true, duration_seconds: 0);
-            // might want to make a contactaction/gameaction var do_nothing
-
-            var apply_nauseated = Common.createContextActionApplyBuff(nauseated, Helpers.CreateContextDuration(), true, true, true, true);
-            var new_round_after = Common.createContextActionRandomize(apply_blind, apply_dazzled, null, null);//, apply_blind_quick, apply_dazzle_quick);
-
             
+            var new_round_after = Common.createContextActionRandomize(apply_blind, apply_dazzled, null, null);//, apply_blind_quick, apply_dazzle_quick);
+            BlueprintBuff stinkingCloudAfterBuff = library.Get<BlueprintBuff>("fa039d873ee3f3e42abaf19877abaae1"); //stinking cloud buff after
+            mydriatic_spontaneity_buff = library.CopyAndAdd<BlueprintBuff>("fa039d873ee3f3e42abaf19877abaae1", "Mydriatic Spontaneity", "e9f794cc9da94a14861b200b83daa265");
+            mydriatic_spontaneity_buff.ReplaceComponent<SpellDescriptorComponent>(Helpers.CreateSpellDescriptor(SpellDescriptor.Blindness));
+            mydriatic_spontaneity_buff.AddComponent(Helpers.CreateAddFactContextActions(activated: new_round_after, newRound: new_round_after)); //activated: apply_nauseated is how we had it working before)
+            mydriatic_spontaneity_buff.SetNameDescriptionIcon("Mydriatic Spontaneity",
+                "Subject is being overstimulated by flashes of light and surges of shadow. They are racked with splitting headaches and are nauseated. Each round their eyes are randomly either rapidly dialated or contracted. This process has a 25% change to dazzle them and 25% change to blind them for that round",
+                overwhelming_presence.Icon);
 
-            mydriatic_spontaneity_buff = Helpers.CreateBuff("MydriaticSpontaneityBuff",
-                                          "Mydriatic Spontaneity",
-                                          "Subject is being overstimulated by flashes of light and surges of shadow. They are racked with splitting headaches and are nauseated. Each round their eyes are randomly either rapidly dialated or contracted. This process has a 25% change to dazzle them and 25% change to blind them for that round",
-                                          "e9f794cc9da94a14861b200b83daa265",
-                                          overwhelming_presence.Icon,
-                                          null,
-                                          Helpers.CreateAddFactContextActions(activated: apply_nauseated, newRound: new_round_after),
-                                          Helpers.CreateSpellDescriptor(SpellDescriptor.Nauseated | SpellDescriptor.Blindness)
-                                          );
 
             var apply_buff = CallOfTheWild.Common.createContextActionApplyBuff(mydriatic_spontaneity_buff, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.Default), DurationRate.Rounds), is_from_spell: true);
 
@@ -128,10 +117,11 @@ namespace CowWithHatsCustomSpellsMod
                 AbilityRange.Close,
                 Helpers.roundsPerLevelDuration,
                 Helpers.willNegates,
+                Common.createAbilitySpawnFx("52d413df527f9fa4a8cf5391fd593edd", anchor: AbilitySpawnFxAnchor.SelectedTarget),
                 Common.createAbilityTargetHasFact(true, undead),
                 Common.createAbilityTargetHasFact(true, construct),
                 Helpers.CreateRunActions(SavingThrowType.Will, Helpers.CreateConditionalSaved(null, apply_buff)),
-                Helpers.CreateSpellDescriptor(SpellDescriptor.Blindness | SpellDescriptor.Nauseated),
+                Helpers.CreateSpellDescriptor(SpellDescriptor.Blindness),
                 Helpers.CreateSpellComponent(SpellSchool.Evocation)
                 );
 
@@ -145,15 +135,17 @@ namespace CowWithHatsCustomSpellsMod
                 AbilityRange.Close,
                 Helpers.roundsPerLevelDuration,
                 Helpers.willNegates,
+                Common.createAbilitySpawnFx("52d413df527f9fa4a8cf5391fd593edd", anchor: AbilitySpawnFxAnchor.SelectedTarget),
                 Common.createAbilityTargetHasFact(true, undead),
                 Common.createAbilityTargetHasFact(true, construct),
+                Helpers.CreateAbilityTargetsAround(30.Feet(), TargetType.Enemy),
                 Helpers.CreateRunActions(SavingThrowType.Will, Helpers.CreateConditionalSaved(null, apply_buff)),
-                Helpers.CreateSpellDescriptor(SpellDescriptor.Blindness | SpellDescriptor.Nauseated),
+                Helpers.CreateSpellDescriptor(SpellDescriptor.Blindness),
                 Helpers.CreateSpellComponent(SpellSchool.Evocation)
                 );
 
             mydriatic_spontaneity.setMiscAbilityParametersSingleTargetRangedHarmful(true);
-            mydriatic_spontaneity_mass.setMiscAbilityParametersRangedDirectional();
+            mydriatic_spontaneity_mass.setMiscAbilityParametersSingleTargetRangedHarmful(true);
             mydriatic_spontaneity.SpellResistance = true;
             mydriatic_spontaneity_mass.SpellResistance = true;
 
@@ -616,7 +608,7 @@ namespace CowWithHatsCustomSpellsMod
                 AbilityRange.Medium,
                 Helpers.minutesPerLevelDuration,
                 Helpers.willNegates,
-                Helpers.CreateAbilityTargetsAround(30.Feet(), TargetType.Enemy),
+                Helpers.CreateAbilityTargetsAround(15.Feet(), TargetType.Enemy),
                 Helpers.CreateRunActions(SavingThrowType.Will, Helpers.CreateConditionalSaved(null, apply_buff)),
                 Helpers.CreateSpellDescriptor(SpellDescriptor.MindAffecting | SpellDescriptor.Compulsion),
                 Helpers.CreateSpellComponent(SpellSchool.Enchantment)
@@ -636,17 +628,44 @@ namespace CowWithHatsCustomSpellsMod
 
         public static void outputSpellInfoToLog()
         {
+            //BlueprintAbility colorspray = library.Get<BlueprintAbility>("91da41b9793a4624797921f221db653c");
+            //foreach(BlueprintComponent bc in colorspray.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"Color Spray component {bc.name} with type {bc.GetType().ToString()}");
+            //    SpellDescriptorComponent sd = bc as SpellDescriptorComponent;
+            //    if (sd != null)
+            //    {
+            //        Main.logger.Log($"Spell descriptor component {sd.Descriptor.Value}");
+            //    }
+            //    SpellListComponent sc = bc as SpellListComponent;
+            //    if(sc !=null)
+            //    {
+            //        Main.logger.Log($"");
+            //    }
+            //}
+
+            //BlueprintBuff stinkingCloudAfterBuff = library.Get<BlueprintBuff>("fa039d873ee3f3e42abaf19877abaae1");
+            //foreach (BlueprintComponent bc in stinkingCloudAfterBuff.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"Stinking cloud after buff component {bc.name} with type {bc.GetType().ToString()}");
+            //    AddCondition ac = bc as AddCondition;
+            //    if(ac != null )
+            //    {
+            //        Main.logger.Log($"The condition inflicted is {ac.Condition} ");
+            //    }
+            //}
+
             //BlueprintAbility dazzle = library.Get<BlueprintAbility>("f0f8e5b9808f44e4eadd22b138131d52");
-            //foreach(BlueprintComponent bc in dazzle.GetComponents<BlueprintComponent>())
+            //foreach (BlueprintComponent bc in dazzle.GetComponents<BlueprintComponent>())
             //{
             //    var aera = bc as AbilityEffectRunAction;
-            //    if(aera != null)
+            //    if (aera != null)
             //    {
-            //        foreach(GameAction ga in aera.Actions.Actions)
+            //        foreach (GameAction ga in aera.Actions.Actions)
             //        {
             //            Main.logger.Log($"The ability effect run action from flare name {ga.name} and type {ga.GetType().ToString()} ");
             //            ContextActionConditionalSaved cacs = ga as ContextActionConditionalSaved;
-            //            if(cacs !=null)
+            //            if (cacs != null)
             //            {
             //                foreach (GameAction conditionalAction in cacs.Failed.Actions)
             //                {

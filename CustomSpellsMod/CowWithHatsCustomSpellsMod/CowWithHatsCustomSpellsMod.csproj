@@ -34,25 +34,23 @@
     <ReferencePath>C:\GOG Games\Pathfinder Kingmaker\Kingmaker_Data\Managed;C:\GOG Games\Pathfinder Kingmaker\Kingmaker_Data\Managed\UnityModManager</ReferencePath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Pathfinder Kingmaker\Kingmaker_Data\Managed\UnityModManager\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="0Harmony12">
-      <HintPath>0Harmony12.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Pathfinder Kingmaker\Kingmaker_Data\Managed\UnityModManager\0Harmony12.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Kingmaker_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Pathfinder Kingmaker\Kingmaker_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Kingmaker_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Pathfinder Kingmaker\Kingmaker_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="CallOfTheWild">
-      <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Mods\CallOfTheWild\CallOfTheWild.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Pathfinder Kingmaker\Mods\CallOfTheWild\CallOfTheWild.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Pathfinder Kingmaker\Kingmaker_Data\Managed\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -63,16 +61,14 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Kingmaker_Data\Managed\UnityEngine.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Pathfinder Kingmaker\Kingmaker_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
       <HintPath>UnityEngine.AnimationModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>UnityEngine.CoreModule.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Pathfinder Kingmaker\Kingmaker_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
       <HintPath>UnityEngine.ImageConversionModule.dll</HintPath>
@@ -99,16 +95,14 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Kingmaker_Data\Managed\UnityEngine.UI.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Pathfinder Kingmaker\Kingmaker_Data\Managed\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UNETModule">
       <HintPath>UnityEngine.UNETModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityModManager">
-      <HintPath>UnityModManager.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Pathfinder Kingmaker\Kingmaker_Data\Managed\UnityModManager\UnityModManager.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
