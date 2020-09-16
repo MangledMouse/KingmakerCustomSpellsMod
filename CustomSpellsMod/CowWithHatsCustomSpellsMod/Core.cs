@@ -54,5 +54,18 @@ namespace CowWithHatsCustomSpellsMod
             dismissAbility.GetComponent<AbilityEffectRunAction>().Actions = Helpers.CreateActionList(dismiss);
             dismissAbility.ReplaceComponent<AbilityTargetCanDismiss>(Helpers.Create<ExpandedAbilityTargetCanDismiss>());
         }
+
+        static internal void UpdateDominationEffects()
+        {
+            BlueprintBuff dominate_person = library.Get<BlueprintBuff>("c0f4e1c24c9cd334ca988ed1bd9d201f");
+            AddControllableToChangeFaction(dominate_person.GetComponent<ChangeFaction>());
+            BlueprintBuff control_undead = library.Get<BlueprintBuff>("21d20a30b93e4ae281a6d70d9ae1a64d");
+            AddControllableToChangeFaction(control_undead.GetComponent<ChangeFaction>());
+        }
+
+        static internal void AddControllableToChangeFaction(ChangeFaction cf)
+        {
+            Helpers.SetField(cf, "m_AllowDirectControl", true);
+        }
     }
 }

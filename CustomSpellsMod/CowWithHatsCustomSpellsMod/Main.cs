@@ -15,6 +15,10 @@ using Newtonsoft.Json;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using CallOfTheWild;
+using Kingmaker.UI.ActionBar;
+using Kingmaker.UI.Common;
+using HarmonyLib;
+//using HarmonyLib;
 
 namespace CowWithHatsCustomSpellsMod
 {
@@ -23,6 +27,7 @@ namespace CowWithHatsCustomSpellsMod
         internal class Settings
         {
             internal bool domination_dismissal;
+            internal bool domination_gives_control;
             internal Settings()
             {
                 using (StreamReader settings_file = File.OpenText("Mods/CowWithHatsCustomSpellsMod/settings.json"))
@@ -30,6 +35,7 @@ namespace CowWithHatsCustomSpellsMod
                 {
                     JObject jo = (JObject)JToken.ReadFrom(reader);
                     domination_dismissal = (bool)jo["domination_dismissal"];
+                    domination_gives_control = (bool)jo["domination_gives_control"];
                 }
             }
         }
@@ -131,6 +137,19 @@ namespace CowWithHatsCustomSpellsMod
             }
         }
 
+        //Patches the action Bar Manager to have it show up for summons, and maybe dominated targets
+        //[HarmonyLib.HarmonyPatch(typeof(ActionBarManager), "CheckTurnPanelView")]
+        //internal static class ActionBarManager_CheckTurnPanelView_Patch
+        //{
+        //    private static void Postfix(ActionBarManager __instance)
+        //    {
+        //        Main.logger.Log($"Patching Show Turn Panel");
+        //        HarmonyLib.Traverse.Create(__instance).Method("ShowTurnPanel").GetValue();
+        //    }
+        //}
+
+
+
         //[Harmony12.HarmonyPatch(typeof(Helpers.GuidStorage), "dump")]
         //LibraryScriptableObject_LoadDictionary_Patch
         [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary")]
@@ -158,6 +177,10 @@ namespace CowWithHatsCustomSpellsMod
                         if (settings.domination_dismissal)
                         {
                             Core.UpdateDismiss();
+                        }
+                        if(settings.domination_gives_control)
+                        {
+                            Core.UpdateDominationEffects();
                         }
                         alreadyRan = true;
                     }
@@ -187,6 +210,20 @@ namespace CowWithHatsCustomSpellsMod
         {
             logger?.Log(message);
             return new InvalidOperationException(message);
+        }
+    }
+
+
+    public class ActionBarFix
+    {
+        [HarmonyPatch(typeof(ActionBarManager), "CheckTurnPanelView")]
+        internal static class ActionBarManager_CheckTurnPanelView_Patch
+        {
+            private static void Postfix(ActionBarManager __instance)
+            {
+                Main.logger.Log("Post fix entered");
+                Traverse.Create((object)__instance).Method("ShowTurnPanel", Array.Empty<object>()).GetValue();
+            }
         }
     }
 }

@@ -626,8 +626,32 @@ namespace CowWithHatsCustomSpellsMod
             NewSpells.suggestion_mass.AddSpellAndScroll("71289f8d77db10e4d90174c902e1b6eb");  //scroll of euphoric tranquility
         }
 
+        
+
         public static void outputSpellInfoToLog()
         {
+
+            //BlueprintAbility forcedRepentence = library.Get<BlueprintAbility>("cc0aeb74b35cb7147bff6c53538bbc76");
+            //foreach(BlueprintComponent bc in forcedRepentence.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"Forced Repentence component {bc.name} of type {bc.GetType().ToString()}");
+            //    SpellListComponent slc = bc as SpellListComponent;
+            //    if (slc != null)
+            //    {
+            //        Main.logger.Log($"Spell list component asset guid {slc.SpellList.AssetGuid}");
+            //    }
+            //    SpellComponent sc = bc as SpellComponent;
+            //    if(sc !=null)
+            //    {
+            //        Main.logger.Log($"Spell Component {sc.School}");
+            //    }
+            //    ContextRankConfig crc = bc as ContextRankConfig;
+            //    if(crc !=null)
+            //    {
+            //        Main.logger.Log($"Context rank config class level {crc.IsBasedOnClassLevel} archetype {crc.RequiresArchetype} feature rank {crc.IsBasedOnFeatureRank} stat bonus {crc.IsBasedOnStatBonus} feature list {crc.IsFeatureList} custom prop {crc.IsBasedOnCustomProperty} division prg {crc.IsDivisionProgression} progressionstart {crc.IsDivisionProgressionStart} Type {crc.Type} ");
+            //    }
+            //}
+
             //BlueprintAbility colorspray = library.Get<BlueprintAbility>("91da41b9793a4624797921f221db653c");
             //foreach(BlueprintComponent bc in colorspray.GetComponents<BlueprintComponent>())
             //{
