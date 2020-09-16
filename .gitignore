@@ -48,3 +48,4 @@ CustomSpellsMod/.vs/CowWithHatsCustomSpellsMod/v16/Server/sqlite3/storage.ide
 CustomSpellsMod/CowWithHatsCustomSpellsMod/obj/Release/CowWithHatsCustomSpellsMod.csproj.CopyComplete
 CustomSpellsMod/CowWithHatsCustomSpellsMod/obj/Release/DesignTimeResolveAssemblyReferencesInput.cache
 CustomSpellsMod/CowWithHatsCustomSpellsMod/obj/Release/DesignTimeResolveAssemblyReferencesInput.cache
+*.cache

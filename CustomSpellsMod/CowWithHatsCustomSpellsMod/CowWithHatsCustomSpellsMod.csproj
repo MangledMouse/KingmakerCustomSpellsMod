@@ -34,9 +34,6 @@
     <ReferencePath>C:\GOG Games\Pathfinder Kingmaker\Kingmaker_Data\Managed;C:\GOG Games\Pathfinder Kingmaker\Kingmaker_Data\Managed\UnityModManager</ReferencePath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Pathfinder Kingmaker\Kingmaker_Data\Managed\UnityModManager\0Harmony.dll</HintPath>
-    </Reference>
     <Reference Include="0Harmony12">
       <HintPath>..\..\..\..\..\..\..\..\..\GOG Games\Pathfinder Kingmaker\Pathfinder Kingmaker\Kingmaker_Data\Managed\UnityModManager\0Harmony12.dll</HintPath>
     </Reference>

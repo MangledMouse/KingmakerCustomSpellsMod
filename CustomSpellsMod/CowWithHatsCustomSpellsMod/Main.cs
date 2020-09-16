@@ -17,8 +17,7 @@ using Newtonsoft.Json.Linq;
 using CallOfTheWild;
 using Kingmaker.UI.ActionBar;
 using Kingmaker.UI.Common;
-using HarmonyLib;
-//using HarmonyLib;
+using Harmony12;
 
 namespace CowWithHatsCustomSpellsMod
 {
@@ -221,7 +220,6 @@ namespace CowWithHatsCustomSpellsMod
         {
             private static void Postfix(ActionBarManager __instance)
             {
-                Main.logger.Log("Post fix entered");
                 Traverse.Create((object)__instance).Method("ShowTurnPanel", Array.Empty<object>()).GetValue();
             }
         }
