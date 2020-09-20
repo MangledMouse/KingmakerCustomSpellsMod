@@ -626,6 +626,24 @@ namespace CowWithHatsCustomSpellsMod
             NewSpells.suggestion_mass.AddSpellAndScroll("71289f8d77db10e4d90174c902e1b6eb");  //scroll of euphoric tranquility
         }
 
+        public static void CreateUpdatedSilenceSpell()
+        {
+            //              SilenceBuff 7ce2f7b5b6904bb9aef6ee2e942e8ff9 Kingmaker.UnitLogic.Buffs.Blueprints.BlueprintBuff
+            //              SilenceAreaEffect   69eb7248d6e84292bb9d3287e90b637d Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbilityAreaEffect
+            //              SilenceAbility  9bd3a1c01eb04104bf5e21a7d6330b4d Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbility
+
+            CallOfTheWild.NewSpells.silence.LocalizedSavingThrow = Helpers.CreateString($"{CallOfTheWild.NewSpells.silence.name}.SavingThrow", "");
+            CallOfTheWild.NewSpells.silence.SpellResistance = false;
+            CallOfTheWild.NewSpells.silence.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Quicken;
+
+            BlueprintAbilityAreaEffect silence_area = library.Get<BlueprintAbilityAreaEffect>("69eb7248d6e84292bb9d3287e90b637d");
+            AbilityAreaEffectRunAction new_action = Helpers.CreateAreaEffectRunAction(unitEnter: Common.createContextActionApplyBuff(CallOfTheWild.NewSpells.silence_buff, Helpers.CreateContextDuration(), is_permanent: true, dispellable: false),
+                                                  unitExit: Helpers.CreateConditional(Common.createContextConditionHasBuffFromCaster(CallOfTheWild.NewSpells.silence_buff),
+                                                                                      Common.createContextActionRemoveBuffFromCaster(CallOfTheWild.NewSpells.silence_buff))
+                                                                                      );
+            silence_area.ReplaceComponent<AbilityEffectRunAction>(new_action);
+
+        }
         
 
         public static void outputSpellInfoToLog()
