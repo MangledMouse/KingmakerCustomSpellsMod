@@ -27,7 +27,7 @@ namespace CowWithHatsCustomSpellsMod
         {
             internal bool domination_dismissal;
             internal bool domination_gives_control;
-            internal bool silence_update;
+            //internal bool silence_update;
             //internal bool confusion_output;
             internal Settings()
             {
@@ -37,7 +37,7 @@ namespace CowWithHatsCustomSpellsMod
                     JObject jo = (JObject)JToken.ReadFrom(reader);
                     domination_dismissal = (bool)jo["domination_dismissal"];
                     domination_gives_control = (bool)jo["domination_gives_control"];
-                    silence_update = (bool)jo["silence_update"];
+                    //silence_update = (bool)jo["silence_update"];
                     //confusion_output = (bool)jo["confusion_output"];
                 }
             }
@@ -183,10 +183,10 @@ namespace CowWithHatsCustomSpellsMod
                         {
                             Core.UpdateDominationEffects();
                         }
-                        if(settings.silence_update)
-                        {
-                            Core.UpdateSilence();
-                        }
+                        //if(settings.silence_update)
+                        //{
+                        //    Core.UpdateSilence();
+                        //}
                         //see Core.cs for Post fix related to settings.confusion_output it is dealt with in a new class after Core
                         alreadyRan = true;
                     }
