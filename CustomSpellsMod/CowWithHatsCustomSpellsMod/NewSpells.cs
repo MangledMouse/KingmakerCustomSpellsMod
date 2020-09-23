@@ -626,6 +626,21 @@ namespace CowWithHatsCustomSpellsMod
             NewSpells.suggestion_mass.AddSpellAndScroll("71289f8d77db10e4d90174c902e1b6eb");  //scroll of euphoric tranquility
         }
 
+        public static void UpdateEarPiercingScream()
+        {
+            var apply_dazed = Common.createContextActionApplyBuff(Common.dazed_non_mind_affecting, Helpers.CreateContextDuration(1));
+            var scream = library.Get<BlueprintAbility>("8e7cfa5f213a90549aadd18f8f6f4664");
+            AbilityEffectRunAction aera = scream.GetComponent<AbilityEffectRunAction>();
+            foreach(GameAction ga in aera.Actions.Actions)
+            {
+                ContextActionConditionalSaved cacs = ga as ContextActionConditionalSaved;
+                if(cacs!=null)
+                {
+                    cacs.Failed = Helpers.CreateActionList(apply_dazed);
+                }
+            }
+        }
+
         public static void CreateUpdatedSilenceSpell()
         {
             //              SilenceBuff 7ce2f7b5b6904bb9aef6ee2e942e8ff9 Kingmaker.UnitLogic.Buffs.Blueprints.BlueprintBuff

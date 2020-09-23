@@ -27,6 +27,7 @@ namespace CowWithHatsCustomSpellsMod
         {
             internal bool domination_dismissal;
             internal bool domination_gives_control;
+            internal bool ear_pierce_daze_update;
             //internal bool silence_update;
             //internal bool confusion_output;
             internal Settings()
@@ -37,6 +38,7 @@ namespace CowWithHatsCustomSpellsMod
                     JObject jo = (JObject)JToken.ReadFrom(reader);
                     domination_dismissal = (bool)jo["domination_dismissal"];
                     domination_gives_control = (bool)jo["domination_gives_control"];
+                    ear_pierce_daze_update = (bool)jo["ear_pierce_daze_update"];
                     //silence_update = (bool)jo["silence_update"];
                     //confusion_output = (bool)jo["confusion_output"];
                 }
@@ -183,6 +185,8 @@ namespace CowWithHatsCustomSpellsMod
                         {
                             Core.UpdateDominationEffects();
                         }
+                        if (settings.ear_pierce_daze_update)
+                            Core.FixEarpierce();
                         //if(settings.silence_update)
                         //{
                         //    Core.UpdateSilence();

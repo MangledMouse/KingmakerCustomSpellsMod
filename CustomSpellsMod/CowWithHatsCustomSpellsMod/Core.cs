@@ -79,8 +79,10 @@ namespace CowWithHatsCustomSpellsMod
             NewSpells.CreateUpdatedSilenceSpell();
         }
 
-
-
+        internal static void FixEarpierce()
+        {
+            NewSpells.UpdateEarPiercingScream();
+        }
     }
 
         //[HarmonyPatch(typeof(UnitAttack), "OnAction")]
