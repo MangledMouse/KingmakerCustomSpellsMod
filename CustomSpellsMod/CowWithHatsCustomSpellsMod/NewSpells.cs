@@ -585,7 +585,7 @@ namespace CowWithHatsCustomSpellsMod
                                       Helpers.minutesPerLevelDuration,
                                       Helpers.willNegates,
                                       Helpers.CreateRunActions(SavingThrowType.Will, Helpers.CreateConditionalSaved(null, apply_buff)),
-                                      Helpers.CreateSpellDescriptor(SpellDescriptor.MindAffecting | SpellDescriptor.Compulsion),
+                                      Helpers.CreateSpellDescriptor(SpellDescriptor.MindAffecting | SpellDescriptor.Compulsion | (SpellDescriptor)CallOfTheWild.AdditionalSpellDescriptors.ExtraSpellDescriptor.LanguageDependent),
                                       Helpers.CreateSpellComponent(SpellSchool.Enchantment)
                                       );
             suggestion.setMiscAbilityParametersSingleTargetRangedHarmful(true);
@@ -610,7 +610,7 @@ namespace CowWithHatsCustomSpellsMod
                 Helpers.willNegates,
                 Helpers.CreateAbilityTargetsAround(15.Feet(), TargetType.Enemy),
                 Helpers.CreateRunActions(SavingThrowType.Will, Helpers.CreateConditionalSaved(null, apply_buff)),
-                Helpers.CreateSpellDescriptor(SpellDescriptor.MindAffecting | SpellDescriptor.Compulsion),
+                Helpers.CreateSpellDescriptor(SpellDescriptor.MindAffecting | SpellDescriptor.Compulsion | (SpellDescriptor)CallOfTheWild.AdditionalSpellDescriptors.ExtraSpellDescriptor.LanguageDependent),
                 Helpers.CreateSpellComponent(SpellSchool.Enchantment)
                 );
             suggestion_mass.setMiscAbilityParametersRangedDirectional();
