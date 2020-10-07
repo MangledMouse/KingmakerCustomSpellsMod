@@ -95,9 +95,6 @@ namespace CowWithHatsCustomSpellsMod
                 "Effect: A witch can cause a creature within 30 feet to fall into a deep, magical sleep, as per the spell sleep. The creature receives a Will save to negate the effect. If the save fails, the creature falls asleep for a number of rounds equal to the witch’s level.\n"
                                                     + "The creature will not wake due to noise or light, but others can rouse it with a standard action. This hex ends immediately if the creature takes damage. Whether or not the save is successful, a creature cannot be the target of this hex again for 1 day.");
 
-            Main.logger.Log($"Slumber nerf should be removed");
-            Main.logger.Log($"Slumber hex description " + slumber_hex.Description);
-
             BlueprintFeature slumber_hex_feature = library.Get<BlueprintFeature>("c086eeb69a4442df9c4bb8469a2c362d");
             slumber_hex_feature.SetNameDescription(slumber_hex.GetName(),
                 "Effect: A witch can cause a creature within 30 feet to fall into a deep, magical sleep, as per the spell sleep. The creature receives a Will save to negate the effect. If the save fails, the creature falls asleep for a number of rounds equal to the witch’s level.\n"
@@ -118,6 +115,16 @@ namespace CowWithHatsCustomSpellsMod
         internal static void FixEarpierce()
         {
             NewSpells.UpdateEarPiercingScream();
+        }
+
+        internal static void ChangeInspireRage()
+        {
+            BlueprintBuff inspiredRageBuff = library.Get<BlueprintBuff>("77038b4555324455b1d110fbe2fbc0ef");
+            inspiredRageBuff.RemoveComponents<SpellDescriptorComponent>();
+            BlueprintBuff inspireRageEffectBuff = library.Get<BlueprintBuff>("78a69c73d07842c0b46aa9038c40114c");
+            inspireRageEffectBuff.RemoveComponents<SpellDescriptorComponent>();
+            BlueprintAbilityAreaEffect inspireRageArea = library.Get<BlueprintAbilityAreaEffect>("5421df42956841e7a0499568080421b7");
+            inspireRageArea.RemoveComponents<SpellDescriptorComponent>();
         }
     }
 
