@@ -29,6 +29,7 @@ namespace CowWithHatsCustomSpellsMod
             internal bool domination_gives_control;
             internal bool ear_pierce_daze_update;
             internal bool remove_slumber_nerf;
+            internal bool change_inspire_rage_mind_affecting;
             //internal bool silence_update;
             //internal bool confusion_output;
             internal Settings()
@@ -41,6 +42,7 @@ namespace CowWithHatsCustomSpellsMod
                     domination_gives_control = (bool)jo["domination_gives_control"];
                     ear_pierce_daze_update = (bool)jo["ear_pierce_daze_update"];
                     remove_slumber_nerf = (bool)jo["remove_slumber_nerf"];
+                    change_inspire_rage_mind_affecting = (bool)jo["change_inspire_rage_mind_affecting"];
                     //silence_update = (bool)jo["silence_update"];
                     //confusion_output = (bool)jo["confusion_output"];
                 }
@@ -191,8 +193,11 @@ namespace CowWithHatsCustomSpellsMod
                             Core.FixEarpierce();
                         if (settings.remove_slumber_nerf)
                         {
-                            logger.Log($"Should remove slumber nerf");
                             Core.RemoveSlumberNerf();
+                        }
+                        if(settings.change_inspire_rage_mind_affecting)
+                        {
+                            Core.ChangeInspireRage();
                         }
                         //if(settings.silence_update)
                         //{
