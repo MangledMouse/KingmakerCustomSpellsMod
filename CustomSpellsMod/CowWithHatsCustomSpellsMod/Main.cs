@@ -231,16 +231,16 @@ namespace CowWithHatsCustomSpellsMod
     }
 
 
-    public class ActionBarFix
-    {
-        [HarmonyPatch(typeof(ActionBarManager), "CheckTurnPanelView")]
-        internal static class ActionBarManager_CheckTurnPanelView_Patch
-        {
-            private static void Postfix(ActionBarManager __instance)
-            {
-                Traverse.Create((object)__instance).Method("ShowTurnPanel", Array.Empty<object>()).GetValue();
-            }
-        }
-    }
+    //public class ActionBarFix
+    //{
+    //    [HarmonyPatch(typeof(ActionBarManager), "CheckTurnPanelView")]
+    //    internal static class ActionBarManager_CheckTurnPanelView_Patch
+    //    {
+    //        private static void Postfix(ActionBarManager __instance)
+    //        {
+    //            Traverse.Create((object)__instance).Method("ShowTurnPanel", Array.Empty<object>()).GetValue();
+    //        }
+    //    }
+    //}
 }
 
