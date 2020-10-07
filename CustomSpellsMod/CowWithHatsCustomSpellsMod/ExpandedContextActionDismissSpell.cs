@@ -27,7 +27,6 @@ namespace CowWithHatsCustomSpellsMod
         {
             //relevant dominate buffs
             //guid for dominatepersonbuff c0f4e1c24c9cd334ca988ed1bd9d201f
-            Common.AddBattleLogMessage($"Dismissing something");
             UnitEntityData unit = GameHelper.GetTargetsAround(this.Target.Point, 1.Feet().Meters * 0.1f, false, false).FirstOrDefault();
 
             if (unit != null && unit.IsPlayerFaction)
@@ -54,8 +53,6 @@ namespace CowWithHatsCustomSpellsMod
                     return;
                 }
             }
-
-            Common.AddBattleLogMessage($"Dismissal sending back to base");
             base.RunAction();
         }
     }
