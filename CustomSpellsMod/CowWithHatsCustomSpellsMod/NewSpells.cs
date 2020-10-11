@@ -109,7 +109,7 @@ namespace CowWithHatsCustomSpellsMod
 
             mydriatic_spontaneity = Helpers.CreateAbility("MydriaticSpontaneityAbility",
                 "Mydriatic Spontaneity",
-                "You overstimulate the target with alternating flashes of light and shadow within its eyes, causing its pupils to rapidly dilate and contract. While under the effects of this spell, the target is racked by splitting headaches and unable to see clearly, becoming nauseated for the spell’s duration. Each round, the target’s pupils randomly become dilated or contracted for 1 round. This has a 25% chance to blind the target and a 25% chance to dazzle them each turn.",
+                "You overstimulate a living target with alternating flashes of light and shadow within its eyes, causing its pupils to rapidly dilate and contract. While under the effects of this spell, the target is racked by splitting headaches and unable to see clearly, becoming nauseated for the spell’s duration. Each round, the target’s pupils randomly become dilated or contracted for 1 round. This has a 25% chance to blind the target and a 25% chance to dazzle them each turn.",
                 "c0017bedbfab480781fa5a3aca39bb26",
                 overwhelming_presence.Icon,
                 AbilityType.Spell,
