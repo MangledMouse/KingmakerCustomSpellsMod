@@ -121,7 +121,6 @@ namespace CowWithHatsCustomSpellsMod
                 Common.createAbilityTargetHasFact(true, undead),
                 Common.createAbilityTargetHasFact(true, construct),
                 Helpers.CreateRunActions(SavingThrowType.Will, Helpers.CreateConditionalSaved(null, apply_buff)),
-                Helpers.CreateSpellDescriptor(SpellDescriptor.Blindness),
                 Helpers.CreateSpellComponent(SpellSchool.Evocation)
                 );
 
@@ -140,7 +139,6 @@ namespace CowWithHatsCustomSpellsMod
                 Common.createAbilityTargetHasFact(true, construct),
                 Helpers.CreateAbilityTargetsAround(30.Feet(), TargetType.Enemy),
                 Helpers.CreateRunActions(SavingThrowType.Will, Helpers.CreateConditionalSaved(null, apply_buff)),
-                Helpers.CreateSpellDescriptor(SpellDescriptor.Blindness),
                 Helpers.CreateSpellComponent(SpellSchool.Evocation)
                 );
 

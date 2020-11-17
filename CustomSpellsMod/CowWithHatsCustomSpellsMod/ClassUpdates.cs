@@ -80,6 +80,8 @@ namespace CowWithHatsCustomSpellsMod
             NewSpells.mydriatic_spontaneity_mass.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 7); //witch spell list
             NewSpells.mydriatic_spontaneity_mass.AddToSpellList(library.Get<BlueprintSpellList>("90a9bcf466f740639902446dfd2230e5"), 7); //winter witch spell list (gets its own because of fire spell ban)
 
+            NewSpells.mages_disjunction.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 9); // psychic spell list
+
         }
 
         private static void ReplaceEvangelistSpells()

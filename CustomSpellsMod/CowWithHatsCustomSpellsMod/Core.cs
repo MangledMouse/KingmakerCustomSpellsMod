@@ -45,12 +45,15 @@ namespace CowWithHatsCustomSpellsMod
         static internal void preLoad()
         {
             NewSpells.load();
+            //at the moment I am failing to remove the appropriate immunities from the enemy i feel like removing them from
+            //BalanceUpdates.load();
             //Main.logger.Log("Preload reached");
         }
 
         static internal void postLoad()
         {
             ClassUpdates.load();
+            
         }
 
         static internal void UpdateDismiss()
