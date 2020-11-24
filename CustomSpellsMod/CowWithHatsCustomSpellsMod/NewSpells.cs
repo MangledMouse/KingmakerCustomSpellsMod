@@ -98,7 +98,6 @@ namespace CowWithHatsCustomSpellsMod
             var new_round_after = Common.createContextActionRandomize(apply_blind, apply_dazzled, null, null);//, apply_blind_quick, apply_dazzle_quick);
             BlueprintBuff stinkingCloudAfterBuff = library.Get<BlueprintBuff>("fa039d873ee3f3e42abaf19877abaae1"); //stinking cloud buff after
             mydriatic_spontaneity_buff = library.CopyAndAdd<BlueprintBuff>("fa039d873ee3f3e42abaf19877abaae1", "Mydriatic Spontaneity", "e9f794cc9da94a14861b200b83daa265");
-            mydriatic_spontaneity_buff.ReplaceComponent<SpellDescriptorComponent>(Helpers.CreateSpellDescriptor(SpellDescriptor.Blindness));
             mydriatic_spontaneity_buff.AddComponent(Helpers.CreateAddFactContextActions(activated: new_round_after, newRound: new_round_after)); //activated: apply_nauseated is how we had it working before)
             mydriatic_spontaneity_buff.SetNameDescriptionIcon("Mydriatic Spontaneity",
                 "Subject is being overstimulated by flashes of light and surges of shadow. They are racked with splitting headaches and are nauseated. Each round their eyes are randomly either rapidly dialated or contracted. This process has a 25% change to dazzle them and 25% change to blind them for that round",
