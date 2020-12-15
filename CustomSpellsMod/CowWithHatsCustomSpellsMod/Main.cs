@@ -30,6 +30,7 @@ namespace CowWithHatsCustomSpellsMod
             internal bool ear_pierce_daze_update;
             internal bool remove_slumber_nerf;
             internal bool change_inspire_rage_mind_affecting;
+            internal bool spell_replacement;
             //internal bool silence_update;
             //internal bool confusion_output;
             internal Settings()
@@ -43,6 +44,7 @@ namespace CowWithHatsCustomSpellsMod
                     ear_pierce_daze_update = (bool)jo["ear_pierce_daze_update"];
                     remove_slumber_nerf = (bool)jo["remove_slumber_nerf"];
                     change_inspire_rage_mind_affecting = (bool)jo["change_inspire_rage_mind_affecting"];
+                    spell_replacement = (bool)jo["spell_replacement"];
                     //silence_update = (bool)jo["silence_update"];
                     //confusion_output = (bool)jo["confusion_output"];
                 }
@@ -134,8 +136,7 @@ namespace CowWithHatsCustomSpellsMod
 //                    CallOfTheWild.Helpers.GuidStorage.load(Properties.Resources.blueprints, allow_guid_generation);
                     Main.DebugLog("Loading CowWithHat's Custom Spells");
                     //logger.Log("Made it to pre load");
-                    Core.preLoad();
-                    
+                    Core.preLoad();                    
                     //this might break some stuff
                     //CallOfTheWild.Helpers.GuidStorage.dump(@"./Mods/CowWithHatsCustomSpellsMod/loaded_blueprints.txt");
                 }
@@ -180,6 +181,7 @@ namespace CowWithHatsCustomSpellsMod
                     if (!alreadyRan)
                     {
                         //Main.logger.Log("Loaddictionary postfix is running");
+                        Core.Load();
                         Core.postLoad();
                         if (settings.domination_dismissal)
                         {
@@ -198,6 +200,10 @@ namespace CowWithHatsCustomSpellsMod
                         if(settings.change_inspire_rage_mind_affecting)
                         {
                             Core.ChangeInspireRage();
+                        }
+                        if(settings.spell_replacement)
+                        {
+                            Core.AddSpellReplacement();
                         }
                         //if(settings.silence_update)
                         //{
@@ -233,6 +239,49 @@ namespace CowWithHatsCustomSpellsMod
             logger?.Log(message);
             return new InvalidOperationException(message);
         }
+
+
+        //This is from Eldritch Arcana and may not be as useful as I'd hoped
+        static Harmony12.HarmonyInstance harmonyInstance;
+        // We don't want one patch failure to take down the entire mod, so they're applied individually.
+        //
+        // Also, in general the return value should be ignored. If a patch fails, we still want to create
+        // blueprints, otherwise the save won't load. Better to have something be non-functional.
+        internal static bool ApplyPatch(Type type, String featureName)
+        {
+            try
+            {
+                if (typesPatched.ContainsKey(type)) return typesPatched[type];
+
+                var patchInfo = Harmony12.HarmonyMethodExtensions.GetHarmonyMethods(type);
+                if (patchInfo == null || patchInfo.Count() == 0)
+                {
+                    Log.Error($"Failed to apply patch {type}: could not find Harmony attributes");
+                    failedPatches.Add(featureName);
+                    typesPatched.Add(type, false);
+                    return false;
+                }
+                var processor = new Harmony12.PatchProcessor(harmonyInstance, type, Harmony12.HarmonyMethod.Merge(patchInfo));
+                var patch = processor.Patch().FirstOrDefault();
+                if (patch == null)
+                {
+                    Log.Error($"Failed to apply patch {type}: no dynamic method generated");
+                    failedPatches.Add(featureName);
+                    typesPatched.Add(type, false);
+                    return false;
+                }
+                typesPatched.Add(type, true);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed to apply patch {type}: {e}");
+                failedPatches.Add(featureName);
+                typesPatched.Add(type, false);
+                return false;
+            }
+        }
+
     }
 
 

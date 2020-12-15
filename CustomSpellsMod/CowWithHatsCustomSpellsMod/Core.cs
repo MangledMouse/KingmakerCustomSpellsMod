@@ -41,6 +41,9 @@ namespace CowWithHatsCustomSpellsMod
     class Core
     {
         static LibraryScriptableObject library => Main.library;
+        // All classes (including prestige classes).
+        public static List<BlueprintCharacterClass> classes;
+        public static BlueprintArchetype eldritchScionArchetype;
 
         static internal void preLoad()
         {
@@ -54,6 +57,18 @@ namespace CowWithHatsCustomSpellsMod
         {
             ClassUpdates.load();
             
+        }
+
+
+        internal static void Load()
+        {
+            const String eldritchScionClassId = "f5b8c63b141b2f44cbb8c2d7579c34f5";
+            classes = library.Root.Progression.CharacterClasses.Where(c => c.AssetGuid != eldritchScionClassId).ToList();
+        }
+
+        internal static void AddSpellReplacement()
+        {
+
         }
 
         static internal void UpdateDismiss()
@@ -128,6 +143,36 @@ namespace CowWithHatsCustomSpellsMod
             inspireRageEffectBuff.RemoveComponents<SpellDescriptorComponent>();
             BlueprintAbilityAreaEffect inspireRageArea = library.Get<BlueprintAbilityAreaEffect>("5421df42956841e7a0499568080421b7");
             inspireRageArea.RemoveComponents<SpellDescriptorComponent>();
+        }
+
+
+        //internal static void UpdateAmiri()
+        //{
+        //    var amiri_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("b3f29faef0a82b941af04f08ceb47fa2");
+        //    amiri_companion.Strength = 16;//+2
+        //    amiri_companion.Dexterity = 13;
+        //    amiri_companion.Constitution = 14;
+        //    amiri_companion.Intelligence = 10;
+        //    amiri_companion.Wisdom = 12;
+        //    amiri_companion.Charisma = 10;
+        //    var amiri1_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("df943986ee329e84a94360f2398ae6e6");
+        //    var amiri_class_level = amiri1_feature.GetComponent<AddClassLevels>();
+        //    amiri_class_level.Archetypes = new BlueprintArchetype[] { };
+        //    amiri_class_level.RaceStat = Kingmaker.EntitySystem.Stats.StatType.Strength;
+        //    amiri_class_level.Selections[0].Features[1] = library.Get<BlueprintFeature>("9972f33f977fc724c838e59641b2fca5");
+        //    amiri_class_level.Skills = new StatType[] { StatType.SkillPersuasion, StatType.SkillAthletics, StatType.SkillLoreNature };
+        //}
+
+        internal static void UpdateExtendableSpells()
+        {
+            CallOfTheWild.NewSpells.daze_mass.AvailableMetamagic = CallOfTheWild.NewSpells.daze_mass.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
+            CallOfTheWild.NewSpells.command.AvailableMetamagic = CallOfTheWild.NewSpells.command.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
+            CallOfTheWild.NewSpells.babble.AvailableMetamagic = CallOfTheWild.NewSpells.babble.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
+            CallOfTheWild.NewSpells.synaptic_pulse.AvailableMetamagic = CallOfTheWild.NewSpells.synaptic_pulse.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
+            CallOfTheWild.NewSpells.synaptic_pulse_greater.AvailableMetamagic = CallOfTheWild.NewSpells.synaptic_pulse_greater.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
+            //Check these
+
+            //CallOfTheWild.NewSpells.sheet_lightning.AvailableMetamagic = CallOfTheWild.NewSpells.sheet_lightning.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
         }
     }
 
