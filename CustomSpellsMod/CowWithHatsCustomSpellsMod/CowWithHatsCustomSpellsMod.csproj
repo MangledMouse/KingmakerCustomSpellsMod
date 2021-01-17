@@ -97,7 +97,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="NewSpells.cs" />
-    <Compile Include="Spell Replacement\SpellReplacementHelpers.cs" />
     <Compile Include="Spell Replacement\SpellReplacement.cs" />
   </ItemGroup>
   <ItemGroup>

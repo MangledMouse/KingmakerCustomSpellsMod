@@ -68,7 +68,7 @@ namespace CowWithHatsCustomSpellsMod
 
         internal static void AddSpellReplacement()
         {
-
+            SpellReplacement.Load();
         }
 
         static internal void UpdateDismiss()
