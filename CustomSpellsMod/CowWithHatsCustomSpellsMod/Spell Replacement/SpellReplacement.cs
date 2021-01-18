@@ -48,13 +48,13 @@ namespace CowWithHatsCustomSpellsMod
             // ApplySpellbook.Apply and SelectFeature.Apply (used for Prestigious Spellcaster).
             foreach (var characterClass in Helpers.classes)
             {
-                //if (characterClass.name == "OccultistClass")
-                //    break;
-                Main.logger.Log($"Spell Replacement Progression function started for {characterClass.name}");
+                if (characterClass.name == "OccultistClass")
+                    break;
+                //Main.logger.Log($"Spell Replacement Progression function started for {characterClass.name}");
                 CreateSpellReplacementProgression(characterClass.Spellbook);
                 foreach (var archetype in characterClass.Archetypes)
                 {
-                    Main.logger.Log($"Spell Replacement Progression function started for {archetype.name}");
+                    //Main.logger.Log($"Spell Replacement Progression function started for {archetype.name}");
                     CreateSpellReplacementProgression(archetype.ReplaceSpellbook);
                 }
             }
