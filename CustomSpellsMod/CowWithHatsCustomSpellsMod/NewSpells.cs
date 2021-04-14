@@ -384,7 +384,7 @@ namespace CowWithHatsCustomSpellsMod
 
             var skill_buff = Helpers.CreateBuff("HeightenedAwarenessSkillBuff",
                                                 "Heightened Awareness",
-                                                "You are in a heigtened state of awareness. You receive a +2 competence bonus on all Perception, Knowledge and Lore checks. You may dismiss this bonus to receive a +4 to initiative bonus checks for 3 rounds",
+                                                "You are in a heigtened state of awareness. You receive a +2 competence bonus on all Perception, Knowledge and Lore checks. You may dismiss this bonus to receive a +4 bonus to initiative checks for 3 rounds.",
                                                 "77219411ea054e03a838c96aaa4ef207", //fresh guid
                                                 //"",
                                                 senseVitalsIcon,
