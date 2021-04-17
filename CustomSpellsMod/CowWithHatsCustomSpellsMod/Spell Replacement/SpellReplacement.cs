@@ -52,14 +52,16 @@ namespace CowWithHatsCustomSpellsMod
                 BlueprintArchetype relicHunterArchetype = library.Get<BlueprintArchetype>("ee3aefc7cb19461f95f5d254009664e0");
                 if (characterClass == occultistClass)
                     break;
-                Main.logger.Log($"Spell Replacement Progression function started for {characterClass.name}");
-                CreateSpellReplacementProgression(characterClass.Spellbook);
+                //Main.logger.Log($"Spell Replacement Progression function started for {characterClass.name}");
+                if(characterClass.Spellbook != null)
+                    CreateSpellReplacementProgression(characterClass.Spellbook);
                 foreach (var archetype in characterClass.Archetypes)
                 {
-                    if (archetype == relicHunterArchetype)
-                        break;
-                    Main.logger.Log($"Spell Replacement Progression function started for {archetype.name}");
-                    CreateSpellReplacementProgression(archetype.ReplaceSpellbook);
+                    //if (archetype == relicHunterArchetype)
+                    //    break;
+                    //Main.logger.Log($"Spell Replacement Progression function started for {archetype.name}");
+                    if (archetype.ReplaceSpellbook != null)
+                        CreateSpellReplacementProgression(archetype.ReplaceSpellbook);
                 }
             }
 
@@ -77,9 +79,8 @@ namespace CowWithHatsCustomSpellsMod
 
         static void CreateSpellReplacementProgression(BlueprintSpellbook spellbook)
         {
-            if (spellbook == null || !spellbook.Spontaneous) return;
+            if (spellbook == null || !spellbook.Spontaneous || spellbook.SpellsKnown == null) return;
 
-            var caster = spellbook.CharacterClass;
             var levelEntries = new Dictionary<int, BlueprintFeatureSelection>();
 
             // Replace a spell is optional, so provide a way to opt out.
