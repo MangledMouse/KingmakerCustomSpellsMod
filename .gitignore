@@ -49,3 +49,4 @@ CustomSpellsMod/CowWithHatsCustomSpellsMod/obj/Release/CowWithHatsCustomSpellsMo
 CustomSpellsMod/CowWithHatsCustomSpellsMod/obj/Release/DesignTimeResolveAssemblyReferencesInput.cache
 CustomSpellsMod/CowWithHatsCustomSpellsMod/obj/Release/DesignTimeResolveAssemblyReferencesInput.cache
 *.cache
+CustomSpellsMod/CowWithHatsCustomSpellsMod/obj*
