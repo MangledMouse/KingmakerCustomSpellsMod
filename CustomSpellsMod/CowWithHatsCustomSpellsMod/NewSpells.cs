@@ -124,7 +124,7 @@ namespace CowWithHatsCustomSpellsMod
                 Helpers.CreateSpellComponent(SpellSchool.Evocation)
                 );
 
-            //mydriatic_spontaneity.AddComponent(Helpers.CreateSpellDescriptor(SpellDescriptor.Nauseated));
+            mydriatic_spontaneity.AddComponent(Helpers.CreateSpellDescriptor(SpellDescriptor.Nauseated));
 
             mydriatic_spontaneity_mass = Helpers.CreateAbility("MydriaticSponaneityMassAbility",
                 "Mydriatic Spontaneity, Mass",
@@ -144,7 +144,7 @@ namespace CowWithHatsCustomSpellsMod
                 Helpers.CreateSpellComponent(SpellSchool.Evocation)
                 );
 
-            //mydriatic_spontaneity_mass.AddComponent(Helpers.CreateSpellDescriptor(SpellDescriptor.Nauseated));
+            mydriatic_spontaneity_mass.AddComponent(Helpers.CreateSpellDescriptor(SpellDescriptor.Nauseated));
 
             mydriatic_spontaneity.setMiscAbilityParametersSingleTargetRangedHarmful(true);
             mydriatic_spontaneity_mass.setMiscAbilityParametersSingleTargetRangedHarmful(true);
