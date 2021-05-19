@@ -371,6 +371,8 @@ namespace CowWithHatsCustomSpellsMod
 
             acute_senses.AddToSpellList(Helpers.alchemistSpellList, 2);
             acute_senses.AddToSpellList(Helpers.bardSpellList, 2);
+            acute_senses.AddToSpellList(Helpers.inquisitorSpellList, 2);
+            acute_senses.AddToSpellList(Helpers.rangerSpellList, 2);
             acute_senses.AddSpellAndScroll("d4dc796367b4fb342ad7e8221fb8d813");//28968352ed826da4e9c2af856aad7096 guid for scroll of foresight
         }
 
