@@ -143,8 +143,36 @@ namespace CowWithHatsCustomSpellsMod
             inspireRageEffectBuff.RemoveComponents<SpellDescriptorComponent>();
             BlueprintAbilityAreaEffect inspireRageArea = library.Get<BlueprintAbilityAreaEffect>("5421df42956841e7a0499568080421b7");
             inspireRageArea.RemoveComponents<SpellDescriptorComponent>();
+
+            BlueprintBuff controlledInspiredRageDexBuff = library.Get<BlueprintBuff>("ed0106d16661497a8147af6175a55dc8");
+            controlledInspiredRageDexBuff.RemoveComponents<SpellDescriptorComponent>();
+            BlueprintBuff controlledInspiredRageStrBuff = library.Get<BlueprintBuff>("de4a813aeee84a329e3b8ed10e9caeec");
+            controlledInspiredRageStrBuff.RemoveComponents<SpellDescriptorComponent>();
+            BlueprintBuff controlledInspiredRageConBuff = library.Get<BlueprintBuff>("cd2956555ab04d46ad0525947fe19846");
+            controlledInspiredRageConBuff.RemoveComponents<SpellDescriptorComponent>();
+
+
+            //This messes with ability funcitoning at all. Will keep it here because it has the IDs of relevant blueprints to the buff in case there are other changes that need to be made
+            //BlueprintBuff controlledRageDexBuff = library.Get<BlueprintBuff>("ed0106d16661497a8147af6175a55dc8");
+            //controlledRageDexBuff.RemoveComponents<SpellDescriptorComponent>();
+            //BlueprintBuff controlledRageStrBuff = library.Get<BlueprintBuff>("de4a813aeee84a329e3b8ed10e9caeec");
+            //controlledRageStrBuff.RemoveComponents<SpellDescriptorComponent>();
+            //BlueprintBuff controlledRageConBuff = library.Get<BlueprintBuff>("cd2956555ab04d46ad0525947fe19846");
+            //controlledRageConBuff.RemoveComponents<SpellDescriptorComponent>();
+
+            BlueprintBuff insightfulContemplationBuff = library.Get<BlueprintBuff>("6b4882478b094ccf99f17fea891d9d14");
+            insightfulContemplationBuff.RemoveComponents<SpellDescriptorComponent>();
+            BlueprintBuff insightfulContemplationAbilityBuff = library.Get<BlueprintBuff>("ebe4fa61b8594e5e9dc084495fa86c2f");
+            insightfulContemplationAbilityBuff.RemoveComponents<SpellDescriptorComponent>();
+            BlueprintAbilityAreaEffect insightfulContemplationAbilityArea = library.Get<BlueprintAbilityAreaEffect>("6b8a0589e9af4227a22b9ea5a1098559");
+            insightfulContemplationAbilityArea.RemoveComponents<SpellDescriptorComponent>();
+
         }
 
+
+        //SkaldCourtPoetInsigtfulContemplationBuff	6b4882478b094ccf99f17fea891d9d14	Kingmaker.UnitLogic.Buffs.Blueprints.BlueprintBuff
+        //SkaldCourtPoetInsightfulContemplationAbilityBuff ebe4fa61b8594e5e9dc084495fa86c2f Kingmaker.UnitLogic.Buffs.Blueprints.BlueprintBuff
+        //SkaldCourtPoetInsightfulContemplationAbilityArea    6b8a0589e9af4227a22b9ea5a1098559 Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbilityAreaEffect
 
         //internal static void UpdateAmiri()
         //{
@@ -170,9 +198,6 @@ namespace CowWithHatsCustomSpellsMod
             CallOfTheWild.NewSpells.babble.AvailableMetamagic = CallOfTheWild.NewSpells.babble.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
             CallOfTheWild.NewSpells.synaptic_pulse.AvailableMetamagic = CallOfTheWild.NewSpells.synaptic_pulse.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
             CallOfTheWild.NewSpells.synaptic_pulse_greater.AvailableMetamagic = CallOfTheWild.NewSpells.synaptic_pulse_greater.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
-            //Check these
-
-            //CallOfTheWild.NewSpells.sheet_lightning.AvailableMetamagic = CallOfTheWild.NewSpells.sheet_lightning.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
         }
     }
 
