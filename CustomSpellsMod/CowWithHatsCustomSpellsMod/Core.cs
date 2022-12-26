@@ -174,30 +174,33 @@ namespace CowWithHatsCustomSpellsMod
         //SkaldCourtPoetInsightfulContemplationAbilityBuff ebe4fa61b8594e5e9dc084495fa86c2f Kingmaker.UnitLogic.Buffs.Blueprints.BlueprintBuff
         //SkaldCourtPoetInsightfulContemplationAbilityArea    6b8a0589e9af4227a22b9ea5a1098559 Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbilityAreaEffect
 
-        //internal static void UpdateAmiri()
-        //{
-        //    var amiri_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("b3f29faef0a82b941af04f08ceb47fa2");
-        //    amiri_companion.Strength = 16;//+2
-        //    amiri_companion.Dexterity = 13;
-        //    amiri_companion.Constitution = 14;
-        //    amiri_companion.Intelligence = 10;
-        //    amiri_companion.Wisdom = 12;
-        //    amiri_companion.Charisma = 10;
-        //    var amiri1_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("df943986ee329e84a94360f2398ae6e6");
-        //    var amiri_class_level = amiri1_feature.GetComponent<AddClassLevels>();
-        //    amiri_class_level.Archetypes = new BlueprintArchetype[] { };
-        //    amiri_class_level.RaceStat = Kingmaker.EntitySystem.Stats.StatType.Strength;
-        //    amiri_class_level.Selections[0].Features[1] = library.Get<BlueprintFeature>("9972f33f977fc724c838e59641b2fca5");
-        //    amiri_class_level.Skills = new StatType[] { StatType.SkillPersuasion, StatType.SkillAthletics, StatType.SkillLoreNature };
-        //}
+        internal static void UpdateAmiri()
+        {
+            var amiri_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("b3f29faef0a82b941af04f08ceb47fa2");
+            amiri_companion.Strength = 16;//+2
+            amiri_companion.Dexterity = 13;
+            amiri_companion.Constitution = 14;
+            amiri_companion.Intelligence = 10;
+            amiri_companion.Wisdom = 12;
+            amiri_companion.Charisma = 10;
+            var amiri1_feature = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("df943986ee329e84a94360f2398ae6e6");
+            var amiri_class_level = amiri1_feature.GetComponent<AddClassLevels>();
+            amiri_class_level.Archetypes = new BlueprintArchetype[] { };
+            amiri_class_level.RaceStat = Kingmaker.EntitySystem.Stats.StatType.Strength;
+            amiri_class_level.Selections[0].Features[1] = library.Get<BlueprintFeature>("9972f33f977fc724c838e59641b2fca5");
+            amiri_class_level.Skills = new StatType[] { StatType.SkillPersuasion, StatType.SkillAthletics, StatType.SkillLoreNature, StatType.SkillPerception };
+        }
 
         internal static void UpdateExtendableSpells()
         {
+            //These 4 are now redundant with the base Call of the Wild mod
             CallOfTheWild.NewSpells.daze_mass.AvailableMetamagic = CallOfTheWild.NewSpells.daze_mass.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
             CallOfTheWild.NewSpells.command.AvailableMetamagic = CallOfTheWild.NewSpells.command.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
-            CallOfTheWild.NewSpells.babble.AvailableMetamagic = CallOfTheWild.NewSpells.babble.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
             CallOfTheWild.NewSpells.synaptic_pulse.AvailableMetamagic = CallOfTheWild.NewSpells.synaptic_pulse.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
             CallOfTheWild.NewSpells.synaptic_pulse_greater.AvailableMetamagic = CallOfTheWild.NewSpells.synaptic_pulse_greater.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
+
+            //This is not offered by the base mod but it is possible there is something that makes it more complicated about it because of the aura it makes
+            CallOfTheWild.NewSpells.babble.AvailableMetamagic = CallOfTheWild.NewSpells.babble.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
         }
     }
 
