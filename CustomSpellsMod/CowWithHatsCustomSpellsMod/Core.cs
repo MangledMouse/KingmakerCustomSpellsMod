@@ -203,22 +203,23 @@ namespace CowWithHatsCustomSpellsMod
         internal static void UpdateForTweakOrTreat(BlueprintUnit amiri_companion)
         {
             Main.logger.Log("Tweak or Treat mod found");
-            foreach (BlueprintUnitFact fact in amiri_companion.AddFacts)
+            if (fact.AssetGuid != "9972f33f977fc724c838e59641b2fca5")//power attack feature
             {
-                if (fact.AssetGuid != "9972f33f977fc724c838e59641b2fca5")//power attack feature
+                BlueprintFeature powerAttackFeat = library.Get<BlueprintFeature>("9972f33f977fc724c838e59641b2fca5");
+                //AddFacts PowerAttackFact = CallOfTheWild.Helpers.CreateAddFact(powerAttackFeat);
+                BlueprintUnitFact[] amiriAddFacts = new BlueprintUnitFact[amiri_companion.AddFacts.Length + 1];
+                for (int i = 0; i < amiri_companion.AddFacts.Length; i++)
                 {
-                    BlueprintFeature powerAttackFeat = library.Get<BlueprintFeature>("9972f33f977fc724c838e59641b2fca5");
-                    //AddFacts PowerAttackFact = CallOfTheWild.Helpers.CreateAddFact(powerAttackFeat);
-                    BlueprintUnitFact[] amiriAddFacts = new BlueprintUnitFact[amiri_companion.AddFacts.Length + 1];
-                    for (int i = 0; i < amiri_companion.AddFacts.Length; i++)
-                    {
-                        amiriAddFacts[i] = amiri_companion.AddFacts[i];
-                    }
-                    amiriAddFacts[amiriAddFacts.Length - 1] = powerAttackFeat;
-                    amiri_companion.AddFacts = amiriAddFacts;
+                    amiriAddFacts[i] = amiri_companion.AddFacts[i];
                 }
-                Main.logger.Log("Amiri units add facts " + fact.AssetGuid + " with name " + fact.name);
+                amiriAddFacts[amiriAddFacts.Length - 1] = powerAttackFeat;
+                amiri_companion.AddFacts = amiriAddFacts;
             }
+            
+            //foreach (BlueprintUnitFact fact in amiri_companion.AddFacts)
+            //{
+            //    Main.logger.Log("Amiri units add facts " + fact.AssetGuid + " with name " + fact.name);
+            //}
         }
 
         internal static void UpdateExtendableSpells()
