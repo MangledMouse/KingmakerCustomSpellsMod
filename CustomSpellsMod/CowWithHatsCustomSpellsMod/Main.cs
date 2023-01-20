@@ -164,7 +164,8 @@ namespace CowWithHatsCustomSpellsMod
         //LibraryScriptableObject_LoadDictionary_Patch
         [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary")]
         [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary", new Type[0])]
-        [Harmony12.HarmonyAfter("CallOfTheWild")] //These want to launch after Call of the Wild so that Call's stuff exists and can be editted
+        [Harmony12.HarmonyAfter("RacesUnleashed", "DerringDo", "ZFavoredClass")]
+        [Harmony12.HarmonyPriority(Harmony12.Priority.Low)] //These want to launch after Call of the Wild so that Call's stuff exists and can be editted
         static class LibraryScriptableObject_LoadDictionary_Patch_After
         {
             static bool alreadyRan = false;

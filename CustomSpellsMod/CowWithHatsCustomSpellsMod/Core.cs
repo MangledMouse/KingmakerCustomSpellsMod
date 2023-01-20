@@ -173,7 +173,7 @@ namespace CowWithHatsCustomSpellsMod
         //SkaldCourtPoetInsigtfulContemplationBuff	6b4882478b094ccf99f17fea891d9d14	Kingmaker.UnitLogic.Buffs.Blueprints.BlueprintBuff
         //SkaldCourtPoetInsightfulContemplationAbilityBuff ebe4fa61b8594e5e9dc084495fa86c2f Kingmaker.UnitLogic.Buffs.Blueprints.BlueprintBuff
         //SkaldCourtPoetInsightfulContemplationAbilityArea    6b8a0589e9af4227a22b9ea5a1098559 Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbilityAreaEffect
-
+        public static BlueprintFeatureSelection tweakedFeat;
         internal static void UpdateAmiri()
         {
             var amiri_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("b3f29faef0a82b941af04f08ceb47fa2");
@@ -187,8 +187,38 @@ namespace CowWithHatsCustomSpellsMod
             var amiri_class_level = amiri1_feature.GetComponent<AddClassLevels>();
             amiri_class_level.Archetypes = new BlueprintArchetype[] { };
             amiri_class_level.RaceStat = Kingmaker.EntitySystem.Stats.StatType.Strength;
-            amiri_class_level.Selections[0].Features[1] = library.Get<BlueprintFeature>("9972f33f977fc724c838e59641b2fca5");
+            amiri_class_level.Selections[0].Features[1] = library.Get<BlueprintFeature>("9972f33f977fc724c838e59641b2fca5"); //power attack feature
+            amiri_class_level.Selections[0].Features[2] = library.Get<BlueprintFeature>("4ec481e2317dad24cb9cdc2adb3a98e5"); //weapon focus bastard sword
+            
             amiri_class_level.Skills = new StatType[] { StatType.SkillPersuasion, StatType.SkillAthletics, StatType.SkillLoreNature, StatType.SkillPerception };
+
+            //There is an error in tweak or treat breaks Amiri's human feat selection with 
+            tweakedFeat = library.TryGet<BlueprintFeatureSelection>("c8a37ee56f164659baaa312027b9c42f");
+            if (tweakedFeat != null)
+            {
+                UpdateForTweakOrTreat(amiri_companion);
+            }
+        }
+
+        internal static void UpdateForTweakOrTreat(BlueprintUnit amiri_companion)
+        {
+            Main.logger.Log("Tweak or Treat mod found");
+            foreach (BlueprintUnitFact fact in amiri_companion.AddFacts)
+            {
+                if (fact.AssetGuid != "9972f33f977fc724c838e59641b2fca5")//power attack feature
+                {
+                    BlueprintFeature powerAttackFeat = library.Get<BlueprintFeature>("9972f33f977fc724c838e59641b2fca5");
+                    //AddFacts PowerAttackFact = CallOfTheWild.Helpers.CreateAddFact(powerAttackFeat);
+                    BlueprintUnitFact[] amiriAddFacts = new BlueprintUnitFact[amiri_companion.AddFacts.Length + 1];
+                    for (int i = 0; i < amiri_companion.AddFacts.Length; i++)
+                    {
+                        amiriAddFacts[i] = amiri_companion.AddFacts[i];
+                    }
+                    amiriAddFacts[amiriAddFacts.Length - 1] = powerAttackFeat;
+                    amiri_companion.AddFacts = amiriAddFacts;
+                }
+                Main.logger.Log("Amiri units add facts " + fact.AssetGuid + " with name " + fact.name);
+            }
         }
 
         internal static void UpdateExtendableSpells()
