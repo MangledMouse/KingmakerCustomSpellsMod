@@ -67,14 +67,14 @@ namespace CowWithHatsCustomSpellsMod
 
             //as explained by elmindra in the previous comment, this is supposed to apply a patch to applyspellbook.apply and selectfeature.apply but one of those functions seems to no longer be present
             //there is error test in output_log.txt for it but i don't really understand exactly how it works
-            //ApplySpellbook_Apply_Patch.onApplySpellbook.Add((state, unit, previousCasterLevel) =>
-            //{
-            //    var spellbook = unit.GetSpellbook(state.SelectedClass);
-            //    if (spellbook != null && spellbook.CasterLevel != previousCasterLevel)
-            //    {
-            //        HandleUpdateCasterLevel(unit, state, spellbook);
-            //    }
-            //});
+            ApplySpellbook_Apply_Patch.onApplySpellbook.Add((state, unit, previousCasterLevel) =>
+            {
+                var spellbook = unit.GetSpellbook(state.SelectedClass);
+                if (spellbook != null && spellbook.CasterLevel != previousCasterLevel)
+                {
+                    HandleUpdateCasterLevel(unit, state, spellbook);
+                }
+            });
         }
 
         static void CreateSpellReplacementProgression(BlueprintSpellbook spellbook)
