@@ -32,6 +32,7 @@ namespace CowWithHatsCustomSpellsMod
             internal bool change_inspire_rage_mind_affecting;
             internal bool spell_replacement;
             internal bool iconic_amiri;
+            internal bool fix_allied_spellcaster;
             //internal bool silence_update;
             //internal bool confusion_output;
             internal Settings()
@@ -47,6 +48,7 @@ namespace CowWithHatsCustomSpellsMod
                     change_inspire_rage_mind_affecting = (bool)jo["change_inspire_rage_mind_affecting"];
                     spell_replacement = (bool)jo["spell_replacement"];
                     iconic_amiri = (bool)jo["iconic_amiri"];
+                    fix_allied_spellcaster = (bool)jo["fix_allied_spellcaster"];
                     //silence_update = (bool)jo["silence_update"];
                     //confusion_output = (bool)jo["confusion_output"];
                 }
@@ -211,6 +213,10 @@ namespace CowWithHatsCustomSpellsMod
                         if(settings.iconic_amiri)
                         {
                             Core.UpdateAmiri();
+                        }
+                        if (settings.fix_allied_spellcaster)
+                        {
+                            Core.UpdateAlliedSpellcaster();
                         }
                         //if(settings.silence_update)
                         //{

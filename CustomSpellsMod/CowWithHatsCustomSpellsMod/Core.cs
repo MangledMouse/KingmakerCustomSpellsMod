@@ -1,6 +1,8 @@
 ﻿using CallOfTheWild;
 using CallOfTheWild.DismissSpells;
 using CallOfTheWild.NewMechanics;
+using CallOfTheWild.TeamworkMechanics;
+using CowWithHatsCustomSpellsMod.AlliedSpellcasterFix;
 using Harmony12;
 using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
@@ -228,6 +230,21 @@ namespace CowWithHatsCustomSpellsMod
 
             //This is not offered by the base mod but it is possible there is something that makes it more complicated about it because of the aura it makes
             CallOfTheWild.NewSpells.babble.AvailableMetamagic = CallOfTheWild.NewSpells.babble.AvailableMetamagic | Kingmaker.UnitLogic.Abilities.Metamagic.Extend;
+        }
+
+        internal static void UpdateAlliedSpellcaster()
+        {
+            int fix_range = 2;
+            var allied_spell_caster = library.Get<BlueprintFeature>("9093ceeefe9b84746a5993d619d7c86f");
+            allied_spell_caster.GetComponent<AlliedSpellcaster>().Radius = fix_range;
+            allied_spell_caster.ReplaceComponent<AlliedSpellcasterSameSpellBonus>(Helpers.Create<AlliedSpellcasterSameSpellBonusExpanded>(a => { a.Radius = fix_range; a.AlliedSpellcasterFact = allied_spell_caster; }));
+
+            //foreach(BlueprintComponent bc in allied_spell_caster.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log("Allied spell caster component " + bc.name + " with type " + bc.GetType().ToString());
+            //}
+
+            allied_spell_caster.RemoveComponents<AlliedSpellcaster>();
         }
     }
 
