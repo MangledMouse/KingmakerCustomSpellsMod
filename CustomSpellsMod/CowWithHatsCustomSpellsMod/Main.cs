@@ -33,6 +33,7 @@ namespace CowWithHatsCustomSpellsMod
             internal bool spell_replacement;
             internal bool iconic_amiri;
             internal bool fix_allied_spellcaster;
+            internal bool fix_fey_thoughts;
             //internal bool silence_update;
             //internal bool confusion_output;
             internal Settings()
@@ -49,6 +50,7 @@ namespace CowWithHatsCustomSpellsMod
                     spell_replacement = (bool)jo["spell_replacement"];
                     iconic_amiri = (bool)jo["iconic_amiri"];
                     fix_allied_spellcaster = (bool)jo["fix_allied_spellcaster"];
+                    fix_fey_thoughts = (bool)jo["fix_fey_thoughts"];
                     //silence_update = (bool)jo["silence_update"];
                     //confusion_output = (bool)jo["confusion_output"];
                 }
@@ -166,7 +168,7 @@ namespace CowWithHatsCustomSpellsMod
         //LibraryScriptableObject_LoadDictionary_Patch
         [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary")]
         [Harmony12.HarmonyPatch(typeof(LibraryScriptableObject), "LoadDictionary", new Type[0])]
-        [Harmony12.HarmonyAfter("RacesUnleashed", "DerringDo", "ZFavoredClass")]
+        [Harmony12.HarmonyAfter("RacesUnleashed", "DerringDo", "ZFavoredClass", "TweakOrTreat")]
         [Harmony12.HarmonyPriority(Harmony12.Priority.Low)] //These want to launch after Call of the Wild so that Call's stuff exists and can be editted
         static class LibraryScriptableObject_LoadDictionary_Patch_After
         {
@@ -223,6 +225,12 @@ namespace CowWithHatsCustomSpellsMod
                         //    Core.UpdateSilence();
                         //}
                         //see Core.cs for Post fix related to settings.confusion_output it is dealt with in a new class after Core
+                        //fix fey thoughts if tweak or treat is installed
+                        BlueprintFeature feyThoughtsBluff = library.TryGet<BlueprintFeature>("3393b744356648bf8c87021fd24680fb");
+                        if (feyThoughtsBluff !=null && settings.fix_fey_thoughts)
+                        {
+                            Core.FixFeyThoughts();
+                        }
                         alreadyRan = true;
                     }
                     else

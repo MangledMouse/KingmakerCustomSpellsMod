@@ -6,5 +6,6 @@
 	"change_inspire_rage_mind_affecting": true,
 	"spell_replacement": true,
 	"iconic_amiri": true,
-	"fix_allied_spellcaster": true
+	"fix_allied_spellcaster": true,
+	"fix_fey_thoughts": true
 }

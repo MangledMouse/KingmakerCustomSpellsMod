@@ -12,6 +12,7 @@ using Kingmaker.Blueprints.Classes.Spells;
 using Kingmaker.Blueprints.Facts;
 using Kingmaker.Blueprints.Items.Armors;
 using Kingmaker.Controllers.Units;
+using Kingmaker.Designers.EventConditionActionSystem.Actions;
 using Kingmaker.Designers.Mechanics.Facts;
 using Kingmaker.EntitySystem.Entities;
 using Kingmaker.EntitySystem.Stats;
@@ -245,6 +246,47 @@ namespace CowWithHatsCustomSpellsMod
             //}
 
             allied_spell_caster.RemoveComponents<AlliedSpellcaster>();
+        }
+
+        internal static void FixFeyThoughts()
+        {
+            BlueprintFeature feyThoughtsBluff = library.TryGet<BlueprintFeature>("3393b744356648bf8c87021fd24680fb");
+            feyThoughtsBluff.AddComponent(Helpers.Create<CallOfTheWild.NewMechanics.AddBonusToSkillCheckIfNoClassSkill>(a => { a.skill = StatType.SkillPersuasion; a.check = StatType.CheckBluff; }));
+            BlueprintFeature feyThoughtsDiplomacy = library.TryGet<BlueprintFeature>("557db4b7510d44418fc654e1734ac0c2");
+            feyThoughtsDiplomacy.AddComponent(Helpers.Create<CallOfTheWild.NewMechanics.AddBonusToSkillCheckIfNoClassSkill>(a => { a.skill = StatType.SkillPersuasion; a.check = StatType.CheckDiplomacy; }));
+            //int i = feyThoughtsBluff.GetComponents<BlueprintComponent>().Count();
+            //Main.logger.Log("Fey Thoughts Bluff has " + i + " components");
+            //foreach (BlueprintComponent bc in feyThoughtsBluff.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log("Component with name " + bc.name + " and to string value " + bc.ToString());
+            //    AddClassSkill acs = bc as AddClassSkill;
+            //    if (acs != null)
+            //    {
+            //        Main.logger.Log("Add Class Skill skill " + acs.Skill.ToString());
+            //    }
+            //}
+            //Main.logger.Log("Fey Thoughts Diplomacy components");
+            //foreach (BlueprintComponent bc in feyThoughtsDiplomacy.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log("Component with name " + bc.name + " and to string value " + bc.ToString());
+            //    AddClassSkill acs = bc as AddClassSkill;
+            //    if (acs != null)
+            //    {
+            //        Main.logger.Log("Add Class Skill skill " + acs.Skill.ToString());
+            //    }
+            //}
+
+            //Main.logger.Log("For reference, Fast talker, which works in favored class");
+            //BlueprintFeature bf = library.TryGet<BlueprintFeature>("a56e300d308641669ed3b6fd27d862e4");
+            //foreach(BlueprintComponent bc in bf.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log("Component with name " + bc.name + " and to string value " + bc.ToString());
+            //    AddClassSkill acs = bc as AddClassSkill;
+            //    if (acs != null)
+            //    {
+            //        Main.logger.Log("Add Class Skill skill " + acs.Skill.ToString());
+            //    }
+            //}
         }
     }
 
