@@ -344,8 +344,6 @@ namespace CowWithHatsCustomSpellsMod
 
         static int previousCasterLevel;
 
-        static ApplySpellbook_Apply_Patch() => Main.ApplyPatch(typeof(ApplySpellbook_Apply_Patch), "Prestigious Spellcaster, spell replacement for spontaneous casters");
-
         static bool Prefix(ApplySpellbook __instance, LevelUpState state, UnitDescriptor unit)
         {
             try

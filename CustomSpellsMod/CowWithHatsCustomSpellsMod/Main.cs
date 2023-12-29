@@ -18,6 +18,7 @@ using CallOfTheWild;
 using Kingmaker.UI.ActionBar;
 using Kingmaker.UI.Common;
 using Harmony12;
+using Kingmaker.UI;
 
 namespace CowWithHatsCustomSpellsMod
 {
@@ -299,6 +300,11 @@ namespace CowWithHatsCustomSpellsMod
                 Log.Error($"Failed to apply patch {type}: {e}");
                 failedPatches.Add(featureName);
                 typesPatched.Add(type, false);
+                NullReferenceException nre = e as NullReferenceException;
+                if(e!=null)
+                {
+                    logger.Log("Null reference exception message is as follows " + nre.Message + " for feature " + featureName + " of type " + type);
+                }
                 return false;
             }
         }
