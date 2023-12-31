@@ -232,6 +232,7 @@ namespace CowWithHatsCustomSpellsMod
                         {
                             Core.FixFeyThoughts();
                         }
+                        Core.FixForTweakOrTreatHumanCompanionFeats();
                         alreadyRan = true;
                     }
                     else

@@ -191,23 +191,41 @@ namespace CowWithHatsCustomSpellsMod
             amiri_class_level.Archetypes = new BlueprintArchetype[] { };
             amiri_class_level.RaceStat = Kingmaker.EntitySystem.Stats.StatType.Strength;
             amiri_class_level.Selections[0].Features[1] = library.Get<BlueprintFeature>("9972f33f977fc724c838e59641b2fca5"); //power attack feature
-            amiri_class_level.Selections[0].Features[2] = library.Get<BlueprintFeature>("4ec481e2317dad24cb9cdc2adb3a98e5"); //weapon focus bastard sword
-            
+            amiri_class_level.Selections[0].Features[2] = library.Get<BlueprintFeature>("57299a78b2256604dadf1ab9a42e2873"); //weapon focus bastard sword
+
+            Main.logger.Log("All features of amiri add class levels component");
+            foreach (BlueprintFeature bf in amiri_class_level.Selections[0].Features)
+            {
+                Main.logger.Log("A feature with name " + bf.name + " and type " + bf.GetType().ToString());
+            }
+
             amiri_class_level.Skills = new StatType[] { StatType.SkillPersuasion, StatType.SkillAthletics, StatType.SkillLoreNature, StatType.SkillPerception };
 
             //There is an error in tweak or treat breaks Amiri's human feat selection with 
+            
+        }
+
+        internal static void FixForTweakOrTreatHumanCompanionFeats()
+        {
             tweakedFeat = library.TryGet<BlueprintFeatureSelection>("c8a37ee56f164659baaa312027b9c42f");
             if (tweakedFeat != null)
             {
-                UpdateForTweakOrTreat(amiri_companion);
+                UpdateForTweakOrTreat();
             }
         }
 
-        internal static void UpdateForTweakOrTreat(BlueprintUnit amiri_companion)
+        internal static void UpdateForTweakOrTreat()
         {
             Main.logger.Log("Tweak or Treat mod found");
-            BlueprintFeature powerAttackFeat = library.Get<BlueprintFeature>("9972f33f977fc724c838e59641b2fca5");
+
+            //foreach (BlueprintUnitFact fact in amiri_companion.AddFacts)
+            //{
+            //    Main.logger.Log("Amiri units add facts " + fact.AssetGuid + " with name " + fact.name);
+            //}
             //AddFacts PowerAttackFact = CallOfTheWild.Helpers.CreateAddFact(powerAttackFeat);
+
+            var amiri_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("b3f29faef0a82b941af04f08ceb47fa2");
+            BlueprintFeature powerAttackFeat = library.Get<BlueprintFeature>("9972f33f977fc724c838e59641b2fca5");
             BlueprintUnitFact[] amiriAddFacts = new BlueprintUnitFact[amiri_companion.AddFacts.Length + 1];
             for (int i = 0; i < amiri_companion.AddFacts.Length; i++)
             {
@@ -219,6 +237,23 @@ namespace CowWithHatsCustomSpellsMod
             //{
             //    Main.logger.Log("Amiri units add facts " + fact.AssetGuid + " with name " + fact.name);
             //}
+
+            BlueprintFeature pointBlankShotFeat = library.Get<BlueprintFeature>("0da0c194d6e1d43419eb8d990b28e0ab");
+            var ekun_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("d5bc1d94cd3e5be4bbc03f3366f67afc");
+            BlueprintUnitFact[] ekunAddFacts = new BlueprintUnitFact[ekun_companion.AddFacts.Length + 1];
+            for (int i = 0; i < ekunAddFacts.Length; i++)
+                ekunAddFacts[i] = ekun_companion.AddFacts[i];
+            ekunAddFacts[ekunAddFacts.Length - 1] = pointBlankShotFeat;
+            ekun_companion.AddFacts = ekunAddFacts;
+
+            BlueprintFeature selectiveChannelFeature = library.Get<BlueprintFeature>("fd30c69417b434d47b6b03b9c1f568ff");
+            var tristain_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("f6c23e93512e1b54dba11560446a9e02");
+            BlueprintUnitFact[] tristAddFacts = new BlueprintUnitFact[tristain_companion.AddFacts.Length + 1];
+            for (int i = 0; i < tristAddFacts.Length; i++)
+                tristAddFacts[i] = tristain_companion.AddFacts[i];
+            tristAddFacts[tristAddFacts.Length - 1] = selectiveChannelFeature;
+            tristain_companion.AddFacts = tristAddFacts;
+            
         }
 
         internal static void UpdateExtendableSpells()
