@@ -13,6 +13,7 @@ using Kingmaker.Blueprints.Facts;
 using Kingmaker.Blueprints.Items.Armors;
 using Kingmaker.Controllers.Units;
 using Kingmaker.Designers.EventConditionActionSystem.Actions;
+using Kingmaker.Designers.Mechanics.Buffs;
 using Kingmaker.Designers.Mechanics.Facts;
 using Kingmaker.EntitySystem.Entities;
 using Kingmaker.EntitySystem.Stats;
@@ -193,11 +194,11 @@ namespace CowWithHatsCustomSpellsMod
             amiri_class_level.Selections[0].Features[1] = library.Get<BlueprintFeature>("9972f33f977fc724c838e59641b2fca5"); //power attack feature
             amiri_class_level.Selections[0].Features[2] = library.Get<BlueprintFeature>("57299a78b2256604dadf1ab9a42e2873"); //weapon focus bastard sword
 
-            Main.logger.Log("All features of amiri add class levels component");
-            foreach (BlueprintFeature bf in amiri_class_level.Selections[0].Features)
-            {
-                Main.logger.Log("A feature with name " + bf.name + " and type " + bf.GetType().ToString());
-            }
+            //Main.logger.Log("All features of amiri add class levels component");
+            //foreach (BlueprintFeature bf in amiri_class_level.Selections[0].Features)
+            //{
+            //    Main.logger.Log("A feature with name " + bf.name + " and type " + bf.GetType().ToString());
+            //}
 
             amiri_class_level.Skills = new StatType[] { StatType.SkillPersuasion, StatType.SkillAthletics, StatType.SkillLoreNature, StatType.SkillPerception };
 
@@ -216,7 +217,7 @@ namespace CowWithHatsCustomSpellsMod
 
         internal static void UpdateForTweakOrTreat()
         {
-            Main.logger.Log("Tweak or Treat mod found");
+            Main.logger.Log("Tweak or Treat mod found. Fixing human companions across versions");
 
             //foreach (BlueprintUnitFact fact in amiri_companion.AddFacts)
             //{
@@ -226,12 +227,16 @@ namespace CowWithHatsCustomSpellsMod
 
             var amiri_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("b3f29faef0a82b941af04f08ceb47fa2");
             BlueprintFeature powerAttackFeat = library.Get<BlueprintFeature>("9972f33f977fc724c838e59641b2fca5");
+            BlueprintFeature toughness = library.Get<BlueprintFeature>("d09b20029e9abfe4480b356c92095623");
             BlueprintUnitFact[] amiriAddFacts = new BlueprintUnitFact[amiri_companion.AddFacts.Length + 1];
             for (int i = 0; i < amiri_companion.AddFacts.Length; i++)
             {
                 amiriAddFacts[i] = amiri_companion.AddFacts[i];
             }
-            amiriAddFacts[amiriAddFacts.Length - 1] = powerAttackFeat;
+            if (Main.settings.iconic_amiri || CallOfTheWild.Main.settings.update_companions)
+                amiriAddFacts[amiriAddFacts.Length - 1] = powerAttackFeat;
+            else
+                amiriAddFacts[amiriAddFacts.Length - 1] = toughness;
             amiri_companion.AddFacts = amiriAddFacts;
             //foreach (BlueprintUnitFact fact in amiri_companion.AddFacts)
             //{
@@ -241,19 +246,65 @@ namespace CowWithHatsCustomSpellsMod
             BlueprintFeature pointBlankShotFeat = library.Get<BlueprintFeature>("0da0c194d6e1d43419eb8d990b28e0ab");
             var ekun_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("d5bc1d94cd3e5be4bbc03f3366f67afc");
             BlueprintUnitFact[] ekunAddFacts = new BlueprintUnitFact[ekun_companion.AddFacts.Length + 1];
-            for (int i = 0; i < ekunAddFacts.Length; i++)
+            for (int i = 0; i < ekun_companion.AddFacts.Length; i++)
                 ekunAddFacts[i] = ekun_companion.AddFacts[i];
             ekunAddFacts[ekunAddFacts.Length - 1] = pointBlankShotFeat;
             ekun_companion.AddFacts = ekunAddFacts;
 
             BlueprintFeature selectiveChannelFeature = library.Get<BlueprintFeature>("fd30c69417b434d47b6b03b9c1f568ff");
+            BlueprintFeature impInit = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("797f25d709f559546b29e7bcb181cc74");
             var tristain_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("f6c23e93512e1b54dba11560446a9e02");
             BlueprintUnitFact[] tristAddFacts = new BlueprintUnitFact[tristain_companion.AddFacts.Length + 1];
-            for (int i = 0; i < tristAddFacts.Length; i++)
+            for (int i = 0; i < tristain_companion.AddFacts.Length; i++)
                 tristAddFacts[i] = tristain_companion.AddFacts[i];
-            tristAddFacts[tristAddFacts.Length - 1] = selectiveChannelFeature;
+            if (CallOfTheWild.Main.settings.update_companions)
+            {
+                tristAddFacts[tristAddFacts.Length - 1] = impInit;
+            }
+            else
+            {
+                tristAddFacts[tristAddFacts.Length - 1] = selectiveChannelFeature;
+            }
             tristain_companion.AddFacts = tristAddFacts;
-            
+
+            BlueprintFeature dodgeFeature = library.Get<BlueprintFeature>("97e216dbb46ae3c4faef90cf6bbe6fd5");
+            BlueprintFeature shieldFocus = library.Get<BlueprintFeature>("ac57069b6bf8c904086171683992a92a");
+            var valerie_compainion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("54be53f0b35bf3c4592a97ae335fe765");
+            BlueprintUnitFact[] valAddFacts = new BlueprintUnitFact[valerie_compainion.AddFacts.Length + 1];
+            for (int i = 0; i < valerie_compainion.AddFacts.Length; i++)
+            {
+                valAddFacts[i] = valerie_compainion.AddFacts[i];
+            }
+            if (CallOfTheWild.Main.settings.update_companions)
+            {
+                valAddFacts[valAddFacts.Length - 1] = shieldFocus;
+            }
+            else
+                valAddFacts[valAddFacts.Length - 1] = dodgeFeature;
+            valerie_compainion.AddFacts = valAddFacts;
+
+            var cephal_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("77c5eb949dffb9f45abcc7a78a2d281f");
+            BlueprintUnitFact[] cephalAddFacts = new BlueprintUnitFact[cephal_companion.AddFacts.Length + 1];
+            for(int i = 0; i < cephal_companion.AddFacts.Length; i++)
+            {
+                cephalAddFacts[i] = cephal_companion.AddFacts[i];
+            }
+            if (CallOfTheWild.Main.settings.update_companions)
+            {
+                cephalAddFacts[cephalAddFacts.Length - 1] = impInit;
+            }
+            else
+                cephalAddFacts[cephalAddFacts.Length - 1] = pointBlankShotFeat;
+            cephal_companion.AddFacts = cephalAddFacts;
+
+            BlueprintFeature twoWeaponFighting = library.Get<BlueprintFeature>("ac8aaf29054f5b74eb18f2af950e752d"); 
+            var varn_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("e83a03d50fedd35449042ce73f1b6908");
+            BlueprintUnitFact[] varnAddFacts = new BlueprintUnitFact[varn_companion.AddFacts.Length + 1];
+            for(int i =0;i<varn_companion.AddFacts.Length;i++)
+                varnAddFacts[i] = varn_companion.AddFacts[i];
+            varnAddFacts[varnAddFacts.Length-1] = twoWeaponFighting;
+            varn_companion.AddFacts = valAddFacts;
+
         }
 
         internal static void UpdateExtendableSpells()
