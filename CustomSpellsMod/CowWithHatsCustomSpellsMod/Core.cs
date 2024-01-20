@@ -243,14 +243,6 @@ namespace CowWithHatsCustomSpellsMod
             //    Main.logger.Log("Amiri units add facts " + fact.AssetGuid + " with name " + fact.name);
             //}
 
-            BlueprintFeature pointBlankShotFeat = library.Get<BlueprintFeature>("0da0c194d6e1d43419eb8d990b28e0ab");
-            var ekun_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("d5bc1d94cd3e5be4bbc03f3366f67afc");
-            BlueprintUnitFact[] ekunAddFacts = new BlueprintUnitFact[ekun_companion.AddFacts.Length + 1];
-            for (int i = 0; i < ekun_companion.AddFacts.Length; i++)
-                ekunAddFacts[i] = ekun_companion.AddFacts[i];
-            ekunAddFacts[ekunAddFacts.Length - 1] = pointBlankShotFeat;
-            ekun_companion.AddFacts = ekunAddFacts;
-
             BlueprintFeature selectiveChannelFeature = library.Get<BlueprintFeature>("fd30c69417b434d47b6b03b9c1f568ff");
             BlueprintFeature impInit = ResourcesLibrary.TryGetBlueprint<BlueprintFeature>("797f25d709f559546b29e7bcb181cc74");
             var tristain_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("f6c23e93512e1b54dba11560446a9e02");
@@ -266,6 +258,15 @@ namespace CowWithHatsCustomSpellsMod
                 tristAddFacts[tristAddFacts.Length - 1] = selectiveChannelFeature;
             }
             tristain_companion.AddFacts = tristAddFacts;
+
+            var ekun_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("d5bc1d94cd3e5be4bbc03f3366f67afc");
+            BlueprintUnitFact[] ekunAddFacts = new BlueprintUnitFact[ekun_companion.AddFacts.Length + 1];
+            for (int i = 0; i < ekun_companion.AddFacts.Length; i++)
+                ekunAddFacts[i] = ekun_companion.AddFacts[i];
+            ekunAddFacts[ekunAddFacts.Length - 1] = impInit;
+            ekun_companion.AddFacts = ekunAddFacts;
+
+            
 
             BlueprintFeature dodgeFeature = library.Get<BlueprintFeature>("97e216dbb46ae3c4faef90cf6bbe6fd5");
             BlueprintFeature shieldFocus = library.Get<BlueprintFeature>("ac57069b6bf8c904086171683992a92a");
@@ -283,6 +284,7 @@ namespace CowWithHatsCustomSpellsMod
                 valAddFacts[valAddFacts.Length - 1] = dodgeFeature;
             valerie_compainion.AddFacts = valAddFacts;
 
+            BlueprintFeature pointBlankShotFeat = library.Get<BlueprintFeature>("0da0c194d6e1d43419eb8d990b28e0ab");
             var cephal_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("77c5eb949dffb9f45abcc7a78a2d281f");
             BlueprintUnitFact[] cephalAddFacts = new BlueprintUnitFact[cephal_companion.AddFacts.Length + 1];
             for(int i = 0; i < cephal_companion.AddFacts.Length; i++)
