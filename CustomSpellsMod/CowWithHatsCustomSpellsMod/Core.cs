@@ -22,6 +22,7 @@ using Kingmaker.Enums.Damage;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
 using Kingmaker.UnitLogic.Abilities.Components;
 using Kingmaker.UnitLogic.ActivatableAbilities;
+using Kingmaker.UnitLogic.Buffs;
 using Kingmaker.UnitLogic.Buffs.Blueprints;
 using Kingmaker.UnitLogic.Commands;
 using Kingmaker.UnitLogic.Commands.Base;
@@ -38,6 +39,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 using UnityModManagerNet;
 
 namespace CowWithHatsCustomSpellsMod
@@ -259,18 +261,82 @@ namespace CowWithHatsCustomSpellsMod
             }
             tristain_companion.AddFacts = tristAddFacts;
 
+            BlueprintFeature pointBlankShotFeat = library.Get<BlueprintFeature>("0da0c194d6e1d43419eb8d990b28e0ab");
+            BlueprintFeature preciseShotFeat = library.Get<BlueprintFeature>("8f3d1e6b4be006f4d896081f2f889665");
+            BlueprintFeature longbowFocusFeat = library.Get<BlueprintFeature>("f641e7c569328614c87e0270ac5325dd");
+            BlueprintFeature boonCompanion = library.Get<BlueprintFeature>("8fc01f06eab4dd946baa5bc658cac556");
             var ekun_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("d5bc1d94cd3e5be4bbc03f3366f67afc");
-            BlueprintUnitFact[] ekunAddFacts = new BlueprintUnitFact[ekun_companion.AddFacts.Length + 1];
-            for (int i = 0; i < ekun_companion.AddFacts.Length; i++)
-                ekunAddFacts[i] = ekun_companion.AddFacts[i];
-            ekunAddFacts[ekunAddFacts.Length - 1] = impInit;
-            ekun_companion.AddFacts = ekunAddFacts;
+            //Main.logger.Log("Ekun companion add facts BEFORE I mess with him.");
+            //for (int i = 0; i < ekun_companion.AddFacts.Length; i++)
+            //{
+            //    Main.logger.Log("Ekun Companion has add fact with name " + ekun_companion.AddFacts[i].Name + " and content " + ekun_companion.AddFacts[i].ToString() + " and type " + ekun_companion.AddFacts[i].GetType().ToString());
+            //    BlueprintFeature bf = ekun_companion.AddFacts[i] as BlueprintFeature;
+            //    if (bf != null)
+            //    {
+            //        Main.logger.Log("blueprint feature");
+            //        foreach (BlueprintComponent bc in bf.ComponentsArray)
+            //        {
+            //            Main.logger.Log("A blueprint component with name " + bc.name + " and to string value " + bc.ToString() + " and type " + bc.GetType());
+            //            AddFacts af = bc as AddFacts;
+            //            if (af != null)
+            //            {
+            //                foreach (BlueprintUnitFact buf in af.Facts)
+            //                    Main.logger.Log("A blueprintunitfact with name " + buf.name + " and to string value " + buf.ToString() + " and type " + buf.GetType());
+            //            }
+            //            AddClassLevels acl = bc as AddClassLevels;
+            //            if (acl != null)
+            //            {
+            //                foreach (SelectionEntry se in acl.Selections)
+            //                {
+            //                    Main.logger.Log("A selection in this add class level " + se.ToString());
+            //                    foreach (BlueprintFeature features in se.Features)
+            //                    {
+            //                        Main.logger.Log("A feature in this selection " + features.name);
+            //                    }
+            //                }
+            //            }
+            //        }
+
+            //    }
+            //}
 
             
+            BlueprintUnitFact[] ekunAddFacts = new BlueprintUnitFact[ekun_companion.AddFacts.Length + 4];
+            for (int i = 0; i < ekun_companion.AddFacts.Length; i++)
+                ekunAddFacts[i] = ekun_companion.AddFacts[i];
+            ekunAddFacts[ekunAddFacts.Length - 1] = pointBlankShotFeat;
+            ekunAddFacts[ekunAddFacts.Length - 2] = preciseShotFeat;
+            ekunAddFacts[ekunAddFacts.Length - 3] = longbowFocusFeat;
+            ekunAddFacts[ekunAddFacts.Length - 4] = boonCompanion;
+            ekun_companion.AddFacts = ekunAddFacts;
 
+            //int theLength = ekun_companion.AddFacts.Length + 1;
+            //Main.logger.Log("This is the length I am setting the new array to " + theLength);
+            //BlueprintUnitFact[] ekunAddFacts = new BlueprintUnitFact[ekun_companion.AddFacts.Length + 1];
+            //for (int i = 0; i < ekun_companion.AddFacts.Length; i++)
+            //    ekunAddFacts[i] = ekun_companion.AddFacts[i];
+            ////ekunAddFacts[ekunAddFacts.Length - 1] = powerAttackFeat; 
+            //ekunAddFacts[ekunAddFacts.Length - 1] = impInit;
+            //ekun_companion.AddFacts = ekunAddFacts;
+
+            //Main.logger.Log("Ekun companion add facts AFTER I mess with him.");
+            //for (int i = 0; i < ekun_companion.AddFacts.Length; i++)
+            //{
+            //    Main.logger.Log("Ekun Companion has add fact with name "+ ekun_companion.AddFacts[i].Name + " and content " + ekun_companion.AddFacts[i].ToString());
+            //}
+
+
+            //Main.logger.Log("Valerie companion start");
+           // Main.logger.Log("Valerie companion add facts BEFORE I mess with her.");
+            
             BlueprintFeature dodgeFeature = library.Get<BlueprintFeature>("97e216dbb46ae3c4faef90cf6bbe6fd5");
             BlueprintFeature shieldFocus = library.Get<BlueprintFeature>("ac57069b6bf8c904086171683992a92a");
             var valerie_compainion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("54be53f0b35bf3c4592a97ae335fe765");
+            for (int i = 0; i < valerie_compainion.AddFacts.Length; i++)
+            {
+                Main.logger.Log("Valerie Companion has add fact with name " + valerie_compainion.AddFacts[i].Name + " and content " + valerie_compainion.AddFacts[i].ToString() + " and type " + valerie_compainion.AddFacts[i].GetType().ToString());
+
+            }
             BlueprintUnitFact[] valAddFacts = new BlueprintUnitFact[valerie_compainion.AddFacts.Length + 1];
             for (int i = 0; i < valerie_compainion.AddFacts.Length; i++)
             {
@@ -283,8 +349,15 @@ namespace CowWithHatsCustomSpellsMod
             else
                 valAddFacts[valAddFacts.Length - 1] = dodgeFeature;
             valerie_compainion.AddFacts = valAddFacts;
+            Main.logger.Log("Valerie companion add facts AFTER I mess with her.");
+            for (int i = 0; i < valerie_compainion.AddFacts.Length; i++)
+            {
+                Main.logger.Log("Valerie Companion has add fact with name " + valerie_compainion.AddFacts[i].Name + " and content " + valerie_compainion.AddFacts[i].ToString() + " and type " + valerie_compainion.AddFacts[i].GetType().ToString());
+            }
+           // Main.logger.Log("Valerie companion finish");
 
-            BlueprintFeature pointBlankShotFeat = library.Get<BlueprintFeature>("0da0c194d6e1d43419eb8d990b28e0ab");
+           // Main.logger.Log("Cephal companion start");
+            
             var cephal_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("77c5eb949dffb9f45abcc7a78a2d281f");
             BlueprintUnitFact[] cephalAddFacts = new BlueprintUnitFact[cephal_companion.AddFacts.Length + 1];
             for(int i = 0; i < cephal_companion.AddFacts.Length; i++)
@@ -298,7 +371,9 @@ namespace CowWithHatsCustomSpellsMod
             else
                 cephalAddFacts[cephalAddFacts.Length - 1] = pointBlankShotFeat;
             cephal_companion.AddFacts = cephalAddFacts;
+           // Main.logger.Log("Cephal companion start");
 
+          //  Main.logger.Log("Maegar companion start");
             BlueprintFeature twoWeaponFighting = library.Get<BlueprintFeature>("ac8aaf29054f5b74eb18f2af950e752d"); 
             var varn_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("e83a03d50fedd35449042ce73f1b6908");
             BlueprintUnitFact[] varnAddFacts = new BlueprintUnitFact[varn_companion.AddFacts.Length + 1];
@@ -306,7 +381,7 @@ namespace CowWithHatsCustomSpellsMod
                 varnAddFacts[i] = varn_companion.AddFacts[i];
             varnAddFacts[varnAddFacts.Length-1] = twoWeaponFighting;
             varn_companion.AddFacts = valAddFacts;
-
+            //Main.logger.Log("Maegar companion end");
         }
 
         internal static void UpdateExtendableSpells()
