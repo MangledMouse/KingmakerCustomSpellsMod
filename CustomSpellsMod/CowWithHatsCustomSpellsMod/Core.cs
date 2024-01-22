@@ -360,7 +360,8 @@ namespace CowWithHatsCustomSpellsMod
             
             var cephal_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("77c5eb949dffb9f45abcc7a78a2d281f");
             BlueprintUnitFact[] cephalAddFacts = new BlueprintUnitFact[cephal_companion.AddFacts.Length + 1];
-            for(int i = 0; i < cephal_companion.AddFacts.Length; i++)
+            BlueprintFeature metamgicExtend = library.Get<BlueprintFeature>("f180e72e4a9cbaa4da8be9bc958132ef");
+            for (int i = 0; i < cephal_companion.AddFacts.Length; i++)
             {
                 cephalAddFacts[i] = cephal_companion.AddFacts[i];
             }
@@ -369,18 +370,18 @@ namespace CowWithHatsCustomSpellsMod
                 cephalAddFacts[cephalAddFacts.Length - 1] = impInit;
             }
             else
-                cephalAddFacts[cephalAddFacts.Length - 1] = pointBlankShotFeat;
+                cephalAddFacts[cephalAddFacts.Length - 1] = metamgicExtend;
             cephal_companion.AddFacts = cephalAddFacts;
            // Main.logger.Log("Cephal companion start");
 
           //  Main.logger.Log("Maegar companion start");
-            BlueprintFeature twoWeaponFighting = library.Get<BlueprintFeature>("ac8aaf29054f5b74eb18f2af950e752d"); 
+            BlueprintFeature ironWill = library.Get<BlueprintFeature>("175d1577bb6c9a04baf88eec99c66334"); 
             var varn_companion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("e83a03d50fedd35449042ce73f1b6908");
             BlueprintUnitFact[] varnAddFacts = new BlueprintUnitFact[varn_companion.AddFacts.Length + 1];
             for(int i =0;i<varn_companion.AddFacts.Length;i++)
                 varnAddFacts[i] = varn_companion.AddFacts[i];
-            varnAddFacts[varnAddFacts.Length-1] = twoWeaponFighting;
-            varn_companion.AddFacts = valAddFacts;
+            varnAddFacts[varnAddFacts.Length-1] = ironWill;
+            varn_companion.AddFacts = varnAddFacts;
             //Main.logger.Log("Maegar companion end");
         }
 
