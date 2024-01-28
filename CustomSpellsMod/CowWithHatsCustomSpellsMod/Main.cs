@@ -35,6 +35,8 @@ namespace CowWithHatsCustomSpellsMod
             internal bool iconic_amiri;
             internal bool fix_allied_spellcaster;
             internal bool fix_fey_thoughts;
+            internal bool fix_studied_combat;
+            internal bool remove_curiousity_invocation_nerf;
             //internal bool silence_update;
             //internal bool confusion_output;
             internal Settings()
@@ -52,6 +54,8 @@ namespace CowWithHatsCustomSpellsMod
                     iconic_amiri = (bool)jo["iconic_amiri"];
                     fix_allied_spellcaster = (bool)jo["fix_allied_spellcaster"];
                     fix_fey_thoughts = (bool)jo["fix_fey_thoughts"];
+                    fix_studied_combat = (bool)jo["fix_studied_combat"];
+                    remove_curiousity_invocation_nerf = (bool)jo["remove_curiousity_invocation_nerf"];
                     //silence_update = (bool)jo["silence_update"];
                     //confusion_output = (bool)jo["confusion_output"];
                 }
@@ -220,6 +224,14 @@ namespace CowWithHatsCustomSpellsMod
                         if (settings.fix_allied_spellcaster)
                         {
                             Core.UpdateAlliedSpellcaster();
+                        }
+                        if (settings.fix_studied_combat)
+                        {
+                            Core.FixStudiedCombat();
+                        }
+                        if(settings.remove_curiousity_invocation_nerf)
+                        {
+                            Core.FixCuriosityInvocation();
                         }
                         //if(settings.silence_update)
                         //{

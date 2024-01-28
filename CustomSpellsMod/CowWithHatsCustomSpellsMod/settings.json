@@ -7,5 +7,7 @@
 	"spell_replacement": true,
 	"iconic_amiri": true,
 	"fix_allied_spellcaster": true,
-	"fix_fey_thoughts": true
+	"fix_fey_thoughts": true,
+	"fix_studied_combat": true,
+	"remove_curiousity_invocation_nerf": true
 }

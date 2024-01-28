@@ -349,11 +349,11 @@ namespace CowWithHatsCustomSpellsMod
             else
                 valAddFacts[valAddFacts.Length - 1] = dodgeFeature;
             valerie_compainion.AddFacts = valAddFacts;
-            Main.logger.Log("Valerie companion add facts AFTER I mess with her.");
-            for (int i = 0; i < valerie_compainion.AddFacts.Length; i++)
-            {
-                Main.logger.Log("Valerie Companion has add fact with name " + valerie_compainion.AddFacts[i].Name + " and content " + valerie_compainion.AddFacts[i].ToString() + " and type " + valerie_compainion.AddFacts[i].GetType().ToString());
-            }
+            //Main.logger.Log("Valerie companion add facts AFTER I mess with her.");
+            //for (int i = 0; i < valerie_compainion.AddFacts.Length; i++)
+            //{
+            //    Main.logger.Log("Valerie Companion has add fact with name " + valerie_compainion.AddFacts[i].Name + " and content " + valerie_compainion.AddFacts[i].ToString() + " and type " + valerie_compainion.AddFacts[i].GetType().ToString());
+            //}
            // Main.logger.Log("Valerie companion finish");
 
            // Main.logger.Log("Cephal companion start");
@@ -452,105 +452,199 @@ namespace CowWithHatsCustomSpellsMod
             //    }
             //}
         }
+
+        internal static void FixStudiedCombat()
+        {
+            BlueprintAbility studiedCombatAbillity = library.TryGet<BlueprintAbility>("aadd0473232c44ebb2d7eb3fbd233d92");
+            BlueprintAbility studiedCombatNoCdAbillity = library.TryGet<BlueprintAbility>("30d78c01ff964e5881315644c9633ba2");
+            BlueprintAbility studiedCombatWrapperAbility = library.TryGet<BlueprintAbility>("306956961f804de09ff4d51372f3533b");
+            
+            BlueprintAbility studiedCombatQuickened = library.TryGet<BlueprintAbility>("2fc11151c2a1462d8fa87c2b42df1d22");
+            BlueprintAbility studiedCombatQuickenedNoCd = library.TryGet<BlueprintAbility>("ef8e87a38ec54aa994d632be06ac09ba");
+            if (studiedCombatAbillity == null
+                || studiedCombatNoCdAbillity == null
+                || studiedCombatWrapperAbility == null
+                || studiedCombatQuickened == null
+                || studiedCombatQuickenedNoCd == null)
+            {
+                Main.logger.Log("Failed to find a studied combat component");
+            }
+            else
+            {
+                studiedCombatAbillity.Range = AbilityRange.Medium;
+                studiedCombatNoCdAbillity.Range = AbilityRange.Medium;
+                studiedCombatWrapperAbility.Range = AbilityRange.Medium;
+                studiedCombatQuickened.Range = AbilityRange.Medium;
+                studiedCombatNoCdAbillity.Range = AbilityRange.Medium;
+                Main.logger.Log("Studied Combat range should have been adjusted");
+            }
+            
+
+        }
+
+
+        internal static void FixCuriosityInvocation()
+        {
+
+            BlueprintBuff EnableCuriosityPatronAspectBuff = library.TryGet<BlueprintBuff>("8feee126c56b4bcf96c57a40da892683");
+            BlueprintActivatableAbility EnableCuriosityPatronAspectBuffToggleAbility = library.TryGet<BlueprintActivatableAbility>("50ab43c81b06445c8f81cdc801a869ff");
+
+            List<BlueprintBuff> patronCuriosityBuffs = new List<BlueprintBuff>();
+            
+            BlueprintBuff curiosityPatronAspectBuff = library.TryGet<BlueprintBuff>("76f185a31cad48eeb6dc00aa82c96235");
+            curiosityPatronAspectBuff.SetDescription("The DCs of the invoker’s hexes and patron spells increase by 1. These DCs increase by an additional 1 at 8th level and 16th level.");
+            EnableCuriosityPatronAspectBuff.SetDescription("The DCs of the invoker’s hexes and patron spells increase by 1. These DCs increase by an additional 1 at 8th level and 16th level.");
+            EnableCuriosityPatronAspectBuffToggleAbility.SetDescription("The DCs of the invoker’s hexes and patron spells increase by 1. These DCs increase by an additional 1 at 8th level and 16th level.");
+
+            patronCuriosityBuffs.Add(curiosityPatronAspectBuff);
+            
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("b22516831d554cda90a9fd02d6ce9043")); //WitchAgilityPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("f0a41f4ce4644f4087282cec2be1a128")); //WitchAncestorsPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("0d879099dc47471ca8d71293d720c230")); //WitchAnimalPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("cf215da90d484546bb1042e1776f4b2d")); //WitchAutumnPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("7bb8000787f04b3685100710379f3897")); //WitchDeathPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("7315cdf49ffa4250b84f35e510432958")); //WitchDevotionPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("246ecf0cd5b5443b9bcc082b2e8e5b47")); //WitchElementsPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("a08a50e7e319431d9c0a2eb77e45b4ca")); //WitchEnchantmentPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("138cc3c95ee349ed850416d5db0201ba")); //WitchEndurancePatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("6dbbecd3443c43509c22c124a2f55f48")); //WitchHealingPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("7b0f7b8946c8455db7979b18e4724abf")); //WitchLightPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("2fe57bf3437641138db2b6992025056d")); //WitchMercyPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("17404f1539bb46768bd28845a4c0fd0f")); //WitchMountainPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("cbefffc320034eb184581d7fa5b89d8c")); //WitchPlaguePatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("9459de5d2a5f482ba2abdb7c52d26f8a")); //WitchProtectionPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("4eeb10c67b194ec38047561210d529ff")); //WitchShadowPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("9c626421b2224badaa006e7652c20308")); //WitchSpringPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("5d0732fde9be4a6d8a3c322be54b05a1")); //WitchStormsPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("720669699cd84187b15eba9f27e35dd7")); //WitchStrengthPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("96fd6593b5a64de59d4dbcb49beedb4c")); //WitchSummerPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("c5ce6d23f6034f0bbe05848c6127249f")); //WitchTransformationPatronFeatureCurioistyBuff
+            patronCuriosityBuffs.Add(library.TryGet<BlueprintBuff>("21337dae00ba418c83dba601c4178488")); //WitchWinterPatronFeatureCurioistyBuff
+
+            (int, int)[] statProgression = new (int, int)[] { (7, 1), (15, 2), (20, 3) };
+
+            foreach (BlueprintBuff buff in patronCuriosityBuffs)
+            {
+                ContextRankConfig crc = buff.GetComponent<ContextRankConfig>();
+                if(crc != null)
+                {
+                    ContextRankConfig newCrc = Helpers.CreateContextRankConfig(baseValueType: ContextRankBaseValueType.ClassLevel,
+                                                                    progression: ContextRankProgression.Custom,
+                                                                    customProgression: statProgression
+                                                                    );
+                    buff.ReplaceComponent<ContextRankConfig>(newCrc);
+                }
+                else
+                {
+                    Main.logger.Log("Failed to find " + buff.Name + " context rank");
+                }
+            }
+        }
+
+        static BlueprintCharacterClass[] getWitchArray()
+        {
+            return new BlueprintCharacterClass[] { CallOfTheWild.Witch.witch_class};
+        }
+
     }
 
-        //[HarmonyPatch(typeof(UnitAttack), "OnAction")]
-        //static class UnitAttack_OnAction_Patch
-        //{
-        //    private static void Postfix(UnitAttack __instance)
-        //    {
-        //        if (!Main.settings.confusion_output)
-        //        {
-        //            return;
-        //        }
-        //        UnitEntityData unit = __instance.Executor;
-        //    if (unit.Descriptor.State.HasCondition(Kingmaker.UnitLogic.UnitCondition.Confusion))
-        //    {
-        //        UnitPartConfusion part = unit.Ensure<UnitPartConfusion>();
-        //        switch (part.State)
-        //        {
-        //            case ConfusionState.ActNormally:
-        //                CallOfTheWild.Common.AddBattleLogMessage($"{unit.CharacterName} sees clearly through its confusion and acts normally");
-        //                break;
-        //            case ConfusionState.AttackNearest:
-        //                CallOfTheWild.Common.AddBattleLogMessage($"{unit.CharacterName} lashes out at the nearest creature due to its confusion");
-        //                break;
-        //            case ConfusionState.DoNothing:
-        //                CallOfTheWild.Common.AddBattleLogMessage($"{unit.CharacterName} stays still out of confusion");
-        //                break;
-        //            case ConfusionState.SelfHarm:
-        //                CallOfTheWild.Common.AddBattleLogMessage($"{unit.CharacterName} hurts itself in its confusion");
-        //                break;
-        //            default:
-        //                CallOfTheWild.Common.AddBattleLogMessage($"{unit.CharacterName} is not confused");
-        //                break;
-        //        }
-        //    }
-        //}
-        //}
+    //[HarmonyPatch(typeof(UnitAttack), "OnAction")]
+    //static class UnitAttack_OnAction_Patch
+    //{
+    //    private static void Postfix(UnitAttack __instance)
+    //    {
+    //        if (!Main.settings.confusion_output)
+    //        {
+    //            return;
+    //        }
+    //        UnitEntityData unit = __instance.Executor;
+    //    if (unit.Descriptor.State.HasCondition(Kingmaker.UnitLogic.UnitCondition.Confusion))
+    //    {
+    //        UnitPartConfusion part = unit.Ensure<UnitPartConfusion>();
+    //        switch (part.State)
+    //        {
+    //            case ConfusionState.ActNormally:
+    //                CallOfTheWild.Common.AddBattleLogMessage($"{unit.CharacterName} sees clearly through its confusion and acts normally");
+    //                break;
+    //            case ConfusionState.AttackNearest:
+    //                CallOfTheWild.Common.AddBattleLogMessage($"{unit.CharacterName} lashes out at the nearest creature due to its confusion");
+    //                break;
+    //            case ConfusionState.DoNothing:
+    //                CallOfTheWild.Common.AddBattleLogMessage($"{unit.CharacterName} stays still out of confusion");
+    //                break;
+    //            case ConfusionState.SelfHarm:
+    //                CallOfTheWild.Common.AddBattleLogMessage($"{unit.CharacterName} hurts itself in its confusion");
+    //                break;
+    //            default:
+    //                CallOfTheWild.Common.AddBattleLogMessage($"{unit.CharacterName} is not confused");
+    //                break;
+    //        }
+    //    }
+    //}
+    //}
 
-        //[HarmonyPatch(typeof(UnitSelfHarm), "OnAction")]
-        //static class UnitSelfHarm_OnAction_Patch
-        //{
-        //    private static void Postfix(UnitSelfHarm __instance)
-        //    {
-        //        if (!Main.settings.confusion_output)
-        //        {
-        //            return;
-        //        }
-        //        if (__instance.Target != null)
-        //            CallOfTheWild.Common.AddBattleLogMessage($"{__instance.Target.Unit.CharacterName} hurts itself in its confusion");
-        //    }
-        //}
+    //[HarmonyPatch(typeof(UnitSelfHarm), "OnAction")]
+    //static class UnitSelfHarm_OnAction_Patch
+    //{
+    //    private static void Postfix(UnitSelfHarm __instance)
+    //    {
+    //        if (!Main.settings.confusion_output)
+    //        {
+    //            return;
+    //        }
+    //        if (__instance.Target != null)
+    //            CallOfTheWild.Common.AddBattleLogMessage($"{__instance.Target.Unit.CharacterName} hurts itself in its confusion");
+    //    }
+    //}
 
-        //[HarmonyPatch(typeof(UnitDoNothing), "OnAction")]
-        //static class DoNothing_OnAction_Patch
-        //{
-        //    private static void Postfix(UnitDoNothing __instance)
-        //    {
-        //        if (!Main.settings.confusion_output)
-        //        {
-        //            return;
-        //        }
-        //        if (__instance.Target != null)
-        //            CallOfTheWild.Common.AddBattleLogMessage($"{__instance.Target.Unit.CharacterName} stays still out of confusion");
-        //    }
-        //}
+    //[HarmonyPatch(typeof(UnitDoNothing), "OnAction")]
+    //static class DoNothing_OnAction_Patch
+    //{
+    //    private static void Postfix(UnitDoNothing __instance)
+    //    {
+    //        if (!Main.settings.confusion_output)
+    //        {
+    //            return;
+    //        }
+    //        if (__instance.Target != null)
+    //            CallOfTheWild.Common.AddBattleLogMessage($"{__instance.Target.Unit.CharacterName} stays still out of confusion");
+    //    }
+    //}
 
 
-        //to avoid transpiler issues
-        //we can write a postfix for the UnitPartConfusion State with this syntax
-        //[HarmonyPatch(typeof(UnitPartConfusion), "State", MethodType.Setter)]
-        //Then grab the __instance of the UnitPartConfusion and output to the battlelog on a switch of the ConfusionState State
-        //which looks like 
+    //to avoid transpiler issues
+    //we can write a postfix for the UnitPartConfusion State with this syntax
+    //[HarmonyPatch(typeof(UnitPartConfusion), "State", MethodType.Setter)]
+    //Then grab the __instance of the UnitPartConfusion and output to the battlelog on a switch of the ConfusionState State
+    //which looks like 
 
-        //[HarmonyPatch(typeof(UnitPartConfusion), "State", MethodType.Setter)]
-        //static class UnitPartConfusion_StateSetter_Patch
-        //{
-        //    private static void Postfix(UnitPartConfusion __instance)
-        //    {
-        //        if(!Main.settings.confusion_output)
-        //        {
-        //            return;
-        //        }
-        //        switch (__instance.State)
-        //        {
-        //            case ConfusionState.ActNormally:
-        //                CallOfTheWild.Common.AddBattleLogMessage($"{__instance.Owner.CharacterName} sees clearly through its confusion and acts normally");
-        //                break;
-        //            case ConfusionState.AttackNearest:
-        //                CallOfTheWild.Common.AddBattleLogMessage($"{__instance.Owner.CharacterName} lashes out at the nearest creature due to its confusion");
-        //                break;
-        //            case ConfusionState.DoNothing:
-        //                CallOfTheWild.Common.AddBattleLogMessage($"{__instance.Owner.CharacterName} stays still out of confusion");
-        //                break;
-        //            case ConfusionState.SelfHarm:
-        //                CallOfTheWild.Common.AddBattleLogMessage($"{__instance.Owner.CharacterName} hurts itself in its confusion");
-        //                break;
-        //            default:
-        //                CallOfTheWild.Common.AddBattleLogMessage($"{__instance.Owner.CharacterName} is not confused");
-        //                break;
-        //        }
-        //    }
-        //}    
+    //[HarmonyPatch(typeof(UnitPartConfusion), "State", MethodType.Setter)]
+    //static class UnitPartConfusion_StateSetter_Patch
+    //{
+    //    private static void Postfix(UnitPartConfusion __instance)
+    //    {
+    //        if(!Main.settings.confusion_output)
+    //        {
+    //            return;
+    //        }
+    //        switch (__instance.State)
+    //        {
+    //            case ConfusionState.ActNormally:
+    //                CallOfTheWild.Common.AddBattleLogMessage($"{__instance.Owner.CharacterName} sees clearly through its confusion and acts normally");
+    //                break;
+    //            case ConfusionState.AttackNearest:
+    //                CallOfTheWild.Common.AddBattleLogMessage($"{__instance.Owner.CharacterName} lashes out at the nearest creature due to its confusion");
+    //                break;
+    //            case ConfusionState.DoNothing:
+    //                CallOfTheWild.Common.AddBattleLogMessage($"{__instance.Owner.CharacterName} stays still out of confusion");
+    //                break;
+    //            case ConfusionState.SelfHarm:
+    //                CallOfTheWild.Common.AddBattleLogMessage($"{__instance.Owner.CharacterName} hurts itself in its confusion");
+    //                break;
+    //            default:
+    //                CallOfTheWild.Common.AddBattleLogMessage($"{__instance.Owner.CharacterName} is not confused");
+    //                break;
+    //        }
+    //    }
+    //}    
 }
