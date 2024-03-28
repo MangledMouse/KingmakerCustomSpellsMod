@@ -11,14 +11,18 @@ using Kingmaker.Blueprints.Classes.Selection;
 using Kingmaker.Blueprints.Classes.Spells;
 using Kingmaker.Blueprints.Facts;
 using Kingmaker.Blueprints.Items.Armors;
+using Kingmaker.Blueprints.Items.Ecnchantments;
+using Kingmaker.Blueprints.Items.Equipment;
 using Kingmaker.Controllers.Units;
 using Kingmaker.Designers.EventConditionActionSystem.Actions;
 using Kingmaker.Designers.Mechanics.Buffs;
+using Kingmaker.Designers.Mechanics.EquipmentEnchants;
 using Kingmaker.Designers.Mechanics.Facts;
 using Kingmaker.EntitySystem.Entities;
 using Kingmaker.EntitySystem.Stats;
 using Kingmaker.Enums;
 using Kingmaker.Enums.Damage;
+using Kingmaker.RuleSystem;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
 using Kingmaker.UnitLogic.Abilities.Components;
 using Kingmaker.UnitLogic.ActivatableAbilities;
@@ -29,7 +33,9 @@ using Kingmaker.UnitLogic.Commands.Base;
 using Kingmaker.UnitLogic.FactLogic;
 using Kingmaker.UnitLogic.Mechanics.Actions;
 using Kingmaker.UnitLogic.Mechanics.Components;
+using Kingmaker.UnitLogic.Mechanics.Conditions;
 using Kingmaker.UnitLogic.Parts;
+using Kingmaker.Utility;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -37,6 +43,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -50,6 +57,13 @@ namespace CowWithHatsCustomSpellsMod
         // All classes (including prestige classes).
         public static List<BlueprintCharacterClass> classes;
         public static BlueprintArchetype eldritchScionArchetype;
+        static BlueprintCharacterClass cleric_class = ResourcesLibrary.TryGetBlueprint<BlueprintCharacterClass>("67819271767a9dd4fbfd4ae700befea0");
+        static BlueprintCharacterClass inquisitor_class = ResourcesLibrary.TryGetBlueprint<BlueprintCharacterClass>("f1a70d9e1b0b41e49874e1fa9052a1ce");
+        static public BlueprintProgression law_archon_domain;
+        static public BlueprintProgression law_archon_domain_secondary;
+        static BlueprintFeatureSelection cleric_domain_selection = library.Get<BlueprintFeatureSelection>("48525e5da45c9c243a343fc6545dbdb9");
+        static BlueprintFeatureSelection cleric_secondary_domain_selection = library.Get<BlueprintFeatureSelection>("43281c3d7fe18cc4d91928395837cd1e");
+
 
         static internal void preLoad()
         {
@@ -109,7 +123,13 @@ namespace CowWithHatsCustomSpellsMod
             BlueprintAbility shaman_slumber_hex = library.Get<BlueprintAbility>("c04cde18e91e4f84898de92a372bc1e0");
             shaman_slumber_hex.RemoveComponents<AbilityTargetCasterHDDifference>();
             shaman_slumber_hex.SetNameDescription(shaman_slumber_hex.GetName(), 
-            "Effect: A witch can cause a creature within 30 feet to fall into a deep, magical sleep, as per the spell sleep. The creature receives a Will save to negate the effect. If the save fails, the creature falls asleep for a number of rounds equal to the witch’s level.\n"
+            "Effect: A shaman can cause a creature within 30 feet to fall into a deep, magical sleep, as per the spell sleep. The creature receives a Will save to negate the effect. If the save fails, the creature falls asleep for a number of rounds equal to the witch’s level.\n"
+                                                    + "The creature will not wake due to noise or light, but others can rouse it with a standard action. This hex ends immediately if the creature takes damage. Whether or not the save is successful, a creature cannot be the target of this hex again for 1 day.");
+
+            BlueprintAbility divine_scourge_slumber_hex = library.Get<BlueprintAbility>("59a600c4da4341fc8e635be2786c760b");
+            divine_scourge_slumber_hex.RemoveComponents<AbilityTargetCasterHDDifference>();
+            divine_scourge_slumber_hex.SetNameDescription(divine_scourge_slumber_hex.GetName(),
+            "Effect: A divine scourge can cause a creature within 30 feet to fall into a deep, magical sleep, as per the spell sleep. The creature receives a Will save to negate the effect. If the save fails, the creature falls asleep for a number of rounds equal to the witch’s level.\n"
                                                     + "The creature will not wake due to noise or light, but others can rouse it with a standard action. This hex ends immediately if the creature takes damage. Whether or not the save is successful, a creature cannot be the target of this hex again for 1 day.");
 
             //hexstrike 82cad6f016c04bf49fa851f5e9e10953
@@ -125,10 +145,14 @@ namespace CowWithHatsCustomSpellsMod
                                                     + "The creature will not wake due to noise or light, but others can rouse it with a standard action. This hex ends immediately if the creature takes damage. Whether or not the save is successful, a creature cannot be the target of this hex again for 1 day.");
             BlueprintFeature shaman_slumber_hex_feature = library.Get<BlueprintFeature>("ee7a8e5dc78a4d6c9e44d88affe47088");
             shaman_slumber_hex_feature.SetNameDescription(shaman_slumber_hex.GetName(),
-                "Effect: A witch can cause a creature within 30 feet to fall into a deep, magical sleep, as per the spell sleep. The creature receives a Will save to negate the effect. If the save fails, the creature falls asleep for a number of rounds equal to the witch’s level.\n"
+                "Effect: A shaman can cause a creature within 30 feet to fall into a deep, magical sleep, as per the spell sleep. The creature receives a Will save to negate the effect. If the save fails, the creature falls asleep for a number of rounds equal to the witch’s level.\n"
                                                     + "The creature will not wake due to noise or light, but others can rouse it with a standard action. This hex ends immediately if the creature takes damage. Whether or not the save is successful, a creature cannot be the target of this hex again for 1 day.");
 
-            
+            BlueprintFeature divine_scourge_slumber_hex_feature = library.Get<BlueprintFeature>("4192c07404ac434fa9b7633a35d3ae81");
+            shaman_slumber_hex_feature.SetNameDescription(divine_scourge_slumber_hex.GetName(),
+                "Effect: A divine scourge can cause a creature within 30 feet to fall into a deep, magical sleep, as per the spell sleep. The creature receives a Will save to negate the effect. If the save fails, the creature falls asleep for a number of rounds equal to the witch’s level.\n"
+                                                    + "The creature will not wake due to noise or light, but others can rouse it with a standard action. This hex ends immediately if the creature takes damage. Whether or not the save is successful, a creature cannot be the target of this hex again for 1 day.");
+
         }
 
         internal static void UpdateSilence()
@@ -332,11 +356,11 @@ namespace CowWithHatsCustomSpellsMod
             BlueprintFeature dodgeFeature = library.Get<BlueprintFeature>("97e216dbb46ae3c4faef90cf6bbe6fd5");
             BlueprintFeature shieldFocus = library.Get<BlueprintFeature>("ac57069b6bf8c904086171683992a92a");
             var valerie_compainion = ResourcesLibrary.TryGetBlueprint<BlueprintUnit>("54be53f0b35bf3c4592a97ae335fe765");
-            for (int i = 0; i < valerie_compainion.AddFacts.Length; i++)
-            {
-                Main.logger.Log("Valerie Companion has add fact with name " + valerie_compainion.AddFacts[i].Name + " and content " + valerie_compainion.AddFacts[i].ToString() + " and type " + valerie_compainion.AddFacts[i].GetType().ToString());
+            //for (int i = 0; i < valerie_compainion.AddFacts.Length; i++)
+            //{
+            //    Main.logger.Log("Valerie Companion has add fact with name " + valerie_compainion.AddFacts[i].Name + " and content " + valerie_compainion.AddFacts[i].ToString() + " and type " + valerie_compainion.AddFacts[i].GetType().ToString());
 
-            }
+            //}
             BlueprintUnitFact[] valAddFacts = new BlueprintUnitFact[valerie_compainion.AddFacts.Length + 1];
             for (int i = 0; i < valerie_compainion.AddFacts.Length; i++)
             {
@@ -418,39 +442,6 @@ namespace CowWithHatsCustomSpellsMod
             feyThoughtsBluff.AddComponent(Helpers.Create<CallOfTheWild.NewMechanics.AddBonusToSkillCheckIfNoClassSkill>(a => { a.skill = StatType.SkillPersuasion; a.check = StatType.CheckBluff; }));
             BlueprintFeature feyThoughtsDiplomacy = library.TryGet<BlueprintFeature>("557db4b7510d44418fc654e1734ac0c2");
             feyThoughtsDiplomacy.AddComponent(Helpers.Create<CallOfTheWild.NewMechanics.AddBonusToSkillCheckIfNoClassSkill>(a => { a.skill = StatType.SkillPersuasion; a.check = StatType.CheckDiplomacy; }));
-            //int i = feyThoughtsBluff.GetComponents<BlueprintComponent>().Count();
-            //Main.logger.Log("Fey Thoughts Bluff has " + i + " components");
-            //foreach (BlueprintComponent bc in feyThoughtsBluff.GetComponents<BlueprintComponent>())
-            //{
-            //    Main.logger.Log("Component with name " + bc.name + " and to string value " + bc.ToString());
-            //    AddClassSkill acs = bc as AddClassSkill;
-            //    if (acs != null)
-            //    {
-            //        Main.logger.Log("Add Class Skill skill " + acs.Skill.ToString());
-            //    }
-            //}
-            //Main.logger.Log("Fey Thoughts Diplomacy components");
-            //foreach (BlueprintComponent bc in feyThoughtsDiplomacy.GetComponents<BlueprintComponent>())
-            //{
-            //    Main.logger.Log("Component with name " + bc.name + " and to string value " + bc.ToString());
-            //    AddClassSkill acs = bc as AddClassSkill;
-            //    if (acs != null)
-            //    {
-            //        Main.logger.Log("Add Class Skill skill " + acs.Skill.ToString());
-            //    }
-            //}
-
-            //Main.logger.Log("For reference, Fast talker, which works in favored class");
-            //BlueprintFeature bf = library.TryGet<BlueprintFeature>("a56e300d308641669ed3b6fd27d862e4");
-            //foreach(BlueprintComponent bc in bf.GetComponents<BlueprintComponent>())
-            //{
-            //    Main.logger.Log("Component with name " + bc.name + " and to string value " + bc.ToString());
-            //    AddClassSkill acs = bc as AddClassSkill;
-            //    if (acs != null)
-            //    {
-            //        Main.logger.Log("Add Class Skill skill " + acs.Skill.ToString());
-            //    }
-            //}
         }
 
         internal static void FixStudiedCombat()
@@ -541,11 +532,331 @@ namespace CowWithHatsCustomSpellsMod
             }
         }
 
-        static BlueprintCharacterClass[] getWitchArray()
+        internal static void fixExplosionRing()
         {
-            return new BlueprintCharacterClass[] { CallOfTheWild.Witch.witch_class};
+        //    BlueprintItemEquipmentRing explosionRing = library.TryGet<BlueprintItemEquipmentRing>("a4aa862b9e7771d4fae3402aa905ae3b");
+        //    BlueprintEquipmentEnchantment[] explosionRingEnchants = (BlueprintEquipmentEnchantment[])(Helpers.GetField(explosionRing, "m_Enchantments"));
+        //    if (explosionRingEnchants != null)
+        //    {
+        //        Main.logger.Log($"Explosion Ring Enchants");
+        //        foreach (BlueprintEquipmentEnchantment enchantment in explosionRingEnchants)
+        //        {
+        //            Main.logger.Log($"Explosion Ring enchant {enchantment.name} and toString value {enchantment.ToString()} and {enchantment.Description}");
+        //            Main.logger.Log($"{enchantment.name} components");
+        //            foreach (BlueprintComponent bc in enchantment.GetComponents<BlueprintComponent>())
+        //            {
+        //                Main.logger.Log($"Component name {bc.name} with toString value {bc.ToString()} and type {bc.GetType().ToString()}");
+        //                AddUnitFeatureEquipment aufe = bc as AddUnitFeatureEquipment;
+        //                if (aufe != null)
+        //                {
+        //                    Main.logger.Log($"Feature {aufe.name} ");
+        //                    if(aufe.Enchantment!=null)
+        //                    {
+        //                        Main.logger.Log($"enchantment {aufe.Enchantment.Name} and enchantment descrpition {aufe.Enchantment.Description} ");
+        //                    }
+                        
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    BlueprintItemEquipmentRing acerbicRing = library.TryGet<BlueprintItemEquipmentRing>("1f34a6b309907a44681c689709976bff");
+        //    BlueprintEquipmentEnchantment[] acerbicRingEnchants = (BlueprintEquipmentEnchantment[])(Helpers.GetField(acerbicRing, "m_Enchantments"));
+        //    if (acerbicRingEnchants != null)
+        //    {
+        //        Main.logger.Log($"Acerbic Ring Enchants");
+        //        foreach (BlueprintEquipmentEnchantment enchantment in acerbicRingEnchants)
+        //        {
+        //            Main.logger.Log($"Acerbic Ring enchant {enchantment.name} and toString value {enchantment.ToString()} and {enchantment.Description}");
+        //            Main.logger.Log($"{enchantment.name} components");
+        //            foreach(BlueprintComponent bc in enchantment.GetComponents<BlueprintComponent>())
+        //            {
+        //                Main.logger.Log($"Component name {bc.name} with toString value {bc.ToString()} and type {bc.GetType().ToString()}");
+        //                //AddUnitFeatureEquipment aufe = bc as AddUnitFeatureEquipment;
+        //                if (aufe != null)
+        //                {
+        //                    Main.logger.Log($"Feature {aufe.name} ");
+        //                    if (aufe.Enchantment != null)
+        //                    {
+        //                        Main.logger.Log($"enchantment {aufe.Enchantment.Name} and enchantment descrpition {aufe.Enchantment.Description} ");
+        //                    }
+
+        //                }
+        //            }
+        //        }
+        //    }
         }
 
+        internal static void fixUndeadAnatomy()
+        {
+            //BlueprintItemEquipmentUsable undeadAnatomy1Scroll = library.Get<BlueprintItemEquipmentUsable>("ed5e68f786820a9a39d04ebb08403a7b");
+            //undeadAnatomy1Scroll.Ability.AddSpellAndScroll
+        }
+
+        internal static void CreateLawArchonSubdomain()
+        {
+            Main.logger.Log("Made it to Create Law Archon Subdomain method");
+            var icon = Helpers.GetIcon("a0bc0525895932b42bfd47f1544e6e35"); //archons aura buff
+
+            var resource = Helpers.CreateAbilityResource("LawArchonSubdomainAuraOfMenaceResource", 
+                "Aura Of Menace", 
+                "At 8th level, you can emit a 30-foot aura of menace as a standard action. Enemies in this aura take a –2 penalty to AC and on attacks and saves as long as they remain inside the aura. You can use this ability for a number of rounds per day equal to your cleric level. These rounds do not need to be consecutive.", 
+                "e7982a5bfeb0456d975988a212a45a9a", 
+                icon);
+            resource.SetIncreasedByLevel(0, 1, new BlueprintCharacterClass[] { cleric_class, inquisitor_class });
+            Main.logger.Log("Created subdomain aura resource");
+
+            var buff = library.Get<BlueprintBuff>("a0bc0525895932b42bfd47f1544e6e35");
+
+            var area_buff = Common.createBuffAreaEffect(buff, 30.Feet(), Helpers.CreateConditionsCheckerAnd(Helpers.Create<ContextConditionIsEnemy>()), "LawArchonSubdomainArea");
+            area_buff.SetNameDescriptionIcon("Aura of Menace",
+                                             "At 8th level, you can emit a 30-foot aura of menace as a standard action. Enemies in this aura take a –2 penalty to AC and on attacks and saves as long as they remain inside the aura. You can use this ability for a number of rounds per day equal to your cleric level. These rounds do not need to be consecutive.",
+                                             icon);
+            Main.logger.Log("Created area buff");
+
+            var toggle = Common.buffToToggle(area_buff, Kingmaker.UnitLogic.Commands.Base.UnitCommand.CommandType.Standard, false,
+                                             Helpers.CreateActivatableResourceLogic(resource, ActivatableAbilityResourceLogic.ResourceSpendType.NewRound));
+
+
+            var law_domain = library.Get<BlueprintProgression>("a723d11a5ae5df0488775e31fac9117d");
+            var law_domain_secondary = library.Get<BlueprintProgression>("0d9749df9d68ded438ecdf8527085963");
+            var good_domain = library.Get<BlueprintProgression>("243ab3e7a86d30243bdfe79c83e6adb4");
+            var good_domain_secondary = library.Get<BlueprintProgression>("efc4219c7894afc438180737adc0b7ac");
+            var good_archon_domain = library.Get<BlueprintProgression>("3db8e899931f4cd8a32904512f024b08");
+            var good_archon_domain_secondary = library.Get<BlueprintProgression>("d1457e93a5f84860a8fe4f2b5b9f0201");
+
+            var law_domain_greater = library.Get<BlueprintFeature>("3dc5e2b315ff07f438582a2468beb1fb");
+            var feature = Common.ActivatableAbilityToFeature(toggle, false);
+            feature.AddComponent(resource.CreateAddAbilityResource());
+            var spell_list = library.CopyAndAdd<BlueprintSpellList>("57b0bbdc1114ee846945f1808b13cff7", "ArchonLawSubdomainSpellList", "");
+            Common.excludeSpellsFromList(spell_list, a => false);
+
+            law_archon_domain = createSubdomain("ArchonLawSubdomain", "Archon (Law) Subdomain",
+                                   "You follow a strict and ordered code of laws, and in so doing, achieve enlightenment.\n" +
+                                   "Touch of Law: You can touch a willing creature as a standard action, infusing it with the power of divine order and allowing it to treat all attack rolls, skill checks, ability checks, and saving throws for 1 round as if the natural d20 roll resulted in an 11. You can use this ability a number of times per day equal to 3 + your Wisdom modifier.\n" +
+                                   $"{toggle.Name}: {toggle.Description}\n" +
+                                   "Domain Spells: Divine Favor, Protection from Chaos Communal, Prayer, Protection From Energy Communal, Dominate Person, Summon Monster VI, Dictum, Shield Of Law, Dominate Monster.",
+                                   law_domain,
+                                   new BlueprintFeature[] { law_domain_greater },
+                                   new BlueprintFeature[] { feature },
+                                   spell_list
+                                   );
+            var good_domain_allowed = library.Get<BlueprintFeature>("882521af8012fc749930b03dc18a69de");
+            Common.replaceDomainSpell(law_archon_domain, library.Get<BlueprintAbility>("9d5d2d3ffdd73c648af3eb3e585b1113"), 1); //divine favor
+            Common.replaceDomainSpell(law_archon_domain, library.Get<BlueprintAbility>("e740afbab0147944dab35d83faa0ae1c"), 6); //summon monster 6
+            law_archon_domain.AddComponents(Helpers.PrerequisiteNoFeature(law_domain), Helpers.PrerequisiteNoFeature(good_domain), Helpers.PrerequisiteFeature(good_domain_allowed));
+
+            law_archon_domain_secondary = library.CopyAndAdd(law_archon_domain, "ArchonLawSubdomainSecondaryProgression", "");
+            law_archon_domain_secondary.RemoveComponents<LearnSpellList>();
+
+            law_archon_domain_secondary.AddComponents(Helpers.PrerequisiteNoFeature(law_archon_domain),
+                                                 Helpers.PrerequisiteNoFeature(law_domain),
+                                                 Helpers.PrerequisiteNoFeature(law_domain_secondary));
+            law_archon_domain.AddComponents(Helpers.PrerequisiteNoFeature(law_archon_domain_secondary));
+
+            law_domain.AddComponents(Helpers.PrerequisiteNoFeature(law_archon_domain), Helpers.PrerequisiteNoFeature(law_archon_domain_secondary));
+            law_domain_secondary.AddComponents(Helpers.PrerequisiteNoFeature(law_archon_domain), Helpers.PrerequisiteNoFeature(law_archon_domain_secondary));
+            good_domain.AddComponents(Helpers.PrerequisiteNoFeature(law_archon_domain), Helpers.PrerequisiteNoFeature(law_archon_domain_secondary));
+            good_domain_secondary.AddComponents(Helpers.PrerequisiteNoFeature(law_archon_domain), Helpers.PrerequisiteNoFeature(law_archon_domain_secondary));
+            good_archon_domain.AddComponents(Helpers.PrerequisiteNoFeature(law_archon_domain), Helpers.PrerequisiteNoFeature(law_archon_domain_secondary));
+            good_archon_domain_secondary.AddComponents(Helpers.PrerequisiteNoFeature(law_archon_domain), Helpers.PrerequisiteNoFeature(law_archon_domain_secondary));
+
+            cleric_domain_selection.AllFeatures = AddToFeatureArray(cleric_domain_selection.AllFeatures, good_archon_domain);
+            cleric_secondary_domain_selection.AllFeatures = AddToFeatureArray(cleric_secondary_domain_selection.AllFeatures, good_archon_domain_secondary);
+            Main.logger.Log("finished creating domain");
+
+        }
+        static BlueprintProgression createSubdomain(string name,
+                                                   string display_name,
+                                                   string description,
+                                                   BlueprintProgression base_progression,
+                                                   BlueprintFeature[] old_features,
+                                                   BlueprintFeature[] new_features,
+                                                   BlueprintSpellList spell_list = null)
+        {
+            bool[] features_replaced = new bool[old_features.Length];
+            List<LevelEntry> new_level_entries = new List<LevelEntry>();
+            var progression = library.CopyAndAdd(base_progression, name + "Progression", "");
+            progression.SetNameDescription(display_name, description);
+
+            foreach (var le in base_progression.LevelEntries)
+            {
+                var features = le.Features.ToArray();
+
+                for (int i = 0; i < old_features.Length; i++)
+                {
+                    if (!features_replaced[i])
+                    {
+                        if (features.Contains(old_features[i]))
+                        {
+                            features_replaced[i] = true;
+                            features = features.RemoveFromArray(old_features[i]);
+                            if (new_features[i] != null)
+                            {
+                                features = AddToFeatureBaseArray(features, new_features[i]);
+                            }
+                        }
+                    }
+                }
+
+                if (!features.Empty())
+                {
+                    new_level_entries.Add(Helpers.LevelEntry(le.Level, features));
+                }
+            }
+
+            progression.LevelEntries = new_level_entries.ToArray();
+
+            if (spell_list != null)
+            {
+                progression.ReplaceComponent<LearnSpellList>(l => l.SpellList = spell_list);
+            }
+
+            features_replaced = new bool[old_features.Length];
+            List<UIGroup> ui_groups = new List<UIGroup>();
+            foreach (var uig in base_progression.UIGroups)
+            {
+                var features = uig.Features.ToArray();
+
+                for (int i = 0; i < old_features.Length; i++)
+                {
+                    if (!features_replaced[i])
+                    {
+                        if (features.Contains(old_features[i]))
+                        {
+                            features_replaced[i] = true;
+                            features = features.RemoveFromArray(old_features[i]);
+                            if (new_features[i] != null)
+                            {
+                                features = AddToFeatureBaseArray(features, new_features[i] );
+                            }
+                        }
+                    }
+                }
+
+                if (!features.Empty())
+                {
+                    ui_groups.Add(Helpers.CreateUIGroup(features));
+                }
+            }
+
+            progression.UIGroups = ui_groups.ToArray();
+            //add domain spells
+            var f0 = progression.LevelEntries[0].Features[0];
+            var comp = f0.GetComponent<AddFeatureOnClassLevel>();
+            if (comp != null)
+            {
+                f0 = library.CopyAndAdd(f0, name + f0.name, "");
+                f0.RemoveComponent(comp);
+            }
+
+            var give_spells = Helpers.CreateFeature(name + "SpellListFeature",
+                                                "",
+                                                "",
+                                                "",
+                                                null,
+                                                FeatureGroup.None,
+                                                Helpers.Create<AddSpecialSpellList>(a => { a.CharacterClass = cleric_class; a.SpellList = spell_list; })
+                                                );
+
+            give_spells.IsClassFeature = true;
+            give_spells.HideInUI = true;
+
+            f0.AddComponent(Helpers.CreateAddFeatureOnClassLevel(give_spells, 1, new BlueprintCharacterClass[] { cleric_class }));
+            f0.SetNameDescription(progression);
+            progression.LevelEntries[0].Features[0] = f0;
+            if (base_progression.UIGroups.Length > 0)
+            {
+                progression.UIGroups[0].Features.Add(f0);
+            }
+
+            return progression;
+        }
+
+        internal static BlueprintFeature[] AddToFeatureArray(BlueprintFeature[] features, BlueprintFeature feature)
+        {
+            var len = features.Length;
+            var result = new BlueprintFeature[len];
+            Array.Copy(features, result, len);
+            result[len] = feature;
+            return result;
+        }
+
+        internal static BlueprintFeatureBase[] AddToFeatureBaseArray(BlueprintFeatureBase[] features, BlueprintFeatureBase value)
+        {
+            var len = features.Length;
+            var result = new BlueprintFeatureBase[len];
+            Array.Copy(features, result, len);
+            result[len] = value;
+            return result;
+        }
+
+        internal static void RemovePlanarFocusNerf()
+        {
+            BlueprintArchetype bloodhunterArchetype = library.Get<BlueprintArchetype>("48e4ff30d3524dbc90a7933107645fd0");
+            BlueprintCharacterClass ranger_class = ResourcesLibrary.TryGetBlueprint<BlueprintCharacterClass>("cda0615668a6df14eb36ba19ee881af6");
+            BlueprintArchetype naturalist= library.Get<BlueprintArchetype>("5794865f6aa541ce9c09c8e682cea799");
+            BlueprintCharacterClass summoner = library.Get<BlueprintCharacterClass>("0f4c4ada51334b43a802350c5c0b85f5");
+            BlueprintCharacterClass hunter = library.Get<BlueprintCharacterClass>("32486dcfda61462fbfd66b5644786b39");
+            BlueprintCharacterClass inquisitor = library.Get<BlueprintCharacterClass>("f1a70d9e1b0b41e49874e1fa9052a1ce");
+            BlueprintArchetype sacredHuntsman = library.Get<BlueprintArchetype>("46eb929c8b6d7164188eb4d9bcd0a012");
+
+            RemoveFireNerf(library.Get<BlueprintUnitFact>("ccf0e83ae87f4edfb81fa6fbc3343a5e"), new BlueprintCharacterClass[]{ hunter, inquisitor}, sacredHuntsman,0); //PlanarFocusFireBuff
+            RemoveFireNerf(library.Get<BlueprintUnitFact>("2e5fda59676445b4b6e66d49ec84ca10"), new BlueprintCharacterClass[]{ hunter, inquisitor }, sacredHuntsman, 0); //PlanarFocusFire
+            RemoveFireNerf(library.Get<BlueprintUnitFact>("4814d6c8d1f84f1ea570b17b1ec4e604"), new BlueprintCharacterClass[]{ hunter, inquisitor }, sacredHuntsman, 0); //EnablePlanarFocusFireBuff
+
+            RemoveFireNerf(library.Get<BlueprintUnitFact>("4c02a5cb966344fba103cd328be359bb"), new BlueprintCharacterClass[] { summoner }, naturalist, 2); //NaturalistPlanarFocusFireBuff
+            RemoveFireNerf(library.Get<BlueprintUnitFact>("7aba8cf50d73431591480fe7ea01de90"), new BlueprintCharacterClass[] { summoner }, naturalist, 2); //NaturalistPlanarFocusFire
+            RemoveFireNerf(library.Get<BlueprintUnitFact>("bafd7cf574fd42b29748d8612bbdc08b"), new BlueprintCharacterClass[] { summoner }, naturalist, 2); //EnableNaturalistPlanarFocusFireBuff
+
+            RemoveFireNerf(library.Get<BlueprintUnitFact>("ce14a5a676914248b65110923656f872"), new BlueprintCharacterClass[] { ranger_class }, bloodhunterArchetype, 0); //BloodHunterPlanarFocusFireBuff
+            RemoveFireNerf(library.Get<BlueprintUnitFact>("02798c08308b4ebfbf57236ed8dfd51c"), new BlueprintCharacterClass[] { ranger_class }, bloodhunterArchetype, 0); //BloodHunterPlanarFocusFire
+            RemoveFireNerf(library.Get<BlueprintUnitFact>("c2bed503f18f41969ee61bf04e99316b"), new BlueprintCharacterClass[] { ranger_class }, bloodhunterArchetype, 0); //EnableBloodHunterPlanarFocusFireBuff
+
+            RemoveColdNerf(library.Get<BlueprintUnitFact>("465e5323e25b4bcd863f28a6847bab55"), new BlueprintCharacterClass[] { hunter, inquisitor }, sacredHuntsman, 0); //PlanarFocusColdBuff
+            RemoveColdNerf(library.Get<BlueprintUnitFact>("051ed3f6fc36400c991bbbde652a4682"), new BlueprintCharacterClass[] { hunter, inquisitor }, sacredHuntsman, 0); //PlanarFocusCold
+            RemoveColdNerf(library.Get<BlueprintUnitFact>("e20b8a26714249c9b7dc5ef06753ba12"), new BlueprintCharacterClass[] { hunter, inquisitor }, sacredHuntsman, 0); //EnablePlanarFocusColdBuff
+
+            RemoveColdNerf(library.Get<BlueprintUnitFact>("1ee60fa7ec0b4973aa826d1c2a814207"), new BlueprintCharacterClass[] { summoner }, naturalist, 2); //NaturalistPlanarFocusColdBuff
+            RemoveColdNerf(library.Get<BlueprintUnitFact>("41eb01770de04378b25a488174f35b35"), new BlueprintCharacterClass[] { summoner }, naturalist, 2); //NaturalistPlanarFocusCold
+            RemoveColdNerf(library.Get<BlueprintUnitFact>("7c289ee04b7040e9916864e23426a29d"), new BlueprintCharacterClass[] { summoner }, naturalist, 2); //EnableNaturalistPlanarFocusColdBuff
+
+            RemoveColdNerf(library.Get<BlueprintUnitFact>("3abd65d42bf64d5dae4abd2b67e71cec"), new BlueprintCharacterClass[] { ranger_class }, bloodhunterArchetype, 0); //BloodHunterPlanarFocusColdBuff
+            RemoveColdNerf(library.Get<BlueprintUnitFact>("93d7eadefe84425d9d395dbdcded42d4"), new BlueprintCharacterClass[] { ranger_class }, bloodhunterArchetype, 0); //BloodHunterPlanarFocusCold
+            RemoveColdNerf(library.Get<BlueprintUnitFact>("f5a37f47a5af4f10b413f74024f85aad"), new BlueprintCharacterClass[] { ranger_class }, bloodhunterArchetype, 0); //EnableBloodHunterPlanarFocusColdBuff
+        }
+
+        internal static void RemoveColdNerf(BlueprintUnitFact buf, BlueprintCharacterClass[] allowed_classes, BlueprintArchetype allowed_archetype, int delay)
+        {
+            ContextRankConfig crf = buf.GetComponent<ContextRankConfig>();
+            if (crf != null)
+            {
+                Main.logger.Log($"Replacing Context Rank Config from {crf.name} with updated cold step of 2 instead of 4");
+                ContextRankConfig updatedcrf = Helpers.CreateContextRankConfig(ContextRankBaseValueTypeExtender.MasterMaxClassLevelWithArchetype.ToContextRankBaseValueType(),
+                                ContextRankProgression.StartPlusDivStep,
+                                AbilityRankType.DamageDice,
+                                startLevel: delay,
+                                stepLevel: 2,
+                                classes: allowed_classes, archetype: allowed_archetype);
+                buf.ReplaceComponent<ContextRankConfig>(updatedcrf);
+            }
+            buf.SetDescription("Creatures that attack you with natural attacks or melee weapons take 1d4 points of cold damage for every 2 class levels you possess.");
+            
+        }
+
+        internal static void RemoveFireNerf(BlueprintUnitFact buf, BlueprintCharacterClass[] allowed_classes, BlueprintArchetype allowed_archetype, int delay)
+        {
+            AddWeaponEnergyDamageDice awedd = buf.GetComponent<AddWeaponEnergyDamageDice>();
+            if(awedd != null)
+            {
+                Main.logger.Log($"Replacing Weapon Energy damage dice from {awedd.name} with updated fire damage dice of d6 instead of d3");
+                AddWeaponEnergyDamageDice updatedAwedd = Common.createAddWeaponEnergyDamageDiceBuff(Helpers.CreateContextDiceValue(DiceType.D6, Helpers.CreateContextValue(AbilityRankType.DamageDice)),
+                                                                                            DamageEnergyType.Fire,
+                                                                                            AttackType.Melee, AttackType.Touch);
+                buf.ReplaceComponent<AddWeaponEnergyDamageDice>(updatedAwedd);
+            }
+            buf.SetDescription("Your natural attacks and melee weapons deal 1d6 points of fire damage for every 4 class levels you possess");
+        }
     }
 
     //[HarmonyPatch(typeof(UnitAttack), "OnAction")]

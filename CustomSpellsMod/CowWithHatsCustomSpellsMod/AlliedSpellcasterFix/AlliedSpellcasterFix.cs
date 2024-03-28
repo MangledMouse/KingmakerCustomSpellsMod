@@ -46,15 +46,15 @@ namespace CowWithHatsCustomSpellsMod.AlliedSpellcasterFix
 
         public void OnEventAboutToTrigger(RuleSpellResistanceCheck evt)
         {
-            Main.logger.Log("Caster with Allied Spellcaster " + this.Owner.Unit.CharacterName);
+         //   Main.logger.Log("Caster with Allied Spellcaster " + this.Owner.Unit.CharacterName);
             foreach (UnitEntityData unitEntityData in GameHelper.GetTargetsAround(this.Owner.Unit.Position, (float)this.Radius, true, false))
             {
                 if ((unitEntityData.Descriptor.HasFact(this.AlliedSpellcasterFact) || (bool)this.Owner.State.Features.SoloTactics) && unitEntityData != this.Owner.Unit && !unitEntityData.IsEnemy(this.Owner.Unit)
                      && hasSpell(unitEntityData.Descriptor, evt.Ability))
                 {
                     evt.AdditionalSpellPenetration += 2;
-                    //Main.logger.Log("Allied character possessing Allied Spellcaster " + unitEntityData.CharacterName);
-                    //Main.logger.Log("Current Bonus " + evt.AdditionalSpellPenetration);
+           //         Main.logger.Log("Allied character possessing Allied Spellcaster " + unitEntityData.CharacterName);
+             //       Main.logger.Log("Current Bonus " + evt.AdditionalSpellPenetration);
                     break;
                 }
             }

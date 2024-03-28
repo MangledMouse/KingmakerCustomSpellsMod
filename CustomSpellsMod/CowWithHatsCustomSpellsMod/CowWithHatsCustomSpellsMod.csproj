@@ -89,6 +89,7 @@
     <Compile Include="Core.cs" />
     <Compile Include="CreationFunctions.cs" />
     <Compile Include="ExpandedContextActionDismissSpell.cs" />
+    <Compile Include="HalfElfRacialFeatures.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="NewComponents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -37,6 +37,8 @@ namespace CowWithHatsCustomSpellsMod
             internal bool fix_fey_thoughts;
             internal bool fix_studied_combat;
             internal bool remove_curiousity_invocation_nerf;
+            internal bool remove_planar_focus_nerf;
+
             //internal bool silence_update;
             //internal bool confusion_output;
             internal Settings()
@@ -56,6 +58,7 @@ namespace CowWithHatsCustomSpellsMod
                     fix_fey_thoughts = (bool)jo["fix_fey_thoughts"];
                     fix_studied_combat = (bool)jo["fix_studied_combat"];
                     remove_curiousity_invocation_nerf = (bool)jo["remove_curiousity_invocation_nerf"];
+                    remove_planar_focus_nerf = (bool)jo["remove_planar_focus_nerf"];
                     //silence_update = (bool)jo["silence_update"];
                     //confusion_output = (bool)jo["confusion_output"];
                 }
@@ -233,6 +236,13 @@ namespace CowWithHatsCustomSpellsMod
                         {
                             Core.FixCuriosityInvocation();
                         }
+                        if(settings.remove_planar_focus_nerf)
+                        {
+                            Core.RemovePlanarFocusNerf();
+                        }
+                        //Core.CreateLawArchonSubdomain();
+
+                        //Core.fixExplosionRing();
                         //if(settings.silence_update)
                         //{
                         //    Core.UpdateSilence();
@@ -242,9 +252,15 @@ namespace CowWithHatsCustomSpellsMod
                         BlueprintFeature feyThoughtsBluff = library.TryGet<BlueprintFeature>("3393b744356648bf8c87021fd24680fb");
                         if (feyThoughtsBluff !=null && settings.fix_fey_thoughts)
                         {
-                            Core.FixFeyThoughts();
+                            //HalfElfRacialFeatures.load();
+                            if (settings.fix_fey_thoughts)
+                                Core.FixFeyThoughts();
                         }
+
                         Core.FixForTweakOrTreatHumanCompanionFeats();
+
+                        //Core.fixUndeadAnatomy();
+
                         alreadyRan = true;
                     }
                     else
@@ -257,7 +273,7 @@ namespace CowWithHatsCustomSpellsMod
                     
 
 #if DEBUG
-                    string guid_file_name = @"./Mods/CowWithHatsCustomSpellsMod/blueprints.txt";
+                    //string guid_file_name = @"./Mods/CowWithHatsCustomSpellsMod/blueprints.txt";
                     //CallOfTheWild.Helpers.GuidStorage.dump(guid_file_name);
 #endif
                     //CallOfTheWild.Helpers.GuidStorage.dump(@"./Mods/CowWithHatsCustomSpellsMod/loaded_blueprints.txt");
