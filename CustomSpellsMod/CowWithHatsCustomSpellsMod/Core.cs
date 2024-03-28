@@ -803,27 +803,39 @@ namespace CowWithHatsCustomSpellsMod
 
             RemoveFireNerf(library.Get<BlueprintUnitFact>("ccf0e83ae87f4edfb81fa6fbc3343a5e"), new BlueprintCharacterClass[]{ hunter, inquisitor}, sacredHuntsman,0); //PlanarFocusFireBuff
             RemoveFireNerf(library.Get<BlueprintUnitFact>("2e5fda59676445b4b6e66d49ec84ca10"), new BlueprintCharacterClass[]{ hunter, inquisitor }, sacredHuntsman, 0); //PlanarFocusFire
-            RemoveFireNerf(library.Get<BlueprintUnitFact>("4814d6c8d1f84f1ea570b17b1ec4e604"), new BlueprintCharacterClass[]{ hunter, inquisitor }, sacredHuntsman, 0); //EnablePlanarFocusFireBuff
+            BlueprintUnitFact EnablePlanarFocusFireBuff = library.Get<BlueprintUnitFact>("4814d6c8d1f84f1ea570b17b1ec4e604");
+            EnablePlanarFocusFireBuff.RemoveComponents<AddWeaponEnergyDamageDice>();
+            RemoveFireNerf(EnablePlanarFocusFireBuff, new BlueprintCharacterClass[]{ hunter, inquisitor }, sacredHuntsman, 0); //EnablePlanarFocusFireBuff
 
             RemoveFireNerf(library.Get<BlueprintUnitFact>("4c02a5cb966344fba103cd328be359bb"), new BlueprintCharacterClass[] { summoner }, naturalist, 2); //NaturalistPlanarFocusFireBuff
             RemoveFireNerf(library.Get<BlueprintUnitFact>("7aba8cf50d73431591480fe7ea01de90"), new BlueprintCharacterClass[] { summoner }, naturalist, 2); //NaturalistPlanarFocusFire
-            RemoveFireNerf(library.Get<BlueprintUnitFact>("bafd7cf574fd42b29748d8612bbdc08b"), new BlueprintCharacterClass[] { summoner }, naturalist, 2); //EnableNaturalistPlanarFocusFireBuff
+            BlueprintUnitFact EnableNaturalistPlanarFocusFireBuff = library.Get<BlueprintUnitFact>("bafd7cf574fd42b29748d8612bbdc08b");
+            EnableNaturalistPlanarFocusFireBuff.RemoveComponents<AddWeaponEnergyDamageDice>();
+            RemoveFireNerf(EnableNaturalistPlanarFocusFireBuff, new BlueprintCharacterClass[] { summoner }, naturalist, 2); //EnableNaturalistPlanarFocusFireBuff
 
             RemoveFireNerf(library.Get<BlueprintUnitFact>("ce14a5a676914248b65110923656f872"), new BlueprintCharacterClass[] { ranger_class }, bloodhunterArchetype, 0); //BloodHunterPlanarFocusFireBuff
             RemoveFireNerf(library.Get<BlueprintUnitFact>("02798c08308b4ebfbf57236ed8dfd51c"), new BlueprintCharacterClass[] { ranger_class }, bloodhunterArchetype, 0); //BloodHunterPlanarFocusFire
-            RemoveFireNerf(library.Get<BlueprintUnitFact>("c2bed503f18f41969ee61bf04e99316b"), new BlueprintCharacterClass[] { ranger_class }, bloodhunterArchetype, 0); //EnableBloodHunterPlanarFocusFireBuff
+            BlueprintUnitFact EnableBloodHunterPlanarFocusFireBuff = library.Get<BlueprintUnitFact>("c2bed503f18f41969ee61bf04e99316b");
+            EnableBloodHunterPlanarFocusFireBuff.RemoveComponents<AddWeaponEnergyDamageDice>();
+            RemoveFireNerf(EnableBloodHunterPlanarFocusFireBuff, new BlueprintCharacterClass[] { ranger_class }, bloodhunterArchetype, 0); //EnableBloodHunterPlanarFocusFireBuff
 
             RemoveColdNerf(library.Get<BlueprintUnitFact>("465e5323e25b4bcd863f28a6847bab55"), new BlueprintCharacterClass[] { hunter, inquisitor }, sacredHuntsman, 0); //PlanarFocusColdBuff
             RemoveColdNerf(library.Get<BlueprintUnitFact>("051ed3f6fc36400c991bbbde652a4682"), new BlueprintCharacterClass[] { hunter, inquisitor }, sacredHuntsman, 0); //PlanarFocusCold
-            RemoveColdNerf(library.Get<BlueprintUnitFact>("e20b8a26714249c9b7dc5ef06753ba12"), new BlueprintCharacterClass[] { hunter, inquisitor }, sacredHuntsman, 0); //EnablePlanarFocusColdBuff
+            BlueprintUnitFact EnablePlanarFocusColdBuff = library.Get<BlueprintUnitFact>("e20b8a26714249c9b7dc5ef06753ba12");
+            EnablePlanarFocusColdBuff.RemoveComponents<ContextRankConfig>();
+            RemoveColdNerf(EnablePlanarFocusColdBuff, new BlueprintCharacterClass[] { hunter, inquisitor }, sacredHuntsman, 0); //EnablePlanarFocusColdBuff
 
             RemoveColdNerf(library.Get<BlueprintUnitFact>("1ee60fa7ec0b4973aa826d1c2a814207"), new BlueprintCharacterClass[] { summoner }, naturalist, 2); //NaturalistPlanarFocusColdBuff
             RemoveColdNerf(library.Get<BlueprintUnitFact>("41eb01770de04378b25a488174f35b35"), new BlueprintCharacterClass[] { summoner }, naturalist, 2); //NaturalistPlanarFocusCold
-            RemoveColdNerf(library.Get<BlueprintUnitFact>("7c289ee04b7040e9916864e23426a29d"), new BlueprintCharacterClass[] { summoner }, naturalist, 2); //EnableNaturalistPlanarFocusColdBuff
+            BlueprintUnitFact EnableNaturalistPlanarFocusColdBuff = library.Get<BlueprintUnitFact>("7c289ee04b7040e9916864e23426a29d");
+            EnableNaturalistPlanarFocusColdBuff.RemoveComponents<ContextRankConfig>();
+            RemoveColdNerf(EnableNaturalistPlanarFocusColdBuff, new BlueprintCharacterClass[] { summoner }, naturalist, 2); //EnableNaturalistPlanarFocusColdBuff
 
             RemoveColdNerf(library.Get<BlueprintUnitFact>("3abd65d42bf64d5dae4abd2b67e71cec"), new BlueprintCharacterClass[] { ranger_class }, bloodhunterArchetype, 0); //BloodHunterPlanarFocusColdBuff
             RemoveColdNerf(library.Get<BlueprintUnitFact>("93d7eadefe84425d9d395dbdcded42d4"), new BlueprintCharacterClass[] { ranger_class }, bloodhunterArchetype, 0); //BloodHunterPlanarFocusCold
-            RemoveColdNerf(library.Get<BlueprintUnitFact>("f5a37f47a5af4f10b413f74024f85aad"), new BlueprintCharacterClass[] { ranger_class }, bloodhunterArchetype, 0); //EnableBloodHunterPlanarFocusColdBuff
+            BlueprintUnitFact EnableBloodHunterPlanarFocusColdBuff = library.Get<BlueprintUnitFact>("f5a37f47a5af4f10b413f74024f85aad");
+            EnableBloodHunterPlanarFocusColdBuff.RemoveComponents<ContextRankConfig>();
+            RemoveColdNerf(EnableBloodHunterPlanarFocusColdBuff, new BlueprintCharacterClass[] { ranger_class }, bloodhunterArchetype, 0); //EnableBloodHunterPlanarFocusColdBuff
         }
 
         internal static void RemoveColdNerf(BlueprintUnitFact buf, BlueprintCharacterClass[] allowed_classes, BlueprintArchetype allowed_archetype, int delay)
@@ -831,7 +843,7 @@ namespace CowWithHatsCustomSpellsMod
             ContextRankConfig crf = buf.GetComponent<ContextRankConfig>();
             if (crf != null)
             {
-                Main.logger.Log($"Replacing Context Rank Config from {crf.name} with updated cold step of 2 instead of 4");
+                Main.logger.Log($"Replacing Context Rank Config from {buf.name} with updated cold step of 2 instead of 4");
                 ContextRankConfig updatedcrf = Helpers.CreateContextRankConfig(ContextRankBaseValueTypeExtender.MasterMaxClassLevelWithArchetype.ToContextRankBaseValueType(),
                                 ContextRankProgression.StartPlusDivStep,
                                 AbilityRankType.DamageDice,
@@ -849,7 +861,7 @@ namespace CowWithHatsCustomSpellsMod
             AddWeaponEnergyDamageDice awedd = buf.GetComponent<AddWeaponEnergyDamageDice>();
             if(awedd != null)
             {
-                Main.logger.Log($"Replacing Weapon Energy damage dice from {awedd.name} with updated fire damage dice of d6 instead of d3");
+                Main.logger.Log($"Replacing Weapon Energy damage dice from {buf.name} with updated fire damage dice of d6 instead of d3");
                 AddWeaponEnergyDamageDice updatedAwedd = Common.createAddWeaponEnergyDamageDiceBuff(Helpers.CreateContextDiceValue(DiceType.D6, Helpers.CreateContextValue(AbilityRankType.DamageDice)),
                                                                                             DamageEnergyType.Fire,
                                                                                             AttackType.Melee, AttackType.Touch);
