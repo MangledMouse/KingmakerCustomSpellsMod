@@ -903,6 +903,23 @@ namespace CowWithHatsCustomSpellsMod
             //CallOfTheWild.NewSpells.sheet_lightning.AddComponent(theEffect);
             CallOfTheWild.NewSpells.sheet_lightning.AddComponent(Helpers.CreateRunActions(context_saved_redux));
         }
+
+        internal static void FixSpellPerfectionMissingGreaterElementalFocus()
+        {
+            BlueprintParametrizedFeature spell_perfection = library.Get<BlueprintParametrizedFeature>("bf89280c487c4539abcccd0d55a9a56e");
+            foreach(BlueprintComponent bc in spell_perfection.GetComponents<BlueprintComponent>())
+            {
+                Main.logger.Log($"Blueprint component from spell perfection {bc.name} with string value {bc.ToString()} and type {bc.GetType().ToString()}");
+                SpellPerfectionDoubleFeatBonuses perfection_doubling_thing = bc as SpellPerfectionDoubleFeatBonuses;
+                if (perfection_doubling_thing !=null)
+                {
+                    BlueprintUnitFact[] things_to_double = perfection_doubling_thing.spell_parameters_feats;
+                    perfection_doubling_thing.spell_parameters_feats = perfection_doubling_thing.spell_parameters_feats.AddToArray(library.Get<BlueprintFeatureSelection>("1c17446a3eb744f438488711b792ca4d").AllFeatures); //elemental focus greater
+
+                }
+            }
+            
+        }
     }
 
     //[HarmonyPatch(typeof(UnitAttack), "OnAction")]

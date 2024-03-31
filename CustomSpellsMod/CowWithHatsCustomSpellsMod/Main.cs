@@ -261,6 +261,8 @@ namespace CowWithHatsCustomSpellsMod
 
                         Core.FixSheetLightningNotToWorkOnNonLiving();
 
+                        Core.FixSpellPerfectionMissingGreaterElementalFocus();
+
                         //Core.fixUndeadAnatomy();
 
                         alreadyRan = true;
