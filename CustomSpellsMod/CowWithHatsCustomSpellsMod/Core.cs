@@ -18,6 +18,7 @@ using Kingmaker.Designers.EventConditionActionSystem.Actions;
 using Kingmaker.Designers.Mechanics.Buffs;
 using Kingmaker.Designers.Mechanics.EquipmentEnchants;
 using Kingmaker.Designers.Mechanics.Facts;
+using Kingmaker.ElementsSystem;
 using Kingmaker.EntitySystem.Entities;
 using Kingmaker.EntitySystem.Stats;
 using Kingmaker.Enums;
@@ -881,16 +882,26 @@ namespace CowWithHatsCustomSpellsMod
             var deal_damage = Helpers.CreateActionDealDamage(DamageEnergyType.Electricity, Helpers.CreateContextDiceValue(DiceType.Zero, 0, 1));
 
 
-            var save_result = Helpers.CreateConditionalSaved(apply_dazzled, apply_dazed);
-            var context_saved = Common.createContextActionSavingThrow(SavingThrowType.Fortitude, Helpers.CreateActionList(save_result));
-            Common.addConditionalDCIncrease(context_saved, Helpers.CreateConditionsCheckerOr(Helpers.Create<CallOfTheWild.NewMechanics.ContextConditionTargetHasMetalArmor>()), 2);
+            //ContextActionConditionalSaved save_result = Helpers.CreateConditionalSaved(apply_dazzled, apply_dazed);
+            //ContextActionSavingThrow context_saved = Common.createContextActionSavingThrow(SavingThrowType.Fortitude, Helpers.CreateActionList(save_result));
+            //Common.addConditionalDCIncrease(context_saved, Helpers.CreateConditionsCheckerOr(Helpers.Create<CallOfTheWild.NewMechanics.ContextConditionTargetHasMetalArmor>()), 2);
 
-            Conditional dazingEffect = Helpers.CreateConditional(Common.createContextConditionHasFacts(false, CallOfTheWild.Common.undead, CallOfTheWild.Common.construct), null, context_saved);
+            //Conditional dazingEffect = Helpers.CreateConditional(Common.createContextConditionHasFacts(false, CallOfTheWild.Common.undead, CallOfTheWild.Common.construct), null, context_saved);
 
-            AbilityEffectRunAction theEffect = Helpers.CreateRunActions(dazingEffect, deal_damage);
+            //AbilityEffectRunAction theEffect = Helpers.CreateRunActions(dazingEffect, deal_damage);
+
+            GameAction[] dazzle_and_damage = new GameAction[] { apply_dazzled, deal_damage };
+            GameAction[] daze_and_damage = new GameAction[] { apply_dazed, deal_damage };
+            GameAction[] just_damage = new GameAction[] { deal_damage };
+            Conditional save_passed = Helpers.CreateConditional(Common.createContextConditionHasFacts(false, CallOfTheWild.Common.undead, CallOfTheWild.Common.construct), just_damage, dazzle_and_damage);
+            Conditional save_failed = Helpers.CreateConditional(Common.createContextConditionHasFacts(false, CallOfTheWild.Common.undead, CallOfTheWild.Common.construct), just_damage, daze_and_damage);
+            ContextActionConditionalSaved save_result_redux = Helpers.CreateConditionalSaved(save_passed, save_failed);
+            ContextActionSavingThrow context_saved_redux = Common.createContextActionSavingThrow(SavingThrowType.Fortitude, Helpers.CreateActionList(save_result_redux));
+            Common.addConditionalDCIncrease(context_saved_redux, Helpers.CreateConditionsCheckerOr(Helpers.Create<CallOfTheWild.NewMechanics.ContextConditionTargetHasMetalArmor>()), 2);
 
             CallOfTheWild.NewSpells.sheet_lightning.RemoveComponent(CallOfTheWild.NewSpells.sheet_lightning.GetComponent<AbilityEffectRunAction>());
-            CallOfTheWild.NewSpells.sheet_lightning.AddComponent(theEffect);
+            //CallOfTheWild.NewSpells.sheet_lightning.AddComponent(theEffect);
+            CallOfTheWild.NewSpells.sheet_lightning.AddComponent(Helpers.CreateRunActions(context_saved_redux));
         }
     }
 
