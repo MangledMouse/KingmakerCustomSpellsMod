@@ -259,6 +259,8 @@ namespace CowWithHatsCustomSpellsMod
 
                         Core.FixForTweakOrTreatHumanCompanionFeats();
 
+                        Core.FixSheetLightningNotToWorkOnNonLiving();
+
                         //Core.fixUndeadAnatomy();
 
                         alreadyRan = true;

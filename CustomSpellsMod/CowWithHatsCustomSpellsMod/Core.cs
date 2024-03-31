@@ -869,6 +869,29 @@ namespace CowWithHatsCustomSpellsMod
             }
             buf.SetDescription("Your natural attacks and melee weapons deal 1d6 points of fire damage for every 4 class levels you possess");
         }
+
+        internal static void FixSheetLightningNotToWorkOnNonLiving()
+        {
+            var chain_lightning = library.Get<BlueprintAbility>("645558d63604747428d55f0dd3a4cb58");
+            var dazed = Common.dazed_non_mind_affecting;
+            var dazzled = library.Get<BlueprintBuff>("df6d1025da07524429afbae248845ecc");
+
+            var apply_dazed = Common.createContextActionApplyBuff(dazed, Helpers.CreateContextDuration(1));
+            var apply_dazzled = Common.createContextActionApplyBuff(dazzled, Helpers.CreateContextDuration(1));
+            var deal_damage = Helpers.CreateActionDealDamage(DamageEnergyType.Electricity, Helpers.CreateContextDiceValue(DiceType.Zero, 0, 1));
+
+
+            var save_result = Helpers.CreateConditionalSaved(apply_dazzled, apply_dazed);
+            var context_saved = Common.createContextActionSavingThrow(SavingThrowType.Fortitude, Helpers.CreateActionList(save_result));
+            Common.addConditionalDCIncrease(context_saved, Helpers.CreateConditionsCheckerOr(Helpers.Create<CallOfTheWild.NewMechanics.ContextConditionTargetHasMetalArmor>()), 2);
+
+            Conditional dazingEffect = Helpers.CreateConditional(Common.createContextConditionHasFacts(false, CallOfTheWild.Common.undead, CallOfTheWild.Common.construct), null, context_saved);
+
+            AbilityEffectRunAction theEffect = Helpers.CreateRunActions(dazingEffect, deal_damage);
+
+            CallOfTheWild.NewSpells.sheet_lightning.RemoveComponent(CallOfTheWild.NewSpells.sheet_lightning.GetComponent<AbilityEffectRunAction>());
+            CallOfTheWild.NewSpells.sheet_lightning.AddComponent(theEffect);
+        }
     }
 
     //[HarmonyPatch(typeof(UnitAttack), "OnAction")]
