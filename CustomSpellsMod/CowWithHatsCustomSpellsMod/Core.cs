@@ -909,7 +909,7 @@ namespace CowWithHatsCustomSpellsMod
             BlueprintParametrizedFeature spell_perfection = library.Get<BlueprintParametrizedFeature>("bf89280c487c4539abcccd0d55a9a56e");
             foreach(BlueprintComponent bc in spell_perfection.GetComponents<BlueprintComponent>())
             {
-                Main.logger.Log($"Blueprint component from spell perfection {bc.name} with string value {bc.ToString()} and type {bc.GetType().ToString()}");
+                //Main.logger.Log($"Blueprint component from spell perfection {bc.name} with string value {bc.ToString()} and type {bc.GetType().ToString()}");
                 SpellPerfectionDoubleFeatBonuses perfection_doubling_thing = bc as SpellPerfectionDoubleFeatBonuses;
                 if (perfection_doubling_thing !=null)
                 {
@@ -918,7 +918,45 @@ namespace CowWithHatsCustomSpellsMod
 
                 }
             }
+
+        }
+
+        internal static void FixBruisingIntellect()
+        {
+            BlueprintFeature bruisingIntellectTrait = library.TryGet<BlueprintFeature>("4e21c192f2ea4f1a8b567dd216deb3b4");
+            if (bruisingIntellectTrait == null)
+                return;
+
+
+            //foreach (BlueprintComponent component in bruisingIntellectTrait.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"Blueprint component from bruising intellect {component.name} with string value {component.ToString()} and type {component.GetType().ToString()}");
+            //    AddBonusToSkillCheckIfNoClassSkill bonus = component as AddBonusToSkillCheckIfNoClassSkill;
+            //    if(bonus != null)
+            //    {
+            //        Main.logger.Log($"AddBonusToSkillCheckIfNoClassSkill {bonus.name.ToString()} has skill {bonus.skill} and check {bonus.check.ToString()}");
+            //    }
+            //}//brusiing intellect
             
+
+            //foreach (BlueprintComponent component in library.Get<BlueprintFeature>("17726c5b51754680b20a2852d3de67f6").GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"Blueprint component from omen {component.name} with string value {component.ToString()} and type {component.GetType().ToString()}");
+            //}//omen
+
+            bruisingIntellectTrait.RemoveComponents<AddBonusToSkillCheckIfNoClassSkill>();
+            bruisingIntellectTrait.AddComponent(Helpers.Create<CallOfTheWild.NewMechanics.AddBonusToSkillCheckIfNoClassSkill>(a => { a.skill = StatType.SkillPersuasion; a.check = StatType.CheckIntimidate; }));
+
+            
+            //foreach (BlueprintComponent component in bruisingIntellectTrait.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"Blueprint component from bruising intellect {component.name} with string value {component.ToString()} and type {component.GetType().ToString()}");
+            //    AddBonusToSkillCheckIfNoClassSkill bonus = component as AddBonusToSkillCheckIfNoClassSkill;
+            //    if (bonus != null)
+            //    {
+            //        Main.logger.Log($"AddBonusToSkillCheckIfNoClassSkill {bonus.name.ToString()} has skill {bonus.skill} and check {bonus.check.ToString()}");
+            //    }
+            //}//brusiing intellect
         }
     }
 
