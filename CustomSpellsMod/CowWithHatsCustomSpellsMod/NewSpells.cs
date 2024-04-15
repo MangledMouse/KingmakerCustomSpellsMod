@@ -298,7 +298,7 @@ namespace CowWithHatsCustomSpellsMod
             mages_disjunction = Helpers.CreateAbility("MagesDisjunctionAbility",
                                                       "Mage's Disjunction",
                                                       "You cause disjunctive magic to surge through each creature within range. " +
-                                                      "All spell effects on these creatures are dispelled." +
+                                                      "All spell effects on these creatures are dispelled. " +
                                                       "Any summoned creatures in the area are dismissed. " +
                                                       "Any magical area effect that is touching an effected creture is disrupted by the spells magic.",
                                                       //"This spell targets a point within range and strips away all nearby magical effects and spells. All area spell effects which touch " +
@@ -407,7 +407,7 @@ namespace CowWithHatsCustomSpellsMod
 
             var init_buff = Helpers.CreateBuff("HeightenAwarenessInitiativeBuff",
                                                 "Heightened Initiative",
-                                                "After dismissing Heigtened Awareness, you have received a +4 to initiative bonus checks for 3 rounds",
+                                                "After dismissing Heightened Awareness, you have received a +4 to initiative bonus checks for 3 rounds",
                                                 "2816472d6c0b4156b04ffdb96bd7e133", //fresh guid
                                                 //"",
                                                 foresightIcon,
@@ -457,6 +457,7 @@ namespace CowWithHatsCustomSpellsMod
             heightened_awareness.AddToSpellList(Helpers.bardSpellList, 1);
             heightened_awareness.AddToSpellList(Helpers.druidSpellList, 1);
             heightened_awareness.AddToSpellList(Helpers.inquisitorSpellList, 1);
+            heightened_awareness.AddToSpellList(Helpers.rangerSpellList, 1);
 
             heightened_awareness.AddSpellAndScroll("d4dc796367b4fb342ad7e8221fb8d813"); // scroll of sense vitals
         }
