@@ -265,6 +265,8 @@ namespace CowWithHatsCustomSpellsMod
 
                         Core.FixBruisingIntellect();
 
+                        Core.fixSpellTypos();
+
                         //Core.fixUndeadAnatomy();
 
                         alreadyRan = true;

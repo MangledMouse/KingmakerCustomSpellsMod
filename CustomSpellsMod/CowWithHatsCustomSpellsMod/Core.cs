@@ -965,6 +965,55 @@ namespace CowWithHatsCustomSpellsMod
             //    }
             //}//brusiing intellect
         }
+
+        internal static void fixSpellTypos()
+        {
+            BlueprintAbility ballLightningSpell = library.TryGet<BlueprintAbility>("8f45d4110fed47b2bb1b5a2303175fc6");
+            bool balanceChanges = ballLightningSpell.Description.ToCharArray()[167] == "8".ToCharArray()[0];
+            fixBallLightningFactDescription(ballLightningSpell, balanceChanges);
+            BlueprintBuff ballLighningBuff = library.Get<BlueprintBuff>("b41745f7e8074151b454c88eafd028b9");
+            fixBallLightningFactDescription(ballLighningBuff, balanceChanges);
+
+            BlueprintAbility touchOfGracelessness = library.Get<BlueprintAbility>("5d38c80a819e8084ba19b29a865312c2");
+            BlueprintAbility touchOfGracelessNessCast = library.Get<BlueprintAbility>("ad10bfec6d7ae8b47870e3a545cc8900");
+            //Main.logger.Log(touchOfGracelessness.Description.ToString());
+            string descriptionOfTouch = $"With a single touch you reduce a creature to a fumbling clown.\n"
+                                                + $"The target is slowed to half its movement speed and the target takes a penalty to its Dexterity equal to 1d6+1 per two caster levels (maximum 1d6+5). This penalty cannot drop the target's Dexterity score below 1.\n"
+                                                + $"A successful Fortitude saves halves the penalty to Dexterity and negates the movement speed penalty.";
+            touchOfGracelessness.SetDescription(descriptionOfTouch);
+            touchOfGracelessNessCast.SetDescription(descriptionOfTouch);
+            //Main.logger.Log(touchOfGracelessness.Description.ToString());
+
+            BlueprintAbility sleetStorm = library.Get<BlueprintAbility>("95574c36b2b4487499757994c8d2d472");
+            CallOfTheWild.Common.addSpellDescriptor(sleetStorm, SpellDescriptor.Cold);
+
+            BlueprintFeature swiftConsume = library.Get<BlueprintFeature>("85cb0dc4e5ba491f87dfe4e089e48681");
+            swiftConsume.SetDescription("The arcanist can use the consume spells class feature as swift action instead of as move action.");
+
+            BlueprintBuff knowThyEnemyBuff = library.Get<BlueprintBuff>("60453c28f24d445db6122ec0ef84a3ee");
+            knowThyEnemyBuff.SetDescription("When the lore warden succeeds at a Knowledge or Lore check to identify a creature’s abilities and weaknesses, she can also use a standard action to grant herself a +2 insight bonus on all attack and weapon damage rolls made against that enemy. This bonus lasts for a number of rounds equal to half her class level (minimum 2 rounds), or until the lore warden uses this ability against a different creature. At 11th level, she also gains a +2 bonus to her AC against the creature when using this ability. At 19th level, the insight bonus increases to +3.");
+            BlueprintAbility knowThyEnemyAbility = library.Get<BlueprintAbility>("22c26399e80c479585620cb4fa3fb8b7");
+            knowThyEnemyAbility.SetDescription("When the lore warden succeeds at a Knowledge or Lore check to identify a creature’s abilities and weaknesses, she can also use a standard action to grant herself a +2 insight bonus on all attack and weapon damage rolls made against that enemy. This bonus lasts for a number of rounds equal to half her class level (minimum 2 rounds), or until the lore warden uses this ability against a different creature. At 11th level, she also gains a +2 bonus to her AC against the creature when using this ability. At 19th level, the insight bonus increases to +3.");
+            BlueprintFeature knowThyEnemyFeature = library.Get<BlueprintFeature>("33df5e9a2e574ba08c0a25a66f8c3735");
+            knowThyEnemyFeature.SetDescription("When the lore warden succeeds at a Knowledge or Lore check to identify a creature’s abilities and weaknesses, she can also use a standard action to grant herself a +2 insight bonus on all attack and weapon damage rolls made against that enemy. This bonus lasts for a number of rounds equal to half her class level (minimum 2 rounds), or until the lore warden uses this ability against a different creature. At 11th level, she also gains a +2 bonus to her AC against the creature when using this ability. At 19th level, the insight bonus increases to +3.");
+        }
+
+        private static void fixBallLightningFactDescription( BlueprintUnitFact buf, bool balanceChanges)
+        {
+            //buf.SetDescription(buf.Description.Insert(464, "d")); //this cannot be handled directly because the string for the description is populated from an internal variable
+            string dieAmount;
+            if (balanceChanges)
+            {
+                dieAmount = "8";
+            }
+            else
+                dieAmount = "6";
+            buf.SetDescription($"You create a globe of lightning that flies in whichever direction you indicate.\n"
+                                                            + $"If the globe enters a space with a creature, it stops moving for the round and deals 6d{dieAmount} points of electricity damage to that creature, though a successful Reflex save negates the damage. Creatures wearing metal armor take a –4 penalty on this saving throw.\n"
+                                                            + $"For every 4 caster levels above 7th, the damage increase by an additional 3d{dieAmount} (9d{dieAmount} at 11th, 12d{dieAmount} at 15th, to the maximum of 15d{dieAmount} at 19th)\n"
+                                                            + "The globe moves as long as you actively direct it (as a move action); otherwise it stays at rest.");
+        }
+
     }
 
     //[HarmonyPatch(typeof(UnitAttack), "OnAction")]
