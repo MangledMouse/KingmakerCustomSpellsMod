@@ -2,7 +2,7 @@
   "Id": "CowWithHatsCustomSpellsMod",
   "DisplayName": "CowWithHatsCustomSpellsMod",
   "Author": "CowWithHat",
-  "Version": "1.3.6c-2.0.8",
+  "Version": "1.3.7-2.0.8",
   "ManagerVersion": "0.13.0",
   "Requirements": [ "CallOfTheWild" ],
   "AssemblyName": "CowWithHatsCustomSpellsMod.dll",

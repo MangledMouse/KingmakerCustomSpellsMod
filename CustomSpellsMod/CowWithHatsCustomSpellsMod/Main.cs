@@ -38,6 +38,7 @@ namespace CowWithHatsCustomSpellsMod
             internal bool fix_studied_combat;
             internal bool remove_curiousity_invocation_nerf;
             internal bool remove_planar_focus_nerf;
+            internal bool bardic_to_dawnflower;
 
             //internal bool silence_update;
             //internal bool confusion_output;
@@ -59,6 +60,7 @@ namespace CowWithHatsCustomSpellsMod
                     fix_studied_combat = (bool)jo["fix_studied_combat"];
                     remove_curiousity_invocation_nerf = (bool)jo["remove_curiousity_invocation_nerf"];
                     remove_planar_focus_nerf = (bool)jo["remove_planar_focus_nerf"];
+                    //bardic_to_dawnflower = (bool)jo["bardic_to_dawnflower"];
                     //silence_update = (bool)jo["silence_update"];
                     //confusion_output = (bool)jo["confusion_output"];
                 }
@@ -257,6 +259,11 @@ namespace CowWithHatsCustomSpellsMod
                                 Core.FixFeyThoughts();
                         }
 
+                        //if(settings.bardic_to_dawnflower)
+                        //{
+                        //    Core.AddBardicInspirationToDawnflowerAnchorite();
+                        //}
+
                         Core.FixForTweakOrTreatHumanCompanionFeats();
 
                         Core.FixSheetLightningNotToWorkOnNonLiving();
@@ -267,7 +274,10 @@ namespace CowWithHatsCustomSpellsMod
 
                         Core.fixSpellTypos();
 
+                        Core.fixUndeadAnatomy();
+
                         //Core.fixUndeadAnatomy();
+
 
                         alreadyRan = true;
                     }
@@ -349,28 +359,28 @@ namespace CowWithHatsCustomSpellsMod
     }
 
 
-    public static class ActionBarFix
-    {
-        public static bool HasMethod(this object objectToCheck, string methodName)
-        {
-            var type = objectToCheck.GetType();
-            return type.GetMethod(methodName) != null;
-        }
+    //public static class ActionBarFix
+    //{
+    //    public static bool HasMethod(this object objectToCheck, string methodName)
+    //    {
+    //        var type = objectToCheck.GetType();
+    //        return type.GetMethod(methodName) != null;
+    //    }
 
-        [HarmonyPatch(typeof(ActionBarManager), "CheckTurnPanelView")]
-        internal static class ActionBarManager_CheckTurnPanelView_Patch
-        {
-            //private static bool Prepare(ActionBarManager __instance)
-            //{
-            //    bool hasCheckTurnPanelView = HasMethod(__instance, "CheckTurnPanelView");
-            //    Main.logger.Log("Reached this point");
-            //    return hasCheckTurnPanelView;
-            //}
-            private static void Postfix(ActionBarManager __instance)
-            {
-                Traverse.Create((object)__instance).Method("ShowTurnPanel", Array.Empty<object>()).GetValue();
-            }
-        }
-    }
+    //    [HarmonyPatch(typeof(ActionBarManager), "CheckTurnPanelView")]
+    //    internal static class ActionBarManager_CheckTurnPanelView_Patch
+    //    {
+    //        //private static bool Prepare(ActionBarManager __instance)
+    //        //{
+    //        //    bool hasCheckTurnPanelView = HasMethod(__instance, "CheckTurnPanelView");
+    //        //    Main.logger.Log("Reached this point");
+    //        //    return hasCheckTurnPanelView;
+    //        //}
+    //        private static void Postfix(ActionBarManager __instance)
+    //        {
+    //            Traverse.Create((object)__instance).Method("ShowTurnPanel", Array.Empty<object>()).GetValue();
+    //        }
+    //    }
+    //}
 }
 

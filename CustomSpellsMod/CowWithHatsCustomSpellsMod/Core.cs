@@ -11,6 +11,7 @@ using Kingmaker.Blueprints.Classes.Selection;
 using Kingmaker.Blueprints.Classes.Spells;
 using Kingmaker.Blueprints.Facts;
 using Kingmaker.Blueprints.Items.Armors;
+using Kingmaker.Blueprints.Items.Components;
 using Kingmaker.Blueprints.Items.Ecnchantments;
 using Kingmaker.Blueprints.Items.Equipment;
 using Kingmaker.Controllers.Units;
@@ -590,6 +591,36 @@ namespace CowWithHatsCustomSpellsMod
 
         internal static void fixUndeadAnatomy()
         {
+//UndeadAnatomyIAbility   8d535e198bb44ba2b6cf6ea603753fe4 Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbility
+//UndeadAnatomyIIAbility  e6161d07f6154750b236b2df94ffa019 Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbility
+//UndeadAnatomyIIIAbility c4529ff389fb45cfa06dd562daa5af61 Kingmaker.UnitLogic.Abilities.Blueprints.BlueprintAbility
+//ScrollOfUndeadAnatomyIAbility   ed5e68f786820a9a39d04ebb08403a7b Kingmaker.Blueprints.Items.Equipment.BlueprintItemEquipmentUsable
+//ScrollOfUndeadAnatomyIIAbility  861b2be9fb2306683d2992c29fcaa586 Kingmaker.Blueprints.Items.Equipment.BlueprintItemEquipmentUsable
+//ScrollOfUndeadAnatomyIIIAbility a45fa91d84cd04f72f72f57fd190aafe Kingmaker.Blueprints.Items.Equipment.BlueprintItemEquipmentUsable
+
+            BlueprintItemEquipmentUsable undeadAnatomy1Scroll = library.Get<BlueprintItemEquipmentUsable>("ed5e68f786820a9a39d04ebb08403a7b");
+            CopyScroll undeadAnatomyScroll1 = undeadAnatomy1Scroll.GetComponent<CopyScroll>();
+            undeadAnatomyScroll1.CustomSpell = library.Get<BlueprintAbility>("8d535e198bb44ba2b6cf6ea603753fe4");
+
+            BlueprintItemEquipmentUsable undeadAnatomy2Scroll = library.Get<BlueprintItemEquipmentUsable>("861b2be9fb2306683d2992c29fcaa586");
+            CopyScroll undeadAnatomyScroll2 = undeadAnatomy2Scroll.GetComponent<CopyScroll>();
+            undeadAnatomyScroll2.CustomSpell = library.Get<BlueprintAbility>("e6161d07f6154750b236b2df94ffa019");
+
+            BlueprintItemEquipmentUsable undeadAnatomy3Scroll = library.Get<BlueprintItemEquipmentUsable>("a45fa91d84cd04f72f72f57fd190aafe");
+            CopyScroll undeadAnatomyScroll3 = undeadAnatomy3Scroll.GetComponent<CopyScroll>();
+            undeadAnatomyScroll3.CustomSpell = library.Get<BlueprintAbility>("c4529ff389fb45cfa06dd562daa5af61");
+
+            //foreach (BlueprintComponent bc in undeadAnatomy1Scroll.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"component {bc.name} has type {bc.GetType()}");
+            //    CopyScroll cs = bc as CopyScroll;
+            //    if (cs != null)
+            //    {
+            //        cs.CustomSpell = library.Get<BlueprintAbility>("8d535e198bb44ba2b6cf6ea603753fe4");
+            //        Main.logger.Log($"The custom spell is {cs.CustomSpell.name} ");
+            //    }
+            //}
+
             //BlueprintItemEquipmentUsable undeadAnatomy1Scroll = library.Get<BlueprintItemEquipmentUsable>("ed5e68f786820a9a39d04ebb08403a7b");
             //undeadAnatomy1Scroll.Ability.AddSpellAndScroll
         }
@@ -1014,6 +1045,27 @@ namespace CowWithHatsCustomSpellsMod
                                                             + "The globe moves as long as you actively direct it (as a move action); otherwise it stays at rest.");
         }
 
+        internal static void AddBardicInspirationToDawnflowerAnchorite()
+        {
+            //DawnflowerAnchoriteChannelDomainProgressionFeature	e58a52b73cbf476b8cd1f8f214fbd7e7	Kingmaker.Blueprints.Classes.BlueprintFeature
+            //AnimalCompanionRank 1670990255e4fe948a863bafd5dbda5d Kingmaker.Blueprints.Classes.BlueprintFeature
+            //BardicPerformanceResourceFact	b92bfc201c6a79e49afd0b5cfbfc269f	Kingmaker.Blueprints.Classes.BlueprintFeature
+            var channel_energy_domain_progression = library.Get<BlueprintFeature>("e58a52b73cbf476b8cd1f8f214fbd7e7");
+            channel_energy_domain_progression.SetDescription(
+                "The character adds his Dawnflower anchorite class levels to his effective class level in the corresponding class for the purpose of determining the effects of the following features: "
+                                                                      + "Domains, Channel Energy, Bardic Performance, Animal Companion and Wildshape."
+                );
+            var bardicPerformance = library.Get<BlueprintFeature>("5d4308fa344af0243b2dd3b1e500b2cc");
+            for (int i = 1; i <= 10; i++)
+            {
+                channel_energy_domain_progression.AddComponent(Helpers.CreateAddFeatureOnClassLevelIfHasFact(bardicPerformance, i, getDawnflowerAcnchoriteArray(), bardicPerformance));
+            }
+        }
+
+        private static BlueprintCharacterClass[] getDawnflowerAcnchoriteArray()
+        {
+            return new BlueprintCharacterClass[] { library.Get<BlueprintCharacterClass>("3bdfed13c1b747b38b4193faf0213423") };
+        }
     }
 
     //[HarmonyPatch(typeof(UnitAttack), "OnAction")]
