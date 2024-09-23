@@ -1092,6 +1092,40 @@ namespace CowWithHatsCustomSpellsMod
                                                               Helpers.LevelEntry(20, str_dex_bonus)
                                                             };
         }
+
+        internal static void fixTemporalCelerity()
+        {
+            //TemporalCelerityOracleRevelationInitiative2Feature  39c20686344c450d9936701fd5536232 Kingmaker.Blueprints.Classes.BlueprintFeature
+            //TemporalCelerityOracleRevelationInitiative3Feature  fc1d098d17364ac09f7bc96df139894c Kingmaker.Blueprints.Classes.BlueprintFeature
+            //WarSightOracleRevelationInitiative2Feature  5634f09095884fea8e21a1734d3d5302 Kingmaker.Blueprints.Classes.BlueprintFeature
+            //WarSightOracleRevelationInitiative3Feature  d939c0b2b6dd46e2baad4bd7eb4abf4a Kingmaker.Blueprints.Classes.BlueprintFeature
+            //TemporalCelerityShamanRevelationInitiative2Feature  9b6950738c6c4c759d6731e1185d2b53 Kingmaker.Blueprints.Classes.BlueprintFeature
+            //TemporalCelerityShamanRevelationInitiative3Feature  27e65f06c7644db7bf49726043ddf61b Kingmaker.Blueprints.Classes.BlueprintFeature
+
+            BlueprintFeature tempCelerityOracleRevelationInitiative2Feature = library.Get<BlueprintFeature>("39c20686344c450d9936701fd5536232");
+            setd20amount(1, tempCelerityOracleRevelationInitiative2Feature);
+            BlueprintFeature tempCelerityOracleRevelationInitiative3Feature = library.Get<BlueprintFeature>("fc1d098d17364ac09f7bc96df139894c");
+            setd20amount(2, tempCelerityOracleRevelationInitiative3Feature);
+
+            BlueprintFeature warSightOracleRevelationInitiative2Feature = library.Get<BlueprintFeature>("5634f09095884fea8e21a1734d3d5302");
+            setd20amount(1, warSightOracleRevelationInitiative2Feature);
+            BlueprintFeature warSightOracleRevelationInitiative3Feature = library.Get<BlueprintFeature>("d939c0b2b6dd46e2baad4bd7eb4abf4a");
+            setd20amount(2, warSightOracleRevelationInitiative3Feature);
+
+            BlueprintFeature temporalCelerityShamanRevelationInitiative2Feature = library.Get<BlueprintFeature>("9b6950738c6c4c759d6731e1185d2b53");
+            setd20amount(1, temporalCelerityShamanRevelationInitiative2Feature);
+            BlueprintFeature temporalCelerityShamanRevelationInitiative3Feature = library.Get<BlueprintFeature>("27e65f06c7644db7bf49726043ddf61b");
+            setd20amount(1, temporalCelerityShamanRevelationInitiative3Feature);
+        }
+
+        internal static void setd20amount(int amount, BlueprintFeature theRevelation)
+        {
+            ModifyD20 d20component = theRevelation.GetComponent<ModifyD20>();
+            if (d20component != null)
+            {
+                d20component.RollsAmount = amount;
+            }
+        }
     }
 
     //[HarmonyPatch(typeof(UnitAttack), "OnAction")]

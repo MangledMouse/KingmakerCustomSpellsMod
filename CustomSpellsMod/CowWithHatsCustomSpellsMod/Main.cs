@@ -278,6 +278,8 @@ namespace CowWithHatsCustomSpellsMod
 
                         Core.fixCorpseCompanion();
 
+                        Core.fixTemporalCelerity();
+
 
                         alreadyRan = true;
                     }
