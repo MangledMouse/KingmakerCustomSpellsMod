@@ -1066,6 +1066,32 @@ namespace CowWithHatsCustomSpellsMod
         {
             return new BlueprintCharacterClass[] { library.Get<BlueprintCharacterClass>("3bdfed13c1b747b38b4193faf0213423") };
         }
+
+        internal static void fixCorpseCompanion()
+        {
+            BlueprintArchetype corpse_companion_archetype = library.Get<BlueprintArchetype>("883543606e074042bd6f40d4f54641ad");
+            //corpse_companion_archetype.GetRemoveEntry(12);
+
+            BlueprintFeature companion_proficiency = library.Get<BlueprintFeature>("cd81defa0e924f7f8cfd90040c41bd2d");
+            BlueprintFeature str_dex_bonus = library.Get<BlueprintFeature>("228e0457e3634577ae60963c6a5d4a4e");
+            BlueprintFeature size_increase1 = library.Get<BlueprintFeature>("cf825092b0a94437942938464c4e7f18");
+            BlueprintFeature size_increase2 = library.Get<BlueprintFeature>("6c3cb94a6ef14b02b35f98bcadaaa433");
+
+            corpse_companion_archetype.AddFeatures = new LevelEntry[] { Helpers.LevelEntry(1, companion_proficiency),
+                                                              Helpers.LevelEntry(2, str_dex_bonus),
+                                                              Helpers.LevelEntry(4, str_dex_bonus),
+                                                              Helpers.LevelEntry(6, str_dex_bonus),
+                                                              Helpers.LevelEntry(7, size_increase1),
+                                                              Helpers.LevelEntry(8, str_dex_bonus),
+                                                              Helpers.LevelEntry(10, str_dex_bonus),
+                                                              Helpers.LevelEntry(12, str_dex_bonus),
+                                                              Helpers.LevelEntry(14, str_dex_bonus),
+                                                              Helpers.LevelEntry(15, size_increase2),
+                                                              Helpers.LevelEntry(16, str_dex_bonus),
+                                                              Helpers.LevelEntry(18, str_dex_bonus),
+                                                              Helpers.LevelEntry(20, str_dex_bonus)
+                                                            };
+        }
     }
 
     //[HarmonyPatch(typeof(UnitAttack), "OnAction")]
