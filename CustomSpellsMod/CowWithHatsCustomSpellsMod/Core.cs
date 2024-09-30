@@ -25,6 +25,7 @@ using Kingmaker.EntitySystem.Stats;
 using Kingmaker.Enums;
 using Kingmaker.Enums.Damage;
 using Kingmaker.RuleSystem;
+using Kingmaker.UnitLogic.Abilities;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
 using Kingmaker.UnitLogic.Abilities.Components;
 using Kingmaker.UnitLogic.ActivatableAbilities;
@@ -50,6 +51,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityModManagerNet;
+using static CallOfTheWild.MetamagicFeats;
 
 namespace CowWithHatsCustomSpellsMod
 {
@@ -1124,6 +1126,21 @@ namespace CowWithHatsCustomSpellsMod
             if (d20component != null)
             {
                 d20component.RollsAmount = amount;
+            }
+        }
+
+        internal static void AllowPersistentSpellOnAllDamagingSpells()
+        {
+            //((b.AvailableMetamagic & Metamagic.Maximize) != 0)).Cast<BlueprintAbility>().ToArray()
+            BlueprintFeature persistent_metamagic = library.Get<BlueprintFeature>("09b10675689147459bd485b28f156768");
+            var spells = library.GetAllBlueprints().OfType<BlueprintAbility>().Where(b => b.IsSpell && b.EffectOnEnemy == AbilityEffectOnUnit.Harmful && ((b.AvailableMetamagic & Metamagic.Maximize) != 0) && ((b.AvailableMetamagic & (Metamagic)MetamagicExtender.Persistent) == 0)).Cast<BlueprintAbility>().ToArray();
+            foreach (var s in spells)
+            {
+                s.AvailableMetamagic = s.AvailableMetamagic | (Metamagic)MetamagicExtender.Persistent;
+                if (s.Parent != null)
+                {
+                    s.AvailableMetamagic = s.AvailableMetamagic | (Metamagic)MetamagicExtender.Persistent;
+                }
             }
         }
     }
