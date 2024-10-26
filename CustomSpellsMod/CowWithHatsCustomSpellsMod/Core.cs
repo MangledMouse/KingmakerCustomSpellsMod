@@ -1143,6 +1143,13 @@ namespace CowWithHatsCustomSpellsMod
                 }
             }
         }
+
+        internal static void fixBloodhuntersFavorTargetShare()
+        {
+            BlueprintBuff bloodhunter_favored_target = library.Get<BlueprintBuff>("894596869b7841fba9d2c45ed80ed52d");
+            ShareFavoredEnemies sfe = bloodhunter_favored_target.GetComponent<ShareFavoredEnemies>();
+            sfe.Half = false;
+        }
     }
 
     //[HarmonyPatch(typeof(UnitAttack), "OnAction")]

@@ -287,6 +287,8 @@ namespace CowWithHatsCustomSpellsMod
 
                         Core.fixTemporalCelerity();
 
+                        Core.fixBloodhuntersFavorTargetShare();
+
                         alreadyRan = true;
                     }
                     else
