@@ -370,7 +370,7 @@ namespace CowWithHatsCustomSpellsMod
 
     }
 
-
+    //need to comment out the ActionbarFix for 2.0.8 version of the mod
     public static class ActionBarFix
     {
         public static bool HasMethod(this object objectToCheck, string methodName)
