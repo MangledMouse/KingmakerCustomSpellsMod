@@ -275,6 +275,8 @@ namespace CowWithHatsCustomSpellsMod
 
                         Core.FixSheetLightningNotToWorkOnNonLiving();
 
+                        Core.FixBurstOfRadiance();
+
                         Core.FixSpellPerfectionMissingGreaterElementalFocus();
 
                         Core.FixBruisingIntellect();

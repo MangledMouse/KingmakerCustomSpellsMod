@@ -34,6 +34,7 @@ using Kingmaker.UnitLogic.Buffs.Blueprints;
 using Kingmaker.UnitLogic.Commands;
 using Kingmaker.UnitLogic.Commands.Base;
 using Kingmaker.UnitLogic.FactLogic;
+using Kingmaker.UnitLogic.Mechanics;
 using Kingmaker.UnitLogic.Mechanics.Actions;
 using Kingmaker.UnitLogic.Mechanics.Components;
 using Kingmaker.UnitLogic.Mechanics.Conditions;
@@ -917,8 +918,8 @@ namespace CowWithHatsCustomSpellsMod
             var dazed = Common.dazed_non_mind_affecting;
             var dazzled = library.Get<BlueprintBuff>("df6d1025da07524429afbae248845ecc");
 
-            var apply_dazed = Common.createContextActionApplyBuff(dazed, Helpers.CreateContextDuration(1));
-            var apply_dazzled = Common.createContextActionApplyBuff(dazzled, Helpers.CreateContextDuration(1));
+            var apply_dazed = Common.createContextActionApplyBuff(dazed, Helpers.CreateContextDuration(1), is_from_spell: true);
+            var apply_dazzled = Common.createContextActionApplyBuff(dazzled, Helpers.CreateContextDuration(1), is_from_spell: true);
             var deal_damage = Helpers.CreateActionDealDamage(DamageEnergyType.Electricity, Helpers.CreateContextDiceValue(DiceType.Zero, 0, 1));
 
 
@@ -942,6 +943,32 @@ namespace CowWithHatsCustomSpellsMod
             CallOfTheWild.NewSpells.sheet_lightning.RemoveComponent(CallOfTheWild.NewSpells.sheet_lightning.GetComponent<AbilityEffectRunAction>());
             //CallOfTheWild.NewSpells.sheet_lightning.AddComponent(theEffect);
             CallOfTheWild.NewSpells.sheet_lightning.AddComponent(Helpers.CreateRunActions(context_saved_redux));
+        }
+
+        internal static void FixBurstOfRadiance()
+        {
+            var dazzled = library.Get<BlueprintBuff>("df6d1025da07524429afbae248845ecc");
+            var blind = library.Get<BlueprintBuff>("187f88d96a0ef464280706b63635f2af");
+            var balance_fixes_in_cotw = CallOfTheWild.Main.settings.balance_fixes;
+
+            ContextDiceValue contextDiceValueIfBalanceFixes = Helpers.CreateContextDiceValue(DiceType.D4);
+            if (balance_fixes_in_cotw)
+                contextDiceValueIfBalanceFixes = Helpers.CreateContextDiceValue(DiceType.D6);
+
+            ContextActionDealDamage damage = Helpers.CreateActionDealDamage(DamageEnergyType.Divine, contextDiceValueIfBalanceFixes, isAoE: true);
+            var apply_damage = Helpers.CreateConditional(Helpers.CreateContextConditionAlignment(AlignmentComponent.Evil),
+                                                         damage);
+            var duration = Helpers.CreateContextDuration(0, diceType: DiceType.D4, diceCount: 1);
+
+            var apply_blind = Common.createContextActionApplyBuff(blind, duration, is_from_spell: true);
+            var apply_dazzled = Common.createContextActionApplyBuff(dazzled, duration, is_from_spell: true);
+
+            GameAction[] dazzle_and_damage = new GameAction[] { apply_damage, apply_dazzled};
+            GameAction[] blind_and_damage = new GameAction[] { apply_damage, apply_blind };
+
+            var effect = Helpers.CreateConditionalSaved(dazzle_and_damage, blind_and_damage);
+
+            CallOfTheWild.NewSpells.burst_of_radiance.ReplaceComponent<AbilityEffectRunAction>(Helpers.CreateRunActions(SavingThrowType.Reflex, effect));
         }
 
         internal static void FixSpellPerfectionMissingGreaterElementalFocus()
