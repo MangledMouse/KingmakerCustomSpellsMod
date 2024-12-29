@@ -1177,6 +1177,31 @@ namespace CowWithHatsCustomSpellsMod
             ShareFavoredEnemies sfe = bloodhunter_favored_target.GetComponent<ShareFavoredEnemies>();
             sfe.Half = false;
         }
+
+        internal static void fixFieryShuriken()
+        {
+            BlueprintAbility fiery_shuriken = CallOfTheWild.NewSpells.fiery_shiriken;
+            CallOfTheWild.Common.addSpellDescriptor(fiery_shuriken, SpellDescriptor.Fire);
+            BlueprintAbility fire_shuriken_1projectile = library.Get<BlueprintAbility>("ee048804323f4369ad2d6b6e53b760e3");
+            CallOfTheWild.Common.addSpellDescriptor(fire_shuriken_1projectile, SpellDescriptor.Fire);
+            BlueprintAbility fire_shuriken_all_projectile = library.Get<BlueprintAbility>("65d6a7e056994a13a9f5386a008d17e5");
+            CallOfTheWild.Common.addSpellDescriptor(fire_shuriken_all_projectile, SpellDescriptor.Fire);
+
+            BlueprintAbility fireS1 = library.Get<BlueprintAbility>("cef68859a5114e29ab68b0212cca484a");
+            CallOfTheWild.Common.addSpellDescriptor(fireS1, SpellDescriptor.Fire);
+            BlueprintAbility fireS2 = library.Get<BlueprintAbility>("68d836bc43e14ef0ac77eec3a5fb4276");
+            CallOfTheWild.Common.addSpellDescriptor(fireS2, SpellDescriptor.Fire);
+            BlueprintAbility fireS3 = library.Get<BlueprintAbility>("903ce6f303854073af1c86dc9d5ae3bc");
+            CallOfTheWild.Common.addSpellDescriptor(fireS3, SpellDescriptor.Fire);
+            BlueprintAbility fireS4 = library.Get<BlueprintAbility>("2a1af589198a4f6abac719873118ceb7");
+            CallOfTheWild.Common.addSpellDescriptor(fireS4, SpellDescriptor.Fire);
+            BlueprintAbility fireS5 = library.Get<BlueprintAbility>("eba75b742e1449edb9a3dc63de41a99c");
+            CallOfTheWild.Common.addSpellDescriptor(fireS5, SpellDescriptor.Fire);
+            BlueprintAbility fireS6 = library.Get<BlueprintAbility>("34030ceaba244521a2c56aff51b83fb5");
+            CallOfTheWild.Common.addSpellDescriptor(fireS6, SpellDescriptor.Fire);
+            BlueprintAbility fireS7 = library.Get<BlueprintAbility>("7645eb17fbc348eebbd2d5929e35c93f");
+            CallOfTheWild.Common.addSpellDescriptor(fireS7, SpellDescriptor.Fire);
+        }
     }
 
     //[HarmonyPatch(typeof(UnitAttack), "OnAction")]

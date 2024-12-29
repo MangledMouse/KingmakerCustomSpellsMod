@@ -291,6 +291,8 @@ namespace CowWithHatsCustomSpellsMod
 
                         Core.fixBloodhuntersFavorTargetShare();
 
+                        Core.fixFieryShuriken();
+
                         alreadyRan = true;
                     }
                     else
