@@ -1171,6 +1171,25 @@ namespace CowWithHatsCustomSpellsMod
             }
         }
 
+        internal static void allowDazingOnAllDamagingSpells()
+        {
+            List<String> exemptions = new List<string>() { "Archon’s Trumpet", "Animate Dead", "Irresistible Dance", "Ghoul Touch", "Shadow Evocation, Greater (Archon’s Trumpet)" };
+            BlueprintFeature dazing_metamagic = library.Get<BlueprintFeature>("b3078f42707c4500902b5f78e3c778ab");
+            var spells = library.GetAllBlueprints().OfType<BlueprintAbility>().Where(b => b.IsSpell && b.EffectOnEnemy == AbilityEffectOnUnit.Harmful && ((b.AvailableMetamagic & Metamagic.Empower) != 0) && ((b.AvailableMetamagic & (Metamagic)MetamagicExtender.Dazing) == 0)).Cast<BlueprintAbility>().ToArray();
+            foreach (var s in spells)
+            {
+                if (!exemptions.Contains(s.Name))
+                {
+                    s.AvailableMetamagic = s.AvailableMetamagic | (Metamagic)MetamagicExtender.Dazing;
+                    if (s.Parent != null)
+                    {
+                        s.AvailableMetamagic = s.AvailableMetamagic | (Metamagic)MetamagicExtender.Dazing;
+                    }
+                    //Main.logger.Log($"Damaging spell that can't have dazing metamagic. Spell name: {s.Name}");
+                }
+            }
+        }
+
         internal static void fixBloodhuntersFavorTargetShare()
         {
             BlueprintBuff bloodhunter_favored_target = library.Get<BlueprintBuff>("894596869b7841fba9d2c45ed80ed52d");
@@ -1201,6 +1220,37 @@ namespace CowWithHatsCustomSpellsMod
             CallOfTheWild.Common.addSpellDescriptor(fireS6, SpellDescriptor.Fire);
             BlueprintAbility fireS7 = library.Get<BlueprintAbility>("7645eb17fbc348eebbd2d5929e35c93f");
             CallOfTheWild.Common.addSpellDescriptor(fireS7, SpellDescriptor.Fire);
+        }
+
+        internal static void fixDivineScourgeHexesDurations()
+        {
+            var context_rank_config = Helpers.CreateContextRankConfig(baseValueType: ContextRankBaseValueType.StatBonus, stat: StatType.Charisma, progression: ContextRankProgression.StartPlusDivStep,
+                                                    min: 3, startLevel: -2, stepLevel: 1, type: AbilityRankType.DamageBonus);
+            switchRankConfigForNewConfig(library.Get<BlueprintAbility>("09e4d54cf7a2423680284dbbf74d953a"), context_rank_config); //DivineScourgeEvilEyeACHexAbility
+            switchRankConfigForNewConfig(library.Get<BlueprintAbility>("ed8dccf0ead04c5facf14f87348857c6"),context_rank_config); //SplitHexDivineScourgeEvilEyeACHexAbility
+            switchRankConfigForNewConfig(library.Get<BlueprintAbility>("3a45043726fc4c6082ef38ef65f1dcbc"), context_rank_config);//DivineScourgeEvilEyeACHexAbilityHexStikeAbility
+
+            switchRankConfigForNewConfig(library.Get<BlueprintAbility>("f55ec19e1f6340a69688516b2d380669"), context_rank_config);//DivineScourgeEvilEyeAttackHexAbility
+            switchRankConfigForNewConfig(library.Get<BlueprintAbility>("78d43d85575642c2ad333fdc1263f8cf"), context_rank_config);//SplitHexDivineScourgeEvilEyeAttackHexAbility
+            switchRankConfigForNewConfig(library.Get<BlueprintAbility>("7eb73a8b670c4f269338d80634e4f2c9"), context_rank_config);//DivineScourgeEvilEyeAttackHexAbilityHexStikeAbility
+
+            switchRankConfigForNewConfig(library.Get<BlueprintAbility>("362d36290eff40ab82feb51a13034192"), context_rank_config);//DivineScourgeEvilEyeSavesHexAbility
+            switchRankConfigForNewConfig(library.Get<BlueprintAbility>("362d36290eff40ab82feb51a13034192"), context_rank_config);//SplitHexDivineScourgeEvilEyeSavesHexAbility
+            switchRankConfigForNewConfig(library.Get<BlueprintAbility>("362d36290eff40ab82feb51a13034192"), context_rank_config);//DivineScourgeEvilEyeSavesHexAbilityHexStikeAbility
+
+            var retribution_context_rank_config = Helpers.CreateContextRankConfig(baseValueType: ContextRankBaseValueType.StatBonus,
+                                                                                stat: StatType.Charisma,
+                                                                                progression: ContextRankProgression.AsIs,
+                                                                                type: AbilityRankType.DamageBonus, min: 1);
+            switchRankConfigForNewConfig(library.Get<BlueprintAbility>("5b1526595e834bcab5d3d1dd1c1cfe8d"), context_rank_config);//DivineScourgeRetributionHexAbility
+            switchRankConfigForNewConfig(library.Get<BlueprintAbility>("b536d525ff2541bea5d9a63f872d1a47"), context_rank_config);//SplitHexDivineScourgeRetributionHexAbility
+            switchRankConfigForNewConfig(library.Get<BlueprintAbility>("5b1526595e834bcab5d3d1dd1c1cfe8d"), context_rank_config);//DivineScourgeRetributionHexAbilityHexStikeAbility
+        }
+
+        internal static void switchRankConfigForNewConfig(BlueprintAbility ability, ContextRankConfig rankConfig)
+        {
+            ability.RemoveComponents<ContextRankConfig>();
+            ability.AddComponent(rankConfig);
         }
     }
 

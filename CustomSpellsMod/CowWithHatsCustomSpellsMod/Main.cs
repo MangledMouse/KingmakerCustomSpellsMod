@@ -3,22 +3,14 @@ using System;
 using System.Reflection;
 using System.Linq;
 using Kingmaker.Blueprints;
-using Kingmaker;
 using Kingmaker.Blueprints.Classes;
-using Kingmaker.UnitLogic.FactLogic;
-using Kingmaker.UnitLogic.Mechanics.Components;
-using Kingmaker.UnitLogic.Buffs.Blueprints;
-using Kingmaker.Designers.Mechanics.Buffs;
 using System.Collections.Generic;
-using Kingmaker.Blueprints.Items;
 using Newtonsoft.Json;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using CallOfTheWild;
 using Kingmaker.UI.ActionBar;
-using Kingmaker.UI.Common;
 using Harmony12;
-using Kingmaker.UI;
 
 namespace CowWithHatsCustomSpellsMod
 {
@@ -165,16 +157,7 @@ namespace CowWithHatsCustomSpellsMod
             }
         }
 
-        //Patches the action Bar Manager to have it show up for summons, and maybe dominated targets
-        //[HarmonyLib.HarmonyPatch(typeof(ActionBarManager), "CheckTurnPanelView")]
-        //internal static class ActionBarManager_CheckTurnPanelView_Patch
-        //{
-        //    private static void Postfix(ActionBarManager __instance)
-        //    {
-        //        Main.logger.Log($"Patching Show Turn Panel");
-        //        HarmonyLib.Traverse.Create(__instance).Method("ShowTurnPanel").GetValue();
-        //    }
-        //}
+
 
         //[Harmony12.HarmonyPatch(typeof(Helpers.GuidStorage), "dump")]
         //LibraryScriptableObject_LoadDictionary_Patch
@@ -292,6 +275,10 @@ namespace CowWithHatsCustomSpellsMod
                         Core.fixBloodhuntersFavorTargetShare();
 
                         Core.fixFieryShuriken();
+
+                        Core.allowDazingOnAllDamagingSpells();
+
+                        Core.fixDivineScourgeHexesDurations();
 
                         alreadyRan = true;
                     }
