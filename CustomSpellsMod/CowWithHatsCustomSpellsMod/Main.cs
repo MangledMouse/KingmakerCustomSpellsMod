@@ -32,6 +32,7 @@ namespace CowWithHatsCustomSpellsMod
             internal bool remove_planar_focus_nerf;
             internal bool bardic_to_dawnflower;
             internal bool persistent_on_damaging_spells;
+            internal bool address_multitick_bug;
 
             //internal bool silence_update;
             //internal bool confusion_output;
@@ -54,6 +55,7 @@ namespace CowWithHatsCustomSpellsMod
                     remove_curiousity_invocation_nerf = (bool)jo["remove_curiousity_invocation_nerf"];
                     remove_planar_focus_nerf = (bool)jo["remove_planar_focus_nerf"];
                     persistent_on_damaging_spells = (bool)jo["persistent_on_damaging_spells"];
+                    address_multitick_bug = (bool)jo["address_multitick_bug"];
                     //bardic_to_dawnflower = (bool)jo["bardic_to_dawnflower"];
                     //silence_update = (bool)jo["silence_update"];
                     //confusion_output = (bool)jo["confusion_output"];

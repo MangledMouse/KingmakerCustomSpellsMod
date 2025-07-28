@@ -11,5 +11,6 @@
 	"fix_studied_combat": true,
 	"remove_curiousity_invocation_nerf": true,
 	"remove_planar_focus_nerf": true,
-	"persistent_on_damaging_spells":  true
+	"persistent_on_damaging_spells": true,
+	"address_multitick_bug":  true
 }

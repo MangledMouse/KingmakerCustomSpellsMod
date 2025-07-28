@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlliedSpellcasterFix\AlliedSpellcasterFix.cs" />
+    <Compile Include="AreaOfEffectsTick.cs" />
     <Compile Include="BalanceUpdates.cs" />
     <Compile Include="ClassUpdates.cs" />
     <Compile Include="Core.cs" />
