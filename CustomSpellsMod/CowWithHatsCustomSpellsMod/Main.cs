@@ -33,6 +33,7 @@ namespace CowWithHatsCustomSpellsMod
             internal bool bardic_to_dawnflower;
             internal bool persistent_on_damaging_spells;
             internal bool address_multitick_bug;
+            internal bool allow_eldritch_heritage_with_bloodline;
 
             //internal bool silence_update;
             //internal bool confusion_output;
@@ -56,6 +57,7 @@ namespace CowWithHatsCustomSpellsMod
                     remove_planar_focus_nerf = (bool)jo["remove_planar_focus_nerf"];
                     persistent_on_damaging_spells = (bool)jo["persistent_on_damaging_spells"];
                     address_multitick_bug = (bool)jo["address_multitick_bug"];
+                    allow_eldritch_heritage_with_bloodline = (bool)jo["allow_eldritch_heritage_with_bloodline"];
                     //bardic_to_dawnflower = (bool)jo["bardic_to_dawnflower"];
                     //silence_update = (bool)jo["silence_update"];
                     //confusion_output = (bool)jo["confusion_output"];
@@ -233,6 +235,10 @@ namespace CowWithHatsCustomSpellsMod
                         {
                             Core.AllowPersistentSpellOnAllDamagingSpells();
                         }
+                        if(settings.allow_eldritch_heritage_with_bloodline)
+                        {
+                            Core.AllowEldritchHeritageWithBloodline();
+                        }
                         //Core.CreateLawArchonSubdomain();
 
                         //Core.fixExplosionRing();
@@ -281,6 +287,11 @@ namespace CowWithHatsCustomSpellsMod
                         Core.allowDazingOnAllDamagingSpells();
 
                         Core.fixDivineScourgeHexesDurations();
+
+                        //This attempted fix didn't solve the invigorate issue
+                        //Core.fixInvigorateBuff();
+                        //This is not something I care about at present
+                        //Core.outputHeartOfIraBuffComponents();
 
                         alreadyRan = true;
                     }

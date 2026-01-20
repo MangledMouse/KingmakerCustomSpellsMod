@@ -337,15 +337,16 @@ namespace CowWithHatsCustomSpellsMod
                                                         "Acute Senses",
                                                         "The target gains a +10 enhancement bonus on Perception checks. The bonus increases to +20 at caster level 8th, and +30 (the maximum) at caster level 16th.",
                                                         "99da40d7f3f54a9f97c696fa19d6bddc ",//fresh guid
-                                                        //"",
+                                                                                            //"",
                                                         foresightIcon,
                                                         null,
                                                         Helpers.CreateAddContextStatBonus(StatType.SkillPerception, ModifierDescriptor.Enhancement, ContextValueType.Rank, AbilityRankType.Default),
                                                         //perceptionBuff,
                                                         Helpers.CreateContextRankConfig(baseValueType: ContextRankBaseValueType.CasterLevel,
-                                                                    progression:ContextRankProgression.Custom, 
+                                                                    progression: ContextRankProgression.Custom,
                                                                     customProgression: statProgression
-                                                                    )//, type:AbilityRankType.StatBonus)
+                                                                    )
+                                                        //ScriptableObject.CreateInstance<BuffLoggerComponent>()
                                                         );
             var apply_buff = Common.createContextActionApplyBuff(acute_senses_buff, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.StatBonus), DurationRate.Minutes), true);
 

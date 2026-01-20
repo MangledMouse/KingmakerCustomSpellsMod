@@ -31,6 +31,7 @@ using Kingmaker.UnitLogic.Abilities.Components;
 using Kingmaker.UnitLogic.ActivatableAbilities;
 using Kingmaker.UnitLogic.Buffs;
 using Kingmaker.UnitLogic.Buffs.Blueprints;
+using Kingmaker.UnitLogic.Buffs.Components;
 using Kingmaker.UnitLogic.Commands;
 using Kingmaker.UnitLogic.Commands.Base;
 using Kingmaker.UnitLogic.FactLogic;
@@ -1247,12 +1248,189 @@ namespace CowWithHatsCustomSpellsMod
             switchRankConfigForNewConfig(library.Get<BlueprintAbility>("5b1526595e834bcab5d3d1dd1c1cfe8d"), context_rank_config);//DivineScourgeRetributionHexAbilityHexStikeAbility
         }
 
+        
         internal static void switchRankConfigForNewConfig(BlueprintAbility ability, ContextRankConfig rankConfig)
         {
             ability.RemoveComponents<ContextRankConfig>();
             ability.AddComponent(rankConfig);
         }
+
+        internal static void outputHeartOfIraBuffComponents()
+        {
+            //HeartOfIraBuff affee8b7dab0c994abc57c1a8a16e999    Kingmaker.UnitLogic.Buffs.Blueprints.BlueprintBuff
+            BlueprintBuff buff = library.Get<BlueprintBuff>("affee8b7dab0c994abc57c1a8a16e999");
+            foreach(BlueprintComponent c in buff.GetComponents<BlueprintComponent>())
+            {
+                Main.logger.Log($"Heart of Ira BlueprintComponent with name {c.name} and buff id {c.GetType().ToString()}");
+                //the only component is an AddAreaEffect which is not at all what we want
+            }
+
+            BlueprintItemEquipmentNeck theHeart = library.Get<BlueprintItemEquipmentNeck>("c17f627fedd420d4aa871f23d0995fcf");
+            Main.logger.Log($"--- Dumping components for {theHeart.name} ---");
+
+            foreach (var c in theHeart.ComponentsArray)
+            {
+                Main.logger.Log($"Item Component: {c.GetType().FullName}");
+            }
+
+            foreach (var addFacts in theHeart.GetComponents<AddFacts>())
+            {
+                foreach (var fact in addFacts.Facts)
+                {
+                    Main.logger.Log($"Heart of Ira adds fact: {fact.name} ({fact.AssetGuid})");
+                    foreach(var c in fact.ComponentsArray)
+                    {
+                        Main.logger.Log($"Fact components: {fact.name} ({fact.AssetGuid}) has component {c.GetType().FullName}");
+                    }
+                }
+            }
+
+            Main.logger.Log($"--- Done dumping components for {theHeart.name} ---");
+
+        }
+
+        internal static void AllowEldritchHeritageWithBloodline()
+        {
+            var eldritchHeritage = library.Get<BlueprintFeatureSelection>("ade48004c6e549ee9d887fa523d99ca3");
+
+            var sorcerer = library.Get<BlueprintCharacterClass>("b3a505fb61437dc4097f43c3f8f9a4cf");
+            var dragonDisciple = library.Get<BlueprintCharacterClass>("72051275b1dbb2d42ba9118237794f7c");
+            var eldritchScion = library.Get<BlueprintArchetype>("d078b2ef073f2814c9e338a789d97b73");
+
+            // Remove CotW's original "cannot take EH if you already have a class/archetype/bloodline" restrictions
+            RemoveNoFeaturePrerequisite(sorcerer, eldritchHeritage);
+            RemoveNoFeaturePrerequisite(dragonDisciple, eldritchHeritage);
+            RemoveNoFeaturePrerequisite(eldritchScion, eldritchHeritage);
+            eldritchHeritage.RemoveComponents<CallOfTheWild.PrerequisiteMechanics.PrerequisiteNoClassLevelVisible>();
+            eldritchHeritage.RemoveComponents<PrerequisiteNoArchetype>();
+
+            // Gather all bloodline progressions
+            var bloodlines = Main.library.Get<BlueprintFeatureSelection>("24bef8d1bee12274686f6da6ccbc8914")
+                                         .AllFeatures.Cast<BlueprintProgression>().ToList();
+
+            var bloodlinesByFamily = bloodlines.GroupBy(GetBloodlineFamily).Where(g => g.Key != null).ToList();
+
+            // --- Step 1: Remove top-level restrictions blocking Eldritch Heritage ---
+            foreach (var p in eldritchHeritage.GetComponents<PrerequisiteNoFeature>()
+                                              .Where(p => bloodlines.Contains(p.Feature))
+                                              .ToArray())
+            {
+                eldritchHeritage.RemoveComponent(p);
+            }
+
+            // --- Step 2: Remove old child-feature restrictions ---
+            foreach (var eh in eldritchHeritage.AllFeatures)
+                foreach (var p in eh.GetComponents<PrerequisiteNoFeature>()
+                                     .Where(p => p.Feature is BlueprintProgression)
+                                     .ToArray())
+                    eh.RemoveComponent(p);
+
+            // --- Step 3: Add family-scoped exclusions to child features only ---
+            foreach (var eh in eldritchHeritage.AllFeatures)
+            {
+                var ehFamily = GetHeritageFamily(eh);
+                if (ehFamily == null)
+                    continue;
+
+                var familyGroup = bloodlinesByFamily.FirstOrDefault(g => g.Key == ehFamily);
+                if (familyGroup == null)
+                    continue;
+
+                foreach (var bl in familyGroup)
+                    eh.AddComponent(new PrerequisiteNoFeature { Feature = bl, HideInUI = false });
+            }
+
+            Main.logger.Log("CowWithHat's Custom Spells Mod: Eldritch Heritage is now correctly restricted only at the child-feature level by bloodline family.");
+        }
+
+        private static void RemoveNoFeaturePrerequisite(
+          BlueprintScriptableObject owner,
+          BlueprintFeature feature)
+        {
+
+            //foreach (BlueprintComponent bc in owner.GetComponents<BlueprintComponent>())
+            //{
+            //    Main.logger.Log($"{owner.name} with component {bc.name} which has toString value {bc.ToString()}");
+            //}
+
+            var prereqs = owner.GetComponents<PrerequisiteNoFeature>()
+                               .Where(p => p.Feature == feature)
+                               .ToArray();
+
+            foreach (var p in prereqs)
+            {
+                owner.RemoveComponent(p);
+            }
+        }
+
+        private static string GetBloodlineFamily(BlueprintFeature bl)
+        {
+            var name = bl.name;
+
+            if (!name.StartsWith("Bloodline") || !name.EndsWith("Progression"))
+                return null;
+
+            name = name.Substring("Bloodline".Length);
+            name = name.Substring(0, name.Length - "Progression".Length);
+
+            if (name.StartsWith("Draconic"))
+                return "Draconic";
+            if (name.StartsWith("Elemental"))
+                return "Elemental";
+
+            return name;
+        }
+
+        private static string GetHeritageFamily(BlueprintFeature f)
+        {
+            if (f.name.Contains("Draconic"))
+                return "Draconic";
+            if (f.name.Contains("Elemental"))
+                return "Elemental";
+
+            return null;
+        }
+
+        //This doesn't work
+        //internal static void fixInvigorateBuff()
+        //{
+        //    try
+        //    {
+        //        var library = Main.library;
+        //        var oldExhausted = library.Get<BlueprintBuff>("46d1b9cc3d0fd36469a471b047d773a2");
+        //        var newExhausted = library.Get<BlueprintBuff>("fe8a25b5fce572244ac64c6554e40e13");
+
+        //        var invigorateField = AccessTools.Field(typeof(CallOfTheWild.NewSpells), "invigorate");
+        //        var invigorate = invigorateField?.GetValue(null) as BlueprintAbility;
+        //        if (invigorate == null) return;
+
+        //        var applyBuff = invigorate.GetComponent<AbilityEffectRunAction>()
+        //            ?.Actions.Actions?.OfType<ContextActionApplyBuff>()
+        //            .FirstOrDefault();
+
+        //        var buff = applyBuff?.Buff;
+        //        var suppress = buff?.GetComponent<CallOfTheWild.BuffMechanics.SuppressBuffsCorrect>();
+        //        if (suppress == null) return;
+
+        //        var buffs = suppress.Buffs.ToList();
+
+        //        if (!buffs.Contains(newExhausted))
+        //        {
+        //            buffs.Add(newExhausted);
+        //            suppress.Buffs = buffs.ToArray();
+        //            Main.logger.Log("✅ Added new exhausted buff to suppression list.");
+        //        }
+        //        else
+        //        {
+        //            Main.logger.Log("ℹ️ New exhausted buff already in suppression list.");
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Main.logger.Log($"⚠️ Error fixing invigorate buff: {e}");
+        //    }
     }
+}
 
     //[HarmonyPatch(typeof(UnitAttack), "OnAction")]
     //static class UnitAttack_OnAction_Patch
@@ -1353,4 +1531,3 @@ namespace CowWithHatsCustomSpellsMod
     //        }
     //    }
     //}    
-}
