@@ -46,6 +46,7 @@ using Kingmaker.Blueprints.Facts;
 using Kingmaker.UnitLogic.Commands;
 using Kingmaker.UnitLogic.Parts;
 using Kingmaker.Blueprints.Classes.Prerequisites;
+using System.Diagnostics.Contracts;
 
 namespace CowWithHatsCustomSpellsMod
 {
@@ -62,6 +63,7 @@ namespace CowWithHatsCustomSpellsMod
         static public BlueprintAbility euphoric_cloud;
         static public BlueprintAbility mydriatic_spontaneity;
         static public BlueprintAbility mydriatic_spontaneity_mass;
+        static public BlueprintAbility piercing_shriek;
 
         static public BlueprintBuff mydriatic_spontaneity_buff;
 
@@ -74,6 +76,7 @@ namespace CowWithHatsCustomSpellsMod
             createMagesDisjunction();
             createEuphoricCloud();
             createMydriaticSpontaneity();
+            CreatePiercingShriek();
             outputSpellInfoToLog();
         }
 
@@ -645,6 +648,42 @@ namespace CowWithHatsCustomSpellsMod
                     cacs.Failed = Helpers.CreateActionList(apply_dazed);
                 }
             }
+        }
+
+        public static void CreatePiercingShriek()
+        {
+            Main.logger.Log("Creating Piercing Shriek");
+            //var buff = library.CopyAndAdd<BlueprintBuff>("f492622e473d34747806bdb39356eb89", "PiercingShriekBuff", "729fa06959ad4a0ca1e761b955b6ff62"); //slow then new guid
+            var stagger = library.Get<BlueprintBuff>("df3950af5a783bd4d91ab73eb8fa0fd3");
+            var echolocation = library.Get<BlueprintAbility>("20b548bf09bb3ea4bafea78dcb4f3db6"); //echolocation
+
+            var apply_buff = CallOfTheWild.Common.createContextActionApplyBuff(stagger, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.Default), DurationRate.Rounds), is_from_spell: true);
+
+            //new guid for buff 00df0fcf5a754d52bc133183e9fa7142
+            //new guid for ability c5ae53ea3f1c4ef9abaf5146669ffc3f
+
+            piercing_shriek = Helpers.CreateAbility("PiercingShriekAbility",
+                "Piercing Shriek",
+                "You emit an ear-splitting shriek which can be heard only by the target of this spell; all other observers merely see you screaming silently. The target suffers wracking pain from the scream, gaining the staggered condition.",
+                "c5ae53ea3f1c4ef9abaf5146669ffc3f",
+                echolocation.Icon,
+                AbilityType.Spell,
+                UnitCommand.CommandType.Standard,
+                AbilityRange.Medium,
+                Helpers.roundsPerLevelDuration,
+                Helpers.fortNegates,
+                Common.createAbilitySpawnFx("2483780330931b64f97cbb6bb7cbd352", anchor: AbilitySpawnFxAnchor.SelectedTarget),
+                Helpers.CreateRunActions(SavingThrowType.Fortitude, Helpers.CreateConditionalSaved(null, apply_buff)),
+                Helpers.CreateSpellDescriptor(SpellDescriptor.Sonic),
+                Helpers.CreateSpellDescriptor((SpellDescriptor)CallOfTheWild.AdditionalSpellDescriptors.ExtraSpellDescriptor.Pain),
+                Helpers.CreateSpellComponent(SpellSchool.Evocation)
+            );
+            piercing_shriek.SpellResistance = true;
+            piercing_shriek.setMiscAbilityParametersSingleTargetRangedHarmful(true);
+
+            piercing_shriek.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Persistent | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Piercing;
+            Main.logger.Log("Creating Piercing Shriek");
+            NewSpells.piercing_shriek.AddSpellAndScroll("33770ff24b320e343bb767815f800fc4"); //scroll of echolocation
         }
 
         public static void CreateUpdatedSilenceSpell()

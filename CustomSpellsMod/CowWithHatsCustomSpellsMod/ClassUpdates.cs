@@ -82,6 +82,8 @@ namespace CowWithHatsCustomSpellsMod
 
             NewSpells.mages_disjunction.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 9); // psychic spell list
 
+            NewSpells.piercing_shriek.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 2);
+
         }
 
         private static void ReplaceEvangelistSpells()
