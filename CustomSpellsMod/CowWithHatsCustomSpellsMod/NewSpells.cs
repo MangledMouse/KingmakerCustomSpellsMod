@@ -64,6 +64,7 @@ namespace CowWithHatsCustomSpellsMod
         static public BlueprintAbility mydriatic_spontaneity;
         static public BlueprintAbility mydriatic_spontaneity_mass;
         static public BlueprintAbility piercing_shriek;
+        static public BlueprintAbility opressive_boredom;
 
         static public BlueprintBuff mydriatic_spontaneity_buff;
 
@@ -77,6 +78,7 @@ namespace CowWithHatsCustomSpellsMod
             createEuphoricCloud();
             createMydriaticSpontaneity();
             CreatePiercingShriek();
+            CreateOppressiveBoredom();
             outputSpellInfoToLog();
         }
 
@@ -652,14 +654,13 @@ namespace CowWithHatsCustomSpellsMod
 
         public static void CreatePiercingShriek()
         {
-            Main.logger.Log("Creating Piercing Shriek");
             //var buff = library.CopyAndAdd<BlueprintBuff>("f492622e473d34747806bdb39356eb89", "PiercingShriekBuff", "729fa06959ad4a0ca1e761b955b6ff62"); //slow then new guid
             var stagger = library.Get<BlueprintBuff>("df3950af5a783bd4d91ab73eb8fa0fd3");
             var echolocation = library.Get<BlueprintAbility>("20b548bf09bb3ea4bafea78dcb4f3db6"); //echolocation
 
             var apply_buff = CallOfTheWild.Common.createContextActionApplyBuff(stagger, Helpers.CreateContextDuration(Helpers.CreateContextValue(AbilityRankType.Default), DurationRate.Rounds), is_from_spell: true);
 
-            //new guid for buff 00df0fcf5a754d52bc133183e9fa7142
+            
             //new guid for ability c5ae53ea3f1c4ef9abaf5146669ffc3f
 
             piercing_shriek = Helpers.CreateAbility("PiercingShriekAbility",
@@ -682,8 +683,13 @@ namespace CowWithHatsCustomSpellsMod
             piercing_shriek.setMiscAbilityParametersSingleTargetRangedHarmful(true);
 
             piercing_shriek.AvailableMetamagic = Metamagic.Extend | Metamagic.Heighten | Metamagic.Reach | Metamagic.Quicken | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Persistent | (Metamagic)CallOfTheWild.MetamagicFeats.MetamagicExtender.Piercing;
-            Main.logger.Log("Creating Piercing Shriek");
-            NewSpells.piercing_shriek.AddSpellAndScroll("33770ff24b320e343bb767815f800fc4"); //scroll of echolocation
+            
+        }
+
+        public static void CreateOppressiveBoredom()
+        {
+            //new guid for buff 00df0fcf5a754d52bc133183e9fa7142
+            //new guid for ability d4153eb617a04755b81224430096f07f
         }
 
         public static void CreateUpdatedSilenceSpell()

@@ -13,5 +13,6 @@
 	"remove_planar_focus_nerf": true,
 	"persistent_on_damaging_spells": true,
 	"address_multitick_bug": true,
-	"allow_eldritch_heritage_with_bloodline":  true
+	"allow_eldritch_heritage_with_bloodline": true,
+	"base_game_grease": false
 }

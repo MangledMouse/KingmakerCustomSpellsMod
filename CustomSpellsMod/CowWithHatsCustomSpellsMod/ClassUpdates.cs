@@ -30,6 +30,29 @@ namespace CowWithHatsCustomSpellsMod
             //Main.logger.Log($"load being called");
         }
 
+        public static void PsychicClassLoad()
+        {
+            NewSpells.mages_disjunction.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 9); // psychic spell list
+            
+            NewSpells.mydriatic_spontaneity_mass.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 6); //psychic spell list
+            NewSpells.mydriatic_spontaneity.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 3); //psychic spell list
+            
+            NewSpells.euphoric_cloud.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 2); //psychic spell list
+            
+            NewSpells.acute_senses.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 2); //psychic spell list
+            
+            NewSpells.heightened_awareness.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 1); // psychic spell list
+            
+            NewSpells.glue_seal.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 1); //psychic spell list
+            
+            NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 2); //psychic spell list
+            NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 5); //psychic spell list
+            
+            NewSpells.piercing_shriek.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 2);
+            //NewSpells.piercing_shriek.AddSpellAndScroll("33770ff24b320e343bb767815f800fc4"); //scroll of echolocation, might need to be done later so it has a spell level. Might not though. looks like it does need to be done here
+            CallOfTheWild.Helpers.AddSpell(NewSpells.piercing_shriek);
+        }
+
         public static void AddAppropriateSpellsToMindKnifePsychicAccess()
         {
             
@@ -51,38 +74,37 @@ namespace CowWithHatsCustomSpellsMod
             NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 5); //psychic detective spell list
             NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 6); // witch spell list
             NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("90a9bcf466f740639902446dfd2230e5"), 6); //winter witch spell list (gets its own because of fire spell ban)
-            NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 5); //psychic spell list
+            
             NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 3); // witch spell list
             NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("90a9bcf466f740639902446dfd2230e5"), 3); //winter witch spell list (gets its own because of fire spell ban)
             NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 2); //psychic detective spell list
-            NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 2); //psychic spell list
+            
 
             NewSpells.glue_seal.AddToSpellList(library.Get<BlueprintSpellList>("972048af37924e59b174653974b255a5"), 1); //Summoner spell list
             NewSpells.glue_seal.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 1); //psychic detective spell list
-            NewSpells.glue_seal.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 1); //psychic spell list
+            
 
             NewSpells.heightened_awareness.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 1); // psychic destective spell list
-            NewSpells.heightened_awareness.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 1); // psychic spell list
+            
 
             NewSpells.acute_senses.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 2); //psychic detective spell list
-            NewSpells.acute_senses.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 2); //psychic spell list
+            
 
             NewSpells.euphoric_cloud.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 2); //psychic detective spell list
             NewSpells.euphoric_cloud.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 2); //witch spell list
             NewSpells.euphoric_cloud.AddToSpellList(library.Get<BlueprintSpellList>("90a9bcf466f740639902446dfd2230e5"), 2); //winter witch spell list (gets its own because of fire spell ban)
             NewSpells.euphoric_cloud.AddToSpellList(library.Get<BlueprintSpellList>("b161506e0b8f4116806a243f6838ae01"), 2); //hunter spell list
-            NewSpells.euphoric_cloud.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 2); //psychic spell list
 
-            NewSpells.mydriatic_spontaneity.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 3); //psychic spell list
+
+            
             NewSpells.mydriatic_spontaneity.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 4); //witch spell list
             NewSpells.mydriatic_spontaneity.AddToSpellList(library.Get<BlueprintSpellList>("90a9bcf466f740639902446dfd2230e5"), 4); //winter witch spell list (gets its own because of fire spell ban)
-            NewSpells.mydriatic_spontaneity_mass.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 6); //psychic spell list
+            
             NewSpells.mydriatic_spontaneity_mass.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 7); //witch spell list
             NewSpells.mydriatic_spontaneity_mass.AddToSpellList(library.Get<BlueprintSpellList>("90a9bcf466f740639902446dfd2230e5"), 7); //winter witch spell list (gets its own because of fire spell ban)
 
-            NewSpells.mages_disjunction.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 9); // psychic spell list
+            
 
-            NewSpells.piercing_shriek.AddToSpellList(library.Get<BlueprintSpellList>("d8eda7e863824c42b3329279cac4d92a"), 2);
 
         }
 

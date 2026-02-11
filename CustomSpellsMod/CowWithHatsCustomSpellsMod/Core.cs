@@ -25,6 +25,7 @@ using Kingmaker.EntitySystem.Stats;
 using Kingmaker.Enums;
 using Kingmaker.Enums.Damage;
 using Kingmaker.RuleSystem;
+using Kingmaker.UnitLogic;
 using Kingmaker.UnitLogic.Abilities;
 using Kingmaker.UnitLogic.Abilities.Blueprints;
 using Kingmaker.UnitLogic.Abilities.Components;
@@ -77,6 +78,11 @@ namespace CowWithHatsCustomSpellsMod
             //at the moment I am failing to remove the appropriate immunities from the enemy i feel like removing them from
             //BalanceUpdates.load();
             //Main.logger.Log("Preload reached");
+        }
+
+        static internal void loadBetweenPsychicInitiation()
+        {
+            ClassUpdates.PsychicClassLoad();
         }
 
         static internal void postLoad()
@@ -1389,6 +1395,19 @@ namespace CowWithHatsCustomSpellsMod
                 return "Elemental";
 
             return null;
+        }
+
+        internal static void AddAppropriateTagsToGrease()
+        {
+            var grease_buff = library.Get<BlueprintBuff>("5f9910ccdd124294e905b391d01b4ade");
+
+            grease_buff.ComponentsArray = grease_buff.ComponentsArray
+                .Concat(new BlueprintComponent[]
+                {
+                    Helpers.CreateSpellDescriptor(SpellDescriptor.Ground | SpellDescriptor.MovementImpairing),
+                    Common.createAddCondition(UnitCondition.DifficultTerrain)
+                })
+                .ToArray();
         }
 
         //This doesn't work

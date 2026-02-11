@@ -11,6 +11,9 @@ using Newtonsoft.Json.Linq;
 using CallOfTheWild;
 using Kingmaker.UI.ActionBar;
 using Harmony12;
+using Kingmaker.Blueprints.Classes.Spells;
+using Kingmaker.UnitLogic.Buffs.Blueprints;
+using Kingmaker.UnitLogic;
 
 namespace CowWithHatsCustomSpellsMod
 {
@@ -34,6 +37,7 @@ namespace CowWithHatsCustomSpellsMod
             internal bool persistent_on_damaging_spells;
             internal bool address_multitick_bug;
             internal bool allow_eldritch_heritage_with_bloodline;
+            internal bool base_game_grease;
 
             //internal bool silence_update;
             //internal bool confusion_output;
@@ -58,6 +62,8 @@ namespace CowWithHatsCustomSpellsMod
                     persistent_on_damaging_spells = (bool)jo["persistent_on_damaging_spells"];
                     address_multitick_bug = (bool)jo["address_multitick_bug"];
                     allow_eldritch_heritage_with_bloodline = (bool)jo["allow_eldritch_heritage_with_bloodline"];
+                    base_game_grease = (bool)jo["base_game_grease"];
+
                     //bardic_to_dawnflower = (bool)jo["bardic_to_dawnflower"];
                     //silence_update = (bool)jo["silence_update"];
                     //confusion_output = (bool)jo["confusion_output"];
@@ -132,6 +138,49 @@ namespace CowWithHatsCustomSpellsMod
         //    }
         //}
 
+        [Harmony12.HarmonyPatch(typeof(CallOfTheWild.Psychic), "createAmnesiac")]
+        static class Psychic_CreateAmnesiac_Prefix
+        {
+
+            static void Prefix()
+            {
+                try
+                {
+                    Core.loadBetweenPsychicInitiation();
+                }
+                catch (Exception ex)
+                {
+                    Main.DebugError(ex);
+                }
+            }
+            
+        }
+
+        [Harmony12.HarmonyPatch(typeof(CallOfTheWild.Rebalance), "fixGrease")]
+        static class fixGrease_Prefix
+        {
+
+            static bool Prefix()
+            {
+                try
+                {
+                    if (settings.base_game_grease)
+                    {
+                        return false;
+                    }
+                    else
+                        return true;
+                }
+                catch (Exception ex)
+                {
+                    Main.DebugError(ex);
+                }
+                return true;
+            }
+
+        }
+
+
         [Harmony12.HarmonyPatch(typeof(CallOfTheWild.NewSpells), "load")]
         static class LibraryScriptableObject_LoadDictionary_Patch_Before
         {
@@ -142,12 +191,12 @@ namespace CowWithHatsCustomSpellsMod
                 Main.library = CallOfTheWild.NewSpells.library;
                 try
                 {
-//#if DEBUG
-//                    bool allow_guid_generation = true;
-//#else
-//                    bool allow_guid_generation = false; //no guids should be ever generated in release
-//#endif
-//                    CallOfTheWild.Helpers.GuidStorage.load(Properties.Resources.blueprints, allow_guid_generation);
+                    //#if DEBUG
+                    //                    bool allow_guid_generation = true;
+                    //#else
+                    //                    bool allow_guid_generation = false; //no guids should be ever generated in release
+                    //#endif
+                    //                    CallOfTheWild.Helpers.GuidStorage.load(Properties.Resources.blueprints, allow_guid_generation);
                     Main.DebugLog("Loading CowWithHat's Custom Spells");
                     //logger.Log("Made it to pre load");
                     Core.preLoad();                    
@@ -239,6 +288,10 @@ namespace CowWithHatsCustomSpellsMod
                         {
                             Core.AllowEldritchHeritageWithBloodline();
                         }
+                        if (settings.base_game_grease)
+                        {
+                            Core.AddAppropriateTagsToGrease();
+                        }
                         //Core.CreateLawArchonSubdomain();
 
                         //Core.fixExplosionRing();
@@ -292,7 +345,6 @@ namespace CowWithHatsCustomSpellsMod
                         //Core.fixInvigorateBuff();
                         //This is not something I care about at present
                         //Core.outputHeartOfIraBuffComponents();
-
                         alreadyRan = true;
                     }
                     else
