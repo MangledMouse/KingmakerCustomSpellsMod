@@ -74,10 +74,16 @@ namespace CowWithHatsCustomSpellsMod
             NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 5); //psychic detective spell list
             NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 6); // witch spell list
             NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("90a9bcf466f740639902446dfd2230e5"), 6); //winter witch spell list (gets its own because of fire spell ban)
+            NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("a6ece1eaa2de452987843dff8f7ca01b"), 5); // occultist spell list
+            NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("e2223e9a2e0f4d47bb24979a097e49c4"), 5); // occultist enchantment spell list
+            NewSpells.suggestion_mass.AddToSpellList(library.Get<BlueprintSpellList>("22486c97798a460a87be266c3158637a"), 5); // occultist performers accoutrements spell list
             
             NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("422490cf62744e16a3e131efd94cf290"), 3); // witch spell list
             NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("90a9bcf466f740639902446dfd2230e5"), 3); //winter witch spell list (gets its own because of fire spell ban)
             NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 2); //psychic detective spell list
+            NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("a6ece1eaa2de452987843dff8f7ca01b"), 3); // occultist spell list
+            NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("e2223e9a2e0f4d47bb24979a097e49c4"), 3); // occultist enchantment spell list
+            NewSpells.suggestion.AddToSpellList(library.Get<BlueprintSpellList>("22486c97798a460a87be266c3158637a"), 3); // occultist performers accoutrements spell list
             
 
             NewSpells.glue_seal.AddToSpellList(library.Get<BlueprintSpellList>("972048af37924e59b174653974b255a5"), 1); //Summoner spell list
@@ -85,6 +91,9 @@ namespace CowWithHatsCustomSpellsMod
             
 
             NewSpells.heightened_awareness.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 1); // psychic destective spell list
+            NewSpells.heightened_awareness.AddToSpellList(library.Get<BlueprintSpellList>("a6ece1eaa2de452987843dff8f7ca01b"), 1); // occultist spell list
+            NewSpells.heightened_awareness.AddToSpellList(library.Get<BlueprintSpellList>("9aae4b857c4a49d1b3d04f096ff3c9a2"), 1); // occultist divination spell list
+            NewSpells.heightened_awareness.AddToSpellList(library.Get<BlueprintSpellList>("00f081550deb42a3915ffadce109d46c"), 1); // occultist mage's paraphernalia spell list
             
 
             NewSpells.acute_senses.AddToSpellList(library.Get<BlueprintSpellList>("b9aacf55018e41aea0ce204f235aa883"), 2); //psychic detective spell list
